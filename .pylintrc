@@ -1,0 +1,5 @@
+[MAIN]
+ignore=migrations,tests,tests.py,apps.py,manage.py
+
+[FORMAT]
+max-line-length=119
