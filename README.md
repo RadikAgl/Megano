@@ -48,7 +48,7 @@ flake8 market
 ```
 * Линтер pylint
 ```shell
-pylint --rcfile=.pylintrc market/*
+pylint --fail-under=7 --rcfile=.pylintrc market/*
 ```
 * Линтер black
 ```shell
