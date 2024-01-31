@@ -2,6 +2,14 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+class Banner(models.Model):
+    """Баннер"""
+
+    name = models.CharField(max_length=512, verbose_name=_("name"))
+    actual = models.BooleanField(default=True, verbose_name=_("actual"))
+    preview = models.ImageField(verbose_name=_("preview"), upload_to="img/preview", null=True, blank=True)
+
+
 class Product(models.Model):
     """Продукт"""
 
