@@ -22,7 +22,7 @@ class Category(models.Model):
         return self.product_set.exists()
 
     class Meta:
-        verbose_name_plural = _("categories")
+        verbose_name_plural = _("Категорий")
 
     def __str__(self):
         return f"{self.name}"

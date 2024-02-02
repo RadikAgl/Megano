@@ -1,8 +1,9 @@
 import json
-from pathlib import Path
+import os
 
 from django.test import TestCase
 
+from config import settings
 from products.models import Product, Category
 
 
@@ -32,25 +33,18 @@ class ProductModelTest(TestCase):
         self.assertEqual(max_length, 512)
 
 
-FIXTURES_DIR = Path(__file__).resolve().parent.parent.parent / "fixtures"
-
-
 class CategoryModelTest(TestCase):
     """Класс тестов модели Категорий"""
 
-    fixtures = ["fixtures/categories.json"]
-
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        # Load fixtures
-        with open(FIXTURES_DIR / "categories.json", "r", encoding="utf-8") as file:
-            cls.fixtures = json.load(file)
+    fixtures = [os.path.join(settings.FIXTURE_DIRS, "05-categories.json")]
 
     def test_fixture_loading(self):
+        with open(self.fixtures[0], "r", encoding="utf-8") as file:
+            loaded_fixtures = json.load(file)
+
         category_count = Category.objects.count()
         print(f"Actual category count: {category_count}")
-        self.assertEqual(category_count, len(self.fixtures))
+        self.assertEqual(category_count, len(loaded_fixtures))
 
     def test_verbose_name(self):
         category = Category()
