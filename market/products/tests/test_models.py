@@ -1,9 +1,5 @@
-import json
-import os
-
 from django.test import TestCase
 
-from config import settings
 from products.models import Product, Category
 
 
@@ -36,15 +32,13 @@ class ProductModelTest(TestCase):
 class CategoryModelTest(TestCase):
     """Класс тестов модели Категорий"""
 
-    fixtures = [os.path.join(settings.FIXTURE_DIRS, "05-categories.json")]
+    fixtures = ["05-categories.json"]
 
     def test_fixture_loading(self):
-        with open(self.fixtures[0], "r", encoding="utf-8") as file:
-            loaded_fixtures = json.load(file)
 
         category_count = Category.objects.count()
         print(f"Actual category count: {category_count}")
-        self.assertEqual(category_count, len(loaded_fixtures))
+        self.assertEqual(category_count, 20)
 
     def test_verbose_name(self):
         category = Category()

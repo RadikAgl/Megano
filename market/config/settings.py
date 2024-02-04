@@ -84,7 +84,7 @@ TEMPLATES = [
 ]
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-FIXTURE_DIRS = os.path.join(BASE_DIR, "fixtures")
+FIXTURE_DIRS = ("fixtures", )
 
 WSGI_APPLICATION = "config.wsgi.application"
 
