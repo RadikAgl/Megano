@@ -1,6 +1,7 @@
 from django.test import TestCase
-from shops.models import Shop, Offer
+
 from products.models import Product
+from shops.models import Shop, Offer
 
 
 class ShopModelTest(TestCase):
