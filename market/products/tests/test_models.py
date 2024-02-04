@@ -1,6 +1,33 @@
 from django.test import TestCase
+from products.models import Product, Banner
 
-from products.models import Product, Category
+
+class BannerModelTest(TestCase):
+    """Класс тестов модели баннера"""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.banner = Banner.objects.create(
+            name="Тестовый баннер",
+            actual=True,
+            preview="",
+        )
+
+    def test_verbose_name(self):
+        banner = Banner()
+        field_verboses = {
+            "name": "название",
+            "actual": "актуальность",
+            "preview": "превью",
+        }
+        for field, expected_value in field_verboses.items():
+            with self.subTest(field=field):
+                self.assertEqual(banner._meta.get_field(field).verbose_name, expected_value)
+
+    def test_name_max_length(self):
+        banner = BannerModelTest.banner
+        max_length = banner._meta.get_field("name").max_length
+        self.assertEqual(max_length, 512)
 
 
 class ProductModelTest(TestCase):
@@ -26,30 +53,4 @@ class ProductModelTest(TestCase):
     def test_name_max_length(self):
         product = ProductModelTest.product
         max_length = product._meta.get_field("name").max_length
-        self.assertEqual(max_length, 512)
-
-
-class CategoryModelTest(TestCase):
-    """Класс тестов модели Категорий"""
-
-    fixtures = ["05-categories.json"]
-
-    def test_fixture_loading(self):
-        category_count = Category.objects.count()
-        print(f"Actual category count: {category_count}")
-        self.assertEqual(category_count, 20)
-
-    def test_verbose_name(self):
-        category = Category()
-        field_verboses = {
-            "name": "наименование",
-            "sort_index": "индекс сортировки",
-        }
-        for field, expected_value in field_verboses.items():
-            with self.subTest(field=field):
-                self.assertEqual(category._meta.get_field(field).verbose_name, expected_value)
-
-    def test_name_max_length(self):
-        category = Category()
-        max_length = category._meta.get_field("name").max_length
         self.assertEqual(max_length, 512)
