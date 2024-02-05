@@ -1,0 +1,11 @@
+{% extends "base.jinja" %}
+
+{% block title %}
+    Продавец - {{ seller_name }}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ seller_name }}</h1>
+    <p>{{ seller_description }}</p>
+    <p>Контактная информация: {{ seller_contact_info }}</p>
+{% endblock %}
