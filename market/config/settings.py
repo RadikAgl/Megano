@@ -61,7 +61,7 @@ TEMPLATES = [
             "constants": {},
             "globals": {},
             "context_processors": [
-                # 'context_processors.categories_context.categories',
+                "context_processors.categories_context.categories",
                 # 'context_processors.cart_context.cart',
                 # 'context_processors.shop_views_context.load_settings',
                 "django.contrib.messages.context_processors.messages",
