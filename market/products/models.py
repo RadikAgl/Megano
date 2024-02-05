@@ -8,8 +8,12 @@ class Banner(models.Model):
 
     name = models.CharField(max_length=512, verbose_name=_("название"))
     actual = models.BooleanField(default=True, verbose_name=_("актуальность"))
-    preview = models.ImageField(verbose_name=_("превью"), upload_to="img/preview", null=True, blank=True)
+    preview = models.ImageField(verbose_name=_("превью"), upload_to="img/preview")
     link = models.URLField(verbose_name=_("ссылка"), blank=True, unique=True, db_index=True)
+
+    class Meta:
+        verbose_name = _("Баннер")
+        verbose_name_plural = _("Баннеры")
 
     def __str__(self):
         return f"{self.name}"
