@@ -1,7 +1,7 @@
 from django.core.management import call_command
 from django.test import TestCase
 from django.utils.translation import gettext as _
-from products.models import Product, Category, Tag
+from products.models import Product, Category
 
 
 class ProductModelTest(TestCase):
@@ -9,17 +9,14 @@ class ProductModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        call_command("loaddata", "tags.json", "05-categories.json", "products.json")
+        call_command("loaddata", "05-categories.json", "07-products.json")
 
     def setUp(self):
         self.product = Product.objects.get(pk=1)
         self.category = Category.objects.get(pk=1)
 
     def test_fixture_loading(self):
-        tags_count = Tag.objects.count()
         products_count = Product.objects.count()
-
-        self.assertGreater(tags_count, 0)
         self.assertGreater(products_count, 0)
 
     def test_verbose_name(self):
@@ -28,7 +25,7 @@ class ProductModelTest(TestCase):
             "category": _("категория"),
             "description": _("описание"),
             "created_at": _("дата создания"),
-            "tags": _("теги"),
+            "details": _("детали"),
         }
 
         for field, expected_value in field_verboses.items():
@@ -69,3 +66,14 @@ class CategoryModelTest(TestCase):
     def test_name_max_length(self):
         max_length = self.category._meta.get_field("name").max_length
         self.assertEqual(max_length, 512)
+
+
+class LoadFixturesTest(TestCase):
+    fixtures = ["05-categories.json", "07-products.json"]
+
+    def test_loaded_data(self):
+        product_count = Product.objects.count()
+        category_count = Category.objects.count()
+
+        self.assertGreater(product_count, 0, _("No products loaded from fixtures"))
+        self.assertGreater(category_count, 0, _("No categories loaded from fixtures"))

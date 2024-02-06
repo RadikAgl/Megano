@@ -1,16 +1,6 @@
 """Django-модель, представляющая продукт."""
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from taggit.managers import TaggableManager
-
-
-class Tag(models.Model):
-    """Модель django orm тегов"""
-
-    name = models.CharField(max_length=255, unique=True)
-
-    def __str__(self):
-        return f"{self.name}"
 
 
 class Category(models.Model):
@@ -38,7 +28,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, max_length=100, verbose_name=_("категория"))
     description = models.CharField(max_length=1000, verbose_name=_("описание"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
-    tags = TaggableManager(verbose_name=_("теги"))
+    details = models.TextField(blank=True, verbose_name=_("детали"))
 
     class Meta:
         verbose_name_plural = _("продукты")
