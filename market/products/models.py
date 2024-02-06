@@ -25,7 +25,9 @@ class Product(models.Model):
     """Модель django orm товаров"""
 
     name = models.CharField(max_length=100, db_index=True, verbose_name=_("наименование"))
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, max_length=100, verbose_name=_("категория"))
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, max_length=100, verbose_name=_("категория"), null=False, blank=False
+    )
     description = models.CharField(max_length=1000, verbose_name=_("описание"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
     details = models.TextField(blank=True, verbose_name=_("детали"))
