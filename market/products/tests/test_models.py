@@ -1,5 +1,6 @@
 from django.core.management import call_command
 from django.test import TestCase
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from products.models import Product, Category
 
@@ -20,7 +21,7 @@ class ProductModelTest(TestCase):
         self.assertGreater(products_count, 0)
 
     def test_verbose_name(self):
-        field_verboses = {
+        field_verbose_names = {
             "name": _("наименование"),
             "category": _("категория"),
             "description": _("описание"),
@@ -28,13 +29,22 @@ class ProductModelTest(TestCase):
             "details": _("детали"),
         }
 
-        for field, expected_value in field_verboses.items():
+        for field, expected_value in field_verbose_names.items():
             with self.subTest(field=field):
-                self.assertEqual(self.product._meta.get_field(field).verbose_name, expected_value)
+                actual_value = self.product._meta.get_field(field).verbose_name
+                self.assertEqual(actual_value, expected_value, f"Unexpected verbose name for field {field}")
 
     def test_name_max_length(self):
         max_length = self.product._meta.get_field("name").max_length
         self.assertEqual(max_length, 100)
+
+    def test_category_relation(self):
+        self.assertIsInstance(self.product.category, Category)
+        self.assertEqual(self.product.category, self.category)
+
+    def test_created_at_auto_now_add(self):
+        self.assertIsNotNone(self.product.created_at)
+        self.assertLessEqual(self.product.created_at, timezone.now())
 
 
 class CategoryModelTest(TestCase):
