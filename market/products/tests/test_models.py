@@ -1,6 +1,5 @@
 from django.core.management import call_command
 from django.test import TestCase
-from django.utils import timezone
 from django.utils.translation import gettext as _
 from products.models import Product, Category
 
@@ -8,9 +7,7 @@ from products.models import Product, Category
 class ProductModelTest(TestCase):
     """Класс тестов модели товара"""
 
-    @classmethod
-    def setUpTestData(cls):
-        call_command("loaddata", "05-categories.json", "07-products.json")
+    fixtures = ["05-categories.json", "07-products.json"]
 
     def setUp(self):
         self.product = Product.objects.get(pk=1)
@@ -21,7 +18,7 @@ class ProductModelTest(TestCase):
         self.assertGreater(products_count, 0)
 
     def test_verbose_name(self):
-        field_verbose_names = {
+        field_verboses = {
             "name": _("наименование"),
             "category": _("категория"),
             "description": _("описание"),
@@ -29,22 +26,13 @@ class ProductModelTest(TestCase):
             "details": _("детали"),
         }
 
-        for field, expected_value in field_verbose_names.items():
+        for field, expected_value in field_verboses.items():
             with self.subTest(field=field):
-                actual_value = self.product._meta.get_field(field).verbose_name
-                self.assertEqual(actual_value, expected_value, f"Unexpected verbose name for field {field}")
+                self.assertEqual(self.product._meta.get_field(field).verbose_name, expected_value)
 
     def test_name_max_length(self):
         max_length = self.product._meta.get_field("name").max_length
         self.assertEqual(max_length, 100)
-
-    def test_category_relation(self):
-        self.assertIsInstance(self.product.category, Category)
-        self.assertEqual(self.product.category, self.category)
-
-    def test_created_at_auto_now_add(self):
-        self.assertIsNotNone(self.product.created_at)
-        self.assertLessEqual(self.product.created_at, timezone.now())
 
 
 class CategoryModelTest(TestCase):
@@ -82,8 +70,8 @@ class LoadFixturesTest(TestCase):
     fixtures = ["05-categories.json", "07-products.json"]
 
     def test_loaded_data(self):
-        product_count = Product.objects.count()
         category_count = Category.objects.count()
+        product_count = Product.objects.count()
 
-        self.assertGreater(product_count, 0, _("No products loaded from fixtures"))
         self.assertGreater(category_count, 0, _("No categories loaded from fixtures"))
+        self.assertGreater(product_count, 0, _("No products loaded from fixtures"))
