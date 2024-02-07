@@ -4,14 +4,19 @@
     "pk": 1,
     "fields": {
       "name": "Смартфон Galaxy S21",
-      "category": 1,
+      "category": 2,
       "description": "Мощный смартфон с высококачественной камерой",
       "created_at": "2024-02-01T12:00:00Z",
       "details": {
-        "color": "черный",
         "RAM": "8 ГБ",
+        "color": "черный",
         "storage": "128 ГБ"
-      }
+      },
+      "tags": [
+        1,
+        2,
+        33
+      ]
     }
   },
   {
@@ -23,10 +28,15 @@
       "description": "Легкий и мощный ноутбук для профессионалов",
       "created_at": "2024-02-02T12:00:00Z",
       "details": {
-        "processor": "Intel Core i7",
         "RAM": "16 ГБ",
-        "storage": "512 ГБ SSD"
-      }
+        "storage": "512 ГБ SSD",
+        "processor": "Intel Core i7"
+      },
+      "tags": [
+        1,
+        3,
+        33
+      ]
     }
   },
   {
@@ -40,7 +50,13 @@
       "details": {
         "memory": "10 ГБ GDDR6X",
         "CUDA cores": 8704
-      }
+      },
+      "tags": [
+        16,
+        33,
+        3,
+        4
+      ]
     }
   },
   {
@@ -55,7 +71,13 @@
         "cores": 10,
         "threads": 20,
         "clock speed": "3.7 GHz"
-      }
+      },
+      "tags": [
+        1,
+        3,
+        5,
+        33
+      ]
     }
   },
   {
@@ -70,7 +92,12 @@
         "capacity": "600 л",
         "energy efficiency": "A++",
         "cooling technology": "LinearCooling"
-      }
+      },
+      "tags": [
+        17,
+        6,
+        33
+      ]
     }
   },
   {
@@ -85,7 +112,11 @@
         "capacity": "8 кг",
         "spin speed": "1400 об/мин",
         "energy efficiency": "A+++ -30%"
-      }
+      },
+      "tags": [
+        33,
+        7
+      ]
     }
   },
   {
@@ -100,7 +131,12 @@
         "size": "M",
         "color": "синий",
         "material": "горизонтальная камера"
-      }
+      },
+      "tags": [
+        8,
+        12,
+        13
+      ]
     }
   },
   {
@@ -115,7 +151,10 @@
         "size": "S",
         "color": "красный",
         "material": "шелк"
-      }
+      },
+      "tags": [
+        9
+      ]
     }
   },
   {
@@ -130,24 +169,12 @@
         "size": "8",
         "color": "зеленый",
         "waterproof": true
-      }
-    }
-  },
-  {
-    "model": "products.product",
-    "pk": 10,
-    "fields": {
-      "name": "Тренажерный зал Iron Fitness",
-      "category": 15,
-      "description": "Оборудование для занятий фитнесом",
-      "created_at": "2024-02-10T12:00:00Z",
-      "details": {
-        "equipment": [
-          "тренажеры для кардио",
-          "гантели",
-          "скамьи"
-        ]
-      }
+      },
+      "tags": [
+        10,
+        12,
+        13
+      ]
     }
   },
   {
@@ -161,7 +188,13 @@
       "details": {
         "length": "170 см",
         "ski type": "горные лыжи"
-      }
+      },
+      "tags": [
+        24,
+        11,
+        12,
+        13
+      ]
     }
   },
   {
@@ -174,9 +207,17 @@
       "created_at": "2024-02-12T12:00:00Z",
       "details": {
         "capacity": "65 л",
-        "hydration compatible": true,
-        "rain cover": true
-      }
+        "rain cover": true,
+        "hydration compatible": true
+      },
+      "tags": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
     }
   },
   {
@@ -193,7 +234,10 @@
           "тушь для ресниц",
           "палетка теней"
         ]
-      }
+      },
+      "tags": [
+        14
+      ]
     }
   },
   {
@@ -205,9 +249,14 @@
       "description": "Защитная медицинская маска с высокой степенью фильтрации",
       "created_at": "2024-02-14T12:00:00Z",
       "details": {
-        "protection level": "N95",
-        "packaging": "50 штук"
-      }
+        "packaging": "50 штук",
+        "protection level": "N95"
+      },
+      "tags": [
+        24,
+        14,
+        15
+      ]
     }
   },
   {
@@ -222,7 +271,12 @@
         "size": "L",
         "color": "серый",
         "material": "хлопок"
-      }
+      },
+      "tags": [
+        8,
+        9,
+        11
+      ]
     }
   },
   {
@@ -237,7 +291,11 @@
         "size": "M",
         "color": "желтый",
         "material": "полиэстер"
-      }
+      },
+      "tags": [
+        9,
+        13
+      ]
     }
   },
   {
@@ -252,7 +310,12 @@
         "size": "6",
         "color": "голубой",
         "material": "нейлон"
-      }
+      },
+      "tags": [
+        10,
+        12,
+        13
+      ]
     }
   },
   {
@@ -269,7 +332,11 @@
           "кардио",
           "жаркая потеря веса"
         ]
-      }
+      },
+      "tags": [
+        11,
+        12
+      ]
     }
   },
   {
@@ -281,10 +348,16 @@
       "description": "Телевизор с высоким разрешением и технологией OLED",
       "created_at": "2024-02-25T12:00:00Z",
       "details": {
-        "screen_size": "55 дюймов",
+        "smart_tv": true,
         "resolution": "4K UHD",
-        "smart_tv": true
-      }
+        "screen_size": "55 дюймов"
+      },
+      "tags": [
+        33,
+        35,
+        21,
+        22
+      ]
     }
   },
   {
@@ -292,14 +365,19 @@
     "pk": 26,
     "fields": {
       "name": "Геймерская мышь Logitech G Pro X",
-      "category": 14,
+      "category": 1,
       "description": "Профессиональная геймерская мышь с поддержкой RGB-подсветки",
       "created_at": "2024-02-26T12:00:00Z",
       "details": {
         "dpi": 16000,
         "buttons": 6,
         "connection": "проводная"
-      }
+      },
+      "tags": [
+        16,
+        1,
+        33
+      ]
     }
   },
   {
@@ -307,14 +385,19 @@
     "pk": 27,
     "fields": {
       "name": "Беспроводные наушники Apple AirPods Pro",
-      "category": 10,
+      "category": 1,
       "description": "Беспроводные наушники с технологией шумоподавления",
       "created_at": "2024-02-27T12:00:00Z",
       "details": {
         "wireless": true,
-        "noise_cancellation": true,
-        "battery_life": "5 часов"
-      }
+        "battery_life": "5 часов",
+        "noise_cancellation": true
+      },
+      "tags": [
+        1,
+        33,
+        31
+      ]
     }
   },
   {
@@ -322,14 +405,18 @@
     "pk": 28,
     "fields": {
       "name": "Газовая плита Bosch Serie 4",
-      "category": 8,
+      "category": 7,
       "description": "Газовая плита с функцией конвекции и духовкой",
       "created_at": "2024-02-28T12:00:00Z",
       "details": {
         "burners": 4,
-        "oven_capacity": "60 л",
-        "ignition_type": "автоматический"
-      }
+        "ignition_type": "автоматический",
+        "oven_capacity": "60 л"
+      },
+      "tags": [
+        17,
+        21
+      ]
     }
   },
   {
@@ -337,14 +424,18 @@
     "pk": 29,
     "fields": {
       "name": "Кофемашина De'Longhi Magnifica",
-      "category": 4,
+      "category": 7,
       "description": "Автоматическая кофемашина с функцией приготовления капучино",
       "created_at": "2024-02-29T12:00:00Z",
       "details": {
+        "display": true,
         "coffee_type": "зерновой",
-        "water_tank_capacity": "1.8 л",
-        "display": true
-      }
+        "water_tank_capacity": "1.8 л"
+      },
+      "tags": [
+        17,
+        30
+      ]
     }
   },
   {
@@ -352,14 +443,21 @@
     "pk": 30,
     "fields": {
       "name": "Монитор LG UltraGear 27GL83A-B",
-      "category": 7,
+      "category": 4,
       "description": "Игровой монитор с высокой частотой обновления и технологией G-Sync",
       "created_at": "2024-03-01T12:00:00Z",
       "details": {
-        "screen_size": "27 дюймов",
         "resolution": "QHD",
+        "screen_size": "27 дюймов",
         "refresh_rate": "144 Гц"
-      }
+      },
+      "tags": [
+        1,
+        33,
+        3,
+        16,
+        22
+      ]
     }
   },
   {
@@ -367,14 +465,21 @@
     "pk": 31,
     "fields": {
       "name": "Фотоаппарат Canon EOS R5",
-      "category": 2,
+      "category": 1,
       "description": "Профессиональный беззеркальный фотоаппарат с высоким разрешением",
       "created_at": "2024-03-02T12:00:00Z",
       "details": {
-        "resolution": "45 МП",
         "iso_range": "100-51200",
+        "resolution": "45 МП",
         "video_resolution": "8K"
-      }
+      },
+      "tags": [
+        33,
+        12,
+        13,
+        22,
+        24
+      ]
     }
   },
   {
@@ -382,14 +487,19 @@
     "pk": 32,
     "fields": {
       "name": "Электрический самокат Xiaomi Mi Electric Scooter",
-      "category": 18,
+      "category": 14,
       "description": "Легкий и компактный электрический самокат для городской езды",
       "created_at": "2024-03-03T12:00:00Z",
       "details": {
-        "max_speed": "25 км/ч",
         "max_range": "30 км",
+        "max_speed": "25 км/ч",
         "weight_limit": "100 кг"
-      }
+      },
+      "tags": [
+        1,
+        34,
+        33
+      ]
     }
   },
   {
@@ -401,10 +511,14 @@
       "description": "Классическая электрогитара с ярким звучанием",
       "created_at": "2024-03-04T12:00:00Z",
       "details": {
+        "neck_profile": "C-образный",
         "body_material": "клен",
-        "pickup_configuration": "SSS",
-        "neck_profile": "C-образный"
-      }
+        "pickup_configuration": "SSS"
+      },
+      "tags": [
+        13,
+        31
+      ]
     }
   },
   {
@@ -412,14 +526,19 @@
     "pk": 34,
     "fields": {
       "name": "Робот-пылесос iRobot Roomba 980",
-      "category": 8,
+      "category": 7,
       "description": "Самостоятельный робот-пылесос с технологией видеокарты",
       "created_at": "2024-03-05T12:00:00Z",
       "details": {
-        "cleaning_pattern": "случайный",
         "battery_life": "120 мин",
-        "smart_mapping": true
-      }
+        "smart_mapping": true,
+        "cleaning_pattern": "случайный"
+      },
+      "tags": [
+        32,
+        1,
+        33
+      ]
     }
   },
   {
@@ -427,14 +546,19 @@
     "pk": 35,
     "fields": {
       "name": "Геймерская клавиатура Corsair K95 RGB Platinum",
-      "category": 14,
+      "category": 4,
       "description": "Механическая клавиатура с подсветкой и программируемыми кнопками",
       "created_at": "2024-03-06T12:00:00Z",
       "details": {
+        "macro_keys": 6,
         "switch_type": "Cherry MX Speed",
-        "backlighting": true,
-        "macro_keys": 6
-      }
+        "backlighting": true
+      },
+      "tags": [
+        16,
+        1,
+        33
+      ]
     }
   },
   {
@@ -442,14 +566,20 @@
     "pk": 36,
     "fields": {
       "name": "Смарт-часы Apple Watch Series 7",
-      "category": 10,
+      "category": 1,
       "description": "Умные часы с крупным дисплеем и множеством функций",
       "created_at": "2024-03-07T12:00:00Z",
       "details": {
         "display_size": "45 мм",
-        "heart_rate_monitor": true,
-        "water_resistance": "50 м"
-      }
+        "water_resistance": "50 м",
+        "heart_rate_monitor": true
+      },
+      "tags": [
+        1,
+        11,
+        12,
+        33
+      ]
     }
   },
   {
@@ -457,14 +587,18 @@
     "pk": 37,
     "fields": {
       "name": "Каминный обогреватель Dimplex Opti-myst",
-      "category": 8,
+      "category": 7,
       "description": "Электрический камин с трехмерным огнем и обогревом",
       "created_at": "2024-03-08T12:00:00Z",
       "details": {
+        "remote_control": true,
         "flame_technology": "Opti-myst",
-        "heating_capacity": "2 кВт",
-        "remote_control": true
-      }
+        "heating_capacity": "2 кВт"
+      },
+      "tags": [
+        21,
+        30
+      ]
     }
   },
   {
@@ -472,14 +606,17 @@
     "pk": 38,
     "fields": {
       "name": "Сковорода Tefal Titanium Excellence",
-      "category": 8,
+      "category": 7,
       "description": "Прочная и антипригарная сковорода с титановым покрытием",
       "created_at": "2024-03-09T12:00:00Z",
       "details": {
         "diameter": "28 см",
         "material": "алюминий",
         "dishwasher_safe": true
-      }
+      },
+      "tags": [
+        17
+      ]
     }
   },
   {
@@ -487,13 +624,18 @@
     "pk": 39,
     "fields": {
       "name": "Беспроводной зарядный стенд Samsung Duo Pad",
-      "category": 7,
+      "category": 1,
       "description": "Двойная беспроводная зарядка для смартфона и часов",
       "created_at": "2024-03-10T12:00:00Z",
       "details": {
         "charging_slots": 2,
         "compatible_devices": "Qi-стандарт"
-      }
+      },
+      "tags": [
+        1,
+        2,
+        33
+      ]
     }
   },
   {
@@ -501,14 +643,19 @@
     "pk": 40,
     "fields": {
       "name": "Кресло-мешок Ambient Lounge Acoustic Sofa",
-      "category": 8,
+      "category": 17,
       "description": "Удобное и стильное кресло-мешок для дома и отдыха",
       "created_at": "2024-03-11T12:00:00Z",
       "details": {
+        "color": "черный",
         "material": "искусственная кожа",
-        "dimensions": "120x80x90 см",
-        "color": "черный"
-      }
+        "dimensions": "120x80x90 см"
+      },
+      "tags": [
+        21,
+        13,
+        30
+      ]
     }
   },
   {
@@ -516,14 +663,21 @@
     "pk": 41,
     "fields": {
       "name": "4K OLED Телевизор LG CX",
-      "category": 4,
+      "category": 1,
       "description": "Телевизор с технологией OLED и поддержкой 4K разрешения",
       "created_at": "2024-03-12T12:00:00Z",
       "details": {
-        "screen_size": "55 дюймов",
+        "smart_tv": true,
         "hdr_support": true,
-        "smart_tv": true
-      }
+        "screen_size": "55 дюймов"
+      },
+      "tags": [
+        33,
+        35,
+        20,
+        22,
+        31
+      ]
     }
   },
   {
@@ -531,14 +685,18 @@
     "pk": 42,
     "fields": {
       "name": "Кофемашина De'Longhi Magnifica",
-      "category": 8,
+      "category": 7,
       "description": "Автоматическая кофемашина с функцией приготовления капучино",
       "created_at": "2024-03-13T12:00:00Z",
       "details": {
+        "cup_warmer": true,
         "coffee_type": "зерна",
-        "milk_frother": true,
-        "cup_warmer": true
-      }
+        "milk_frother": true
+      },
+      "tags": [
+        17,
+        21
+      ]
     }
   },
   {
@@ -553,7 +711,12 @@
         "resolution": "1832x1920",
         "refresh_rate": "90 Гц",
         "storage_capacity": "256 ГБ"
-      }
+      },
+      "tags": [
+        1,
+        33,
+        31
+      ]
     }
   },
   {
@@ -565,10 +728,16 @@
       "description": "Шумоподавляющие наушники с высоким качеством звука",
       "created_at": "2024-03-15T12:00:00Z",
       "details": {
-        "noise_cancellation": true,
         "battery_life": "30 часов",
-        "touch_controls": true
-      }
+        "touch_controls": true,
+        "noise_cancellation": true
+      },
+      "tags": [
+        1,
+        20,
+        33,
+        31
+      ]
     }
   },
   {
@@ -580,10 +749,17 @@
       "description": "Комфортабельный гидрокостюм для подводных приключений",
       "created_at": "2024-03-16T12:00:00Z",
       "details": {
+        "material": "неопрен",
         "thickness": "3.5 мм",
-        "zipper_type": "YKK",
-        "material": "неопрен"
-      }
+        "zipper_type": "YKK"
+      },
+      "tags": [
+        8,
+        9,
+        11,
+        12,
+        13
+      ]
     }
   },
   {
@@ -591,14 +767,21 @@
     "pk": 46,
     "fields": {
       "name": "Фитнес-браслет Garmin Vivosmart 4",
-      "category": 10,
+      "category": 1,
       "description": "Браслет для отслеживания активности и состояния здоровья",
       "created_at": "2024-03-17T12:00:00Z",
       "details": {
-        "heart_rate_monitor": true,
+        "body_battery": true,
         "sleep_tracking": true,
-        "body_battery": true
-      }
+        "heart_rate_monitor": true
+      },
+      "tags": [
+        1,
+        33,
+        11,
+        12,
+        13
+      ]
     }
   },
   {
@@ -610,10 +793,15 @@
       "description": "Дорожный велосипед с алюминиевой рамой и технологией IsoSpeed",
       "created_at": "2024-03-18T12:00:00Z",
       "details": {
-        "frame_material": "алюминий",
+        "brake_type": "дисковые",
         "gear_shifters": "Shimano 105",
-        "brake_type": "дисковые"
-      }
+        "frame_material": "алюминий"
+      },
+      "tags": [
+        24,
+        11,
+        12
+      ]
     }
   },
   {
@@ -621,14 +809,19 @@
     "pk": 48,
     "fields": {
       "name": "Смарт-гирлянда Philips Hue Outdoor",
-      "category": 8,
+      "category": 1,
       "description": "Умная наружная гирлянда с поддержкой цветовой подсветки",
       "created_at": "2024-03-19T12:00:00Z",
       "details": {
         "bulb_type": "LED",
         "color_options": true,
         "smart_control": true
-      }
+      },
+      "tags": [
+        1,
+        21,
+        33
+      ]
     }
   },
   {
@@ -636,18 +829,22 @@
     "pk": 49,
     "fields": {
       "name": "Кухонный комбайн KitchenAid Artisan",
-      "category": 8,
+      "category": 7,
       "description": "Многозадачное кухонное устройство для профессионального использования",
       "created_at": "2024-03-20T12:00:00Z",
       "details": {
         "power": "300 Вт",
-        "bowl_capacity": "4.8 л",
         "attachments": [
           "венчик",
           "лопатка",
           "насадка для теста"
-        ]
-      }
+        ],
+        "bowl_capacity": "4.8 л"
+      },
+      "tags": [
+        1,
+        17
+      ]
     }
   },
   {
@@ -655,14 +852,21 @@
     "pk": 50,
     "fields": {
       "name": "Электросамокат Xiaomi Mi Electric Scooter Pro 2",
-      "category": 18,
+      "category": 16,
       "description": "Складной электросамокат с максимальной скоростью до 25 км/ч",
       "created_at": "2024-03-21T12:00:00Z",
       "details": {
-        "max_speed": "25 км/ч",
+        "foldable": true,
         "max_range": "45 км",
-        "foldable": true
-      }
+        "max_speed": "25 км/ч"
+      },
+      "tags": [
+        33,
+        34,
+        11,
+        12,
+        13
+      ]
     }
   },
   {
@@ -674,10 +878,15 @@
       "description": "Игровой монитор с высоким разрешением и поддержкой G-Sync",
       "created_at": "2024-03-22T12:00:00Z",
       "details": {
-        "screen_size": "27 дюймов",
         "resolution": "3840x2160",
+        "screen_size": "27 дюймов",
         "refresh_rate": "144 Гц"
-      }
+      },
+      "tags": [
+        16,
+        33,
+        22
+      ]
     }
   },
   {
@@ -685,14 +894,21 @@
     "pk": 52,
     "fields": {
       "name": "Фотокамера Sony Alpha A7 III",
-      "category": 7,
+      "category": 17,
       "description": "Зеркальная камера с полнокадровой матрицей и 4K видеозаписью",
       "created_at": "2024-03-23T12:00:00Z",
       "details": {
-        "sensor_type": "Full-frame",
         "megapixels": 24.2,
+        "sensor_type": "Full-frame",
         "video_resolution": "4K"
-      }
+      },
+      "tags": [
+        1,
+        33,
+        12,
+        13,
+        22
+      ]
     }
   },
   {
@@ -700,14 +916,20 @@
     "pk": 53,
     "fields": {
       "name": "Беспроводная зарядка Samsung Wireless Charger Duo",
-      "category": 8,
+      "category": 2,
       "description": "Двойная беспроводная зарядка для смартфона и часов",
       "created_at": "2024-03-24T12:00:00Z",
       "details": {
-        "compatible_devices": "смартфоны, часы",
+        "fast_charging": true,
         "charging_ports": 2,
-        "fast_charging": true
-      }
+        "compatible_devices": "смартфоны, часы"
+      },
+      "tags": [
+        1,
+        2,
+        30,
+        33
+      ]
     }
   },
   {
@@ -715,14 +937,20 @@
     "pk": 54,
     "fields": {
       "name": "Гироскутер Segway Ninebot S",
-      "category": 18,
+      "category": 14,
       "description": "Современный гироскутер с автобалансировкой и LED-подсветкой",
       "created_at": "2024-03-25T12:00:00Z",
       "details": {
-        "max_speed": "16 км/ч",
         "max_range": "25 км",
+        "max_speed": "16 км/ч",
         "led_lights": true
-      }
+      },
+      "tags": [
+        1,
+        11,
+        12,
+        13
+      ]
     }
   },
   {
@@ -730,14 +958,18 @@
     "pk": 55,
     "fields": {
       "name": "Робот-пылесос iRobot Roomba i7+",
-      "category": 8,
+      "category": 7,
       "description": "Автоматический пылесос с функцией самопочистки",
       "created_at": "2024-03-26T12:00:00Z",
       "details": {
+        "smart_mapping": true,
         "suction_power": "1700 Па",
-        "dustbin_capacity": "0.7 л",
-        "smart_mapping": true
-      }
+        "dustbin_capacity": "0.7 л"
+      },
+      "tags": [
+        32,
+        1
+      ]
     }
   },
   {
@@ -749,10 +981,16 @@
       "description": "Беспроводная акустическая система с отличным звуком",
       "created_at": "2024-03-27T12:00:00Z",
       "details": {
+        "weight": "0.68 кг",
         "battery_life": "10 часов",
-        "bluetooth_version": "4.2",
-        "weight": "0.68 кг"
-      }
+        "bluetooth_version": "4.2"
+      },
+      "tags": [
+        16,
+        1,
+        20,
+        31
+      ]
     }
   },
   {
@@ -760,14 +998,20 @@
     "pk": 57,
     "fields": {
       "name": "Смарт-часы Apple Watch Series 7",
-      "category": 2,
+      "category": 1,
       "description": "Умные часы с большим дисплеем и множеством функций",
       "created_at": "2024-03-28T12:00:00Z",
       "details": {
         "display_size": "45 мм",
-        "heart_rate_monitor": true,
-        "water_resistance": "50 м"
-      }
+        "water_resistance": "50 м",
+        "heart_rate_monitor": true
+      },
+      "tags": [
+        1,
+        11,
+        12,
+        13
+      ]
     }
   },
   {
@@ -779,10 +1023,17 @@
       "description": "Электрический карт с возможностью дрифта для детей",
       "created_at": "2024-03-29T12:00:00Z",
       "details": {
-        "max_speed": "13 км/ч",
         "run_time": "40 мин",
+        "max_speed": "13 км/ч",
         "weight_limit": "54 кг"
-      }
+      },
+      "tags": [
+        12,
+        13,
+        16,
+        24,
+        28
+      ]
     }
   },
   {
@@ -790,14 +1041,18 @@
     "pk": 59,
     "fields": {
       "name": "Гитара Fender American Professional II Stratocaster",
-      "category": 7,
+      "category": 14,
       "description": "Профессиональная электрогитара для музыкантов",
       "created_at": "2024-03-30T12:00:00Z",
       "details": {
+        "pickups": "V-Mod II",
         "body_material": "ольха",
-        "neck_material": "клен",
-        "pickups": "V-Mod II"
-      }
+        "neck_material": "клен"
+      },
+      "tags": [
+        24,
+        31
+      ]
     }
   },
   {
@@ -805,14 +1060,19 @@
     "pk": 60,
     "fields": {
       "name": "Квадрокоптер DJI Mavic Air 2",
-      "category": 4,
+      "category": 1,
       "description": "Компактный квадрокоптер с камерой 48 Мп и 4K видео",
       "created_at": "2024-03-31T12:00:00Z",
       "details": {
-        "camera_resolution": "48 Мп",
         "max_flight_time": "34 мин",
+        "camera_resolution": "48 Мп",
         "intelligent_modes": true
-      }
+      },
+      "tags": [
+        16,
+        12,
+        13
+      ]
     }
   }
 ]
