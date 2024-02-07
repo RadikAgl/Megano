@@ -7,21 +7,3 @@ class User(AbstractUser):
 
     class Meta:
         app_label = "accounts"
-
-
-class BuyerGroup(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    users = models.ManyToManyField(User, related_name="buyers", blank=True)
-
-    def __str__(self):
-        return self.name
-
-
-class UserGroup(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    users = models.ManyToManyField(User, related_name="users", blank=True)
-
-
-class AdminGroup(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    users = models.ManyToManyField(User, related_name="admins", blank=True)

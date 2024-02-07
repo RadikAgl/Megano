@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import register, login_view, PasswordReset, UpdatePasswordView
+from .views import register, login_view, PasswordReset, UpdatePasswordView, main_page
 from django.contrib.auth.views import (
     PasswordResetDoneView,
     PasswordResetCompleteView,
@@ -20,4 +20,5 @@ urlpatterns = [
         PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    path("main_page/", main_page, name="main_page"),
 ]

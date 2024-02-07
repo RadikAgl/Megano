@@ -12,6 +12,10 @@ from django.contrib import messages
 from .forms import RegistrationForm, LoginForm, CustomPasswordForm
 
 
+def main_page(request):
+    return render(request, "accounts/catalog.jinja2")
+
+
 def register(request):
     """
     Обрабатывает запросы на регистрацию пользователя.
@@ -29,7 +33,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("#")
+            return redirect("user:main_page")
         else:
             return render(request, "accounts/registr.jinja2", {"form": form.errors})
     else:
@@ -56,7 +60,7 @@ def login_view(request):
             password = form.cleaned_data.get("password")
             user = authenticate(request, username=username, password=password)
             login(request, user)
-            return redirect("#")
+            return redirect("user:main_page")
         else:
             return render(request, "accounts/login.jinja2", {"form": form.error_messages.get("invalid_login")})
     else:
@@ -65,31 +69,100 @@ def login_view(request):
 
 
 class PasswordReset(PasswordResetView):
+    """
+    Представление для сброса пароля. Отправляет электронное письмо с инструкциями
+    по сбросу пароля на указанный электронный адрес.
+
+    template_name: str
+        Имя шаблона для отображения формы ввода электронного адреса.
+
+    email_template_name: str
+        Имя шаблона для отправки электронного письма с инструкциями.
+
+    form_class: Form
+        Класс формы для ввода электронного адреса.
+
+    success_url: str
+        URL-адрес, на который перенаправляется пользователь после успешного
+        запроса на сброс пароля.
+    """
+
     template_name = "accounts/e-mail.jinja2"
     email_template_name = "accounts/reset_password.jinja2"
     form_class = PasswordResetForm
     success_url = reverse_lazy("user:reset_password_done")
 
     def form_valid(self, form):
+        """
+        Обработчик вызывается при успешном вводе данных в форму.
+        Перед отправкой электронного письма проверяет наличие пользователя
+        с указанным адресом электронной почты.
+
+        Parameters:
+        - form: Form
+            Форма с введенными данными.
+
+        Returns:
+        - HttpResponseRedirect
+            Перенаправляет пользователя на страницу успешного запроса на сброс пароля.
+        """
         email = form.cleaned_data["email"]
         try:
             get_user_model().objects.get(email=email)
         except ObjectDoesNotExist:
             messages.error(self.request, "нет пользователя с таким Email")
             return self.form_invalid(form)
-
         return super().form_valid(form)
 
 
 class UpdatePasswordView(PasswordResetConfirmView):
+    """
+    Представление для обновления пароля. Позволяет пользователю изменить свой пароль
+    после успешного запроса на сброс.
+
+    template_name: str
+        Имя шаблона для отображения формы обновления пароля.
+
+    form_class: Form
+        Класс формы для ввода нового пароля.
+
+    success_url: str
+        URL-адрес, на который перенаправляется пользователь после успешного
+        обновления пароля.
+    """
+
     template_name = "accounts/password.jinja2"
     form_class = CustomPasswordForm
     success_url = reverse_lazy("user:password_reset_complete")
 
     def form_valid(self, form):
-        form.save()
+        """
+        Обработчик вызывается при успешном вводе нового пароля.
+        Сохраняет новый пароль пользователя.
 
+        Parameters:
+        - form: Form
+            Форма с введенным новым паролем.
+
+        Returns:
+        - HttpResponseRedirect
+            Перенаправляет пользователя на страницу успешного обновления пароля.
+        """
+        form.save()
         return super().form_valid(form)
 
     def form_invalid(self, form):
+        """
+        Обработчик вызывается при ошибке ввода нового пароля.
+        Добавляет сообщение об ошибке в систему сообщений Django.
+
+        Parameters:
+        - form: Form
+            Форма с ошибками.
+
+        Returns:
+        - HttpResponseRedirect
+            Перенаправляет пользователя на страницу с формой обновления пароля.
+        """
         messages.error(self.request, f"{form.errors}")
+        return super().form_invalid(form)
