@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from products.models import Product
+from products.models import Product, Category
 from shops.models import Shop, Offer
 
 
@@ -9,8 +9,10 @@ class ShopModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        cls.category = Category.objects.create(name="TestCategory")  # Create a Category instance
         cls.product = Product.objects.create(
             name="тестовый продукт",
+            category=cls.category,
             details={"Диагональ, дм": 101},
         )
         cls.shop = Shop.objects.create(name="тестовый магазин")
@@ -37,8 +39,10 @@ class OfferModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        cls.category = Category.objects.create(name="TestCategory")  # Create a Category instance
         cls.product = Product.objects.create(
             name="тестовый продукт",
+            category=cls.category,
             details={"Диагональ, дм": 101},
         )
         cls.shop = Shop.objects.create(name="тестовый магазин")
