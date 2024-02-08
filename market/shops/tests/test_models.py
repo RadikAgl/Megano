@@ -9,7 +9,7 @@ class ShopModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.category = Category.objects.create(name="TestCategory")  # Create a Category instance
+        cls.category = Category.objects.create(name="TestCategory")
         cls.product = Product.objects.create(
             name="тестовый продукт",
             category=cls.category,
@@ -39,7 +39,7 @@ class OfferModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.category = Category.objects.create(name="TestCategory")  # Create a Category instance
+        cls.category = Category.objects.create(name="TestCategory")
         cls.product = Product.objects.create(
             name="тестовый продукт",
             category=cls.category,

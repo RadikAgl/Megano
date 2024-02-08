@@ -22,6 +22,18 @@ class Category(models.Model):
         return f"{self.name}"
 
 
+class Tag(models.Model):
+    """Модель django orm тегов"""
+
+    name = models.CharField(max_length=100, verbose_name=_("тег"), unique=True)
+
+    class Meta:
+        verbose_name_plural = _("тег")
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Product(models.Model):
     """Модель django orm товаров"""
 
@@ -30,6 +42,7 @@ class Product(models.Model):
     description = models.CharField(max_length=1000, verbose_name=_("описание"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
     details = models.JSONField(default=dict, blank=True, verbose_name=_("детали"))
+    tags = models.ManyToManyField(Tag, related_name="product")
 
     class Meta:
         verbose_name_plural = _("продукт")
