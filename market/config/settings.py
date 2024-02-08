@@ -59,7 +59,7 @@ TEMPLATES = [
             "match_regex": None,
             "app_dirname": "templates",
             "constants": {},
-            "globals": {"all_categories": "templatetags.categories.get_categories"},
+            "globals": {"all_categories": "templatetags.globals.get_categories"},
             "context_processors": [
                 "django.contrib.messages.context_processors.messages",
             ],

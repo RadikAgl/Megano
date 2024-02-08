@@ -1,10 +1,13 @@
+"""Модуль глобальных функций django_jinja"""
+
 from django_jinja import library
 
 from products.models import Category
 
 
 @library.global_function
-def get_categories():
+def get_categories() -> dict:
+    """Получение всех категорий"""
     all_categories = Category.objects.select_related("parent")
 
     children = {}
