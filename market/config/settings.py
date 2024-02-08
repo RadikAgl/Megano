@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "django_jinja",
     "products",
     "shops",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -123,7 +124,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+AUTH_USER_MODEL = "accounts.User"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "/static")
 
