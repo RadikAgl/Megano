@@ -9,9 +9,10 @@
                             </div>
                         </div>
                         <div class="CategoriesButton-content">
-                            {% for category in main_categories recursive %}
+                            {% set categories = all_categories()["main_categories"]%}
+                            {% for category in categories recursive %}
                                 {% set pk = category.pk %}
-                                {% set childs = children[pk] %}
+                                {% set children = all_categories()["children"][pk] %}
                                 <div class="CategoriesButton-link">
                                     <a href="#">
                                         <div class="CategoriesButton-icon">
@@ -19,10 +20,10 @@
                                         </div>
                                         <span class="CategoriesButton-text">{{ category.name }}</span>
                                 </a>
-                                {% if childs %}
+                                {% if children %}
                                     <a class="CategoriesButton-arrow" href="#"></a>
                                     <div class="CategoriesButton-submenu">
-                                        {{ loop(childs) }}
+                                        {{ loop(children) }}
                                     </div>
                                 {% endif %}
                             </div>
@@ -36,6 +37,7 @@
                 <div class="Header-search">
                     <div class="search">
                         <form class="form form_search" action="#" method="post">
+                            {% csrf_token %}
                             <input class="search-input" id="query" name="query" type="text" placeholder="Random product name from db" />
                             <button class="search-button" type="submit" name="search" id="search"><img src="{{ static('img/icons/search.svg') }}" alt="search.svg" />Поиск
                             </button>
