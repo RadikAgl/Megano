@@ -66,7 +66,7 @@ def login_view(request):
                 login(request, user)
                 return redirect("user:main_page")
             else:
-                messages.error(request, "нет пользователя с таким Email или не верный пароль")
+                messages.error(request, "нет пользователя с таким Email или неверный пароль")
                 return render(request, "accounts/login.jinja2", {"form": form})
 
         else:
