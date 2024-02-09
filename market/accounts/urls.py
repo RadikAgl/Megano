@@ -8,7 +8,7 @@ from django.contrib.auth.views import (
 
 
 app_name = "accounts"
-
+"""url пути"""
 urlpatterns = [
     path("register/", register, name="register"),
     path("login/", login_view, name="login"),

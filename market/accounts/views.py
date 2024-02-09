@@ -13,6 +13,7 @@ from .forms import RegistrationForm, LoginForm, CustomPasswordForm
 
 
 def main_page(request):
+    """ф-я которая возвращает на главную страницу"""
     return render(request, "accounts/catalog.jinja2")
 
 
@@ -73,14 +74,7 @@ class PasswordReset(PasswordResetView):
     Представление для сброса пароля. Отправляет электронное письмо с инструкциями
     по сбросу пароля на указанный электронный адрес.
 
-    template_name: str
-        Имя шаблона для отображения формы ввода электронного адреса.
 
-    email_template_name: str
-        Имя шаблона для отправки электронного письма с инструкциями.
-
-    form_class: Form
-        Класс формы для ввода электронного адреса.
 
     success_url: str
         URL-адрес, на который перенаправляется пользователь после успешного
@@ -120,11 +114,6 @@ class UpdatePasswordView(PasswordResetConfirmView):
     Представление для обновления пароля. Позволяет пользователю изменить свой пароль
     после успешного запроса на сброс.
 
-    template_name: str
-        Имя шаблона для отображения формы обновления пароля.
-
-    form_class: Form
-        Класс формы для ввода нового пароля.
 
     success_url: str
         URL-адрес, на который перенаправляется пользователь после успешного
@@ -144,9 +133,7 @@ class UpdatePasswordView(PasswordResetConfirmView):
         - form: Form
             Форма с введенным новым паролем.
 
-        Returns:
-        - HttpResponseRedirect
-            Перенаправляет пользователя на страницу успешного обновления пароля.
+
         """
         form.save()
         return super().form_valid(form)
