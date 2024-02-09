@@ -57,13 +57,21 @@ def login_view(request):
     if request.method == "POST":
         form = LoginForm(request, request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get("username")
+            email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
-            user = authenticate(request, username=username, password=password)
-            login(request, user)
-            return redirect("user:main_page")
+            print(email, password)
+            user = authenticate(request, email=email, password=password)
+            print(user)
+            if user:
+                login(request, user)
+                return redirect("user:main_page")
+            else:
+                messages.error(request, "нет пользователя с таким Email или не верный пароль")
+                return render(request, "accounts/login.jinja2", {"form": form})
+
         else:
-            return render(request, "accounts/login.jinja2", {"form": form.error_messages.get("invalid_login")})
+            messages.error(request, 'не верно указаны данные')
+            return render(request, "accounts/login.jinja2", {"form":form})
     else:
         form = LoginForm()
         return render(request, "accounts/login.jinja2", {"form": form})

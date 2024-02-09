@@ -109,7 +109,7 @@
                 <form  method="post">
                     {% csrf_token %}
                     <div>
-                        <input class="user-input" type="text" name="username" id="name" placeholder="username" />
+                        <input class="user-input" type="text" name="email" id="name" placeholder="email" />
                     </div>
                     <div>
 
@@ -117,14 +117,14 @@
                     </div>
                     <div>
                         <input type="submit" value="Войти" />
-                        {% if form.error_messages %}
-                        {{ form.error_messages }}
-                        {% else %}
-                            {{ form }}
+                      {% if messages %}
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
                         {% endif %}
 
                     </div>
-                    <a class="forgot-label" href="e-mail.jinja2">Забыли пароль?</a>
+                    <a class="forgot-label" href={{ url("user:password_reset") }}>Забыли пароль?</a>
                     <a class="registr" href="registr.html">
                         Регистрация
                     </a>

@@ -14,23 +14,26 @@ class RegistrationForm(UserCreationForm):
         форма для регистрации пользователя
         """
         model = get_user_model()
-        fields = ["username", "email", "password1"]
+        fields = ["email", "password1"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Убираем поле для повторного ввода пароля
         self.fields.pop("password2", None)
+        self.fields.pop("username", None)
 
 
 class LoginForm(AuthenticationForm):
-    """
-    Форма входа пользователя.
-    """
+    """форма для входа в аккаунт"""
+    email = forms.EmailField(required=True)
 
     class Meta:
-        """указание полей для логина"""
         model = get_user_model()
-        fields = ["username", "password"]
+        fields = ["email", "password"]
+    """удаление поля имени"""
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        del self.fields["username"]
 
 
 class CustomPasswordForm(SetPasswordForm):
@@ -44,7 +47,7 @@ class CustomPasswordForm(SetPasswordForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Делаем поле для повторного ввода нового пароля обязательным
-        self.fields["new_password2"].required = True
+        # Делаем поле для повторного ввода нового пароля не обязательным
+        self.fields["new_password2"].required = False
         # Убираем поле для повторного ввода нового пароля
         self.fields.pop("new_password2", None)
