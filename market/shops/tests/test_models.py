@@ -1,11 +1,17 @@
 from django.test import TestCase
-
 from products.models import Product
 from shops.models import Shop, Offer
 
 
 class ShopModelTest(TestCase):
     """Класс тестов модели Магазин"""
+
+    fixtures = ["04-shops.json"]
+
+    def test_fixture_loading(self):
+        shop_count = Shop.objects.count()
+        print(f"Actual shop count: {shop_count}")
+        self.assertEqual(shop_count, 8)
 
     @classmethod
     def setUpTestData(cls):
