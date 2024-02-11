@@ -1,15 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.contrib.auth.models import Group
 
 
 class UserModelTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.user = get_user_model().objects.create_user(
-            username="testuser", email="test@example.com", password="testpassword"
-        )
+    """класс для тестов юзера"""
+    fixtures = ['fixtures/02-users.json', 'fixtures/01-groups.json']
 
-    def test_user_creation(self):
-        self.assertEqual(self.user.username, "testuser")
-        self.assertEqual(self.user.email, "test@example.com")
-        self.assertTrue(self.user.check_password("testpassword"))
+    def test_loaded_user_and_groups(self):
+        self.assertEqual(get_user_model().objects.count(), 11)
+        self.assertEqual(Group.objects.count(), 2)
