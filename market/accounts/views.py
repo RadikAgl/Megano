@@ -71,7 +71,7 @@ def login_view(request):
 
         else:
             messages.error(request, 'не верно указаны данные')
-            return render(request, "accounts/login.jinja2", {"form":form})
+            return render(request, "accounts/login.jinja2", {"form": form})
     else:
         form = LoginForm()
         return render(request, "accounts/login.jinja2", {"form": form})
