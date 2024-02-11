@@ -31,7 +31,9 @@ def register(request):
     """
     if request.method == "POST":
         form = RegistrationForm(request.POST)
+
         if form.is_valid():
+
             user = form.save()
             login(request, user)
             return redirect("user:main_page")
@@ -59,9 +61,7 @@ def login_view(request):
         if form.is_valid():
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
-            print(email, password)
             user = authenticate(request, email=email, password=password)
-            print(user)
             if user:
                 login(request, user)
                 return redirect("user:main_page")

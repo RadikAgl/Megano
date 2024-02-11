@@ -30,7 +30,7 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = get_user_model()
         fields = ["email", "password"]
-    """удаление поля имени"""
+
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         del self.fields["username"]

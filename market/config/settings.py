@@ -146,4 +146,4 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = "kudakaevnikita@yandex.ru"
 EMAIL_HOST_PASSWORD = os.getenv("GMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = "kudakaevnikita@yandex.ru"
+DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
