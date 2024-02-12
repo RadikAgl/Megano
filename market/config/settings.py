@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     "django_jinja",
     "products",
     "shops",
+    "accounts",
+
 ]
 
 MIDDLEWARE = [
@@ -124,7 +126,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+AUTH_USER_MODEL = "accounts.User"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "/static")
 
@@ -138,3 +140,11 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+"""Gmail reset password settings"""
+EMAIL_HOST = os.getenv("GMAIL_HOST")
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = "kudakaevnikita@yandex.ru"
+EMAIL_HOST_PASSWORD = os.getenv("GMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
