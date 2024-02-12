@@ -2,17 +2,25 @@ from django.test import TestCase
 
 from products.models import Product, Category
 from shops.models import Shop, Offer
+from accounts.models import User
 
 
 class ShopModelTest(TestCase):
     """Класс тестов модели Магазин"""
 
-    fixtures = ["04-shops.json"]
+    fixtures = ["04-shops.json", "users.json"]
 
     def test_fixture_loading(self):
         shop_count = Shop.objects.count()
         print(f"Actual shop count: {shop_count}")
         self.assertEqual(shop_count, 8)
+
+    def test_shop_user_relation(self):
+        shops = Shop.objects.all()
+        for shop in shops:
+            user_id = shop.user_id
+            user = User.objects.get(pk=user_id)
+            self.assertIsNotNone(user, f"User with id {user_id} not found for shop {shop.name}")
 
     @classmethod
     def setUpTestData(cls):

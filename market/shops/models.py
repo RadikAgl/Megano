@@ -20,16 +20,18 @@ def shop_logo_directory_path(instance: "Shop", filename: str) -> str:
 class Shop(models.Model):
     """Модель django orm магазина, который является продавцом на маркетплейсе Megano"""
 
-    name = models.CharField(max_length=512, verbose_name=_("Название"))
-    contact_info = models.CharField(max_length=512, verbose_name=_("Контактная информация"))
-    description_of_seller = models.TextField(verbose_name=_("Описание"))
+    name = models.CharField(max_length=512, verbose_name=_("Название"), blank=True, null=True)
+    contact_info = models.CharField(max_length=512, verbose_name=_("Контактная информация"), blank=True, null=True)
+    description_of_seller = models.TextField(verbose_name=_("Описание"), blank=True, null=True)
     products = models.ManyToManyField(
         "products.Product",
         through="Offer",
         related_name="shops",
         verbose_name=_("Товары в магазине"),
     )
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, verbose_name=_("Пользователь"))
+    user = models.OneToOneField(
+        get_user_model(), on_delete=models.CASCADE, verbose_name=_("Пользователь"), null=True, unique=True
+    )
     logo = models.ImageField(
         upload_to=shop_logo_directory_path,
         validators=[FileExtensionValidator(allowed_extensions=["jpg", "jpeg", "png"])],
