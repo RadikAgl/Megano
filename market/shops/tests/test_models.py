@@ -8,12 +8,12 @@ from accounts.models import User
 class ShopModelTest(TestCase):
     """Класс тестов модели Магазин"""
 
-    fixtures = ["04-shops.json", "users.json"]
+    fixtures = ["04-shops.json", "02-users.json"]
 
     def test_fixture_loading(self):
         shop_count = Shop.objects.count()
         print(f"Actual shop count: {shop_count}")
-        self.assertEqual(shop_count, 8)
+        self.assertEqual(shop_count, 9)
 
     def test_shop_user_relation(self):
         shops = Shop.objects.all()
@@ -26,6 +26,7 @@ class ShopModelTest(TestCase):
     def setUpTestData(cls):
         cls.product = Product.objects.create(
             name="тестовый продукт",
+            category_id=1,
             details={"Диагональ, дм": 101},
         )
         cls.shop = Shop.objects.create(name="тестовый магазин")
