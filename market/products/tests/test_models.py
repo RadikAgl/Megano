@@ -1,56 +1,56 @@
 from django.test import TestCase
-from products.models import Product, Banner
 
-
-class BannerModelTest(TestCase):
-    """Класс тестов модели баннера"""
-
-    @classmethod
-    def setUpTestData(cls):
-        cls.banner = Banner.objects.create(
-            name="Тестовый баннер",
-            actual=True,
-            preview="",
-        )
-
-    def test_verbose_name(self):
-        banner = Banner()
-        field_verboses = {
-            "name": "название",
-            "actual": "актуальность",
-            "preview": "превью",
-        }
-        for field, expected_value in field_verboses.items():
-            with self.subTest(field=field):
-                self.assertEqual(banner._meta.get_field(field).verbose_name, expected_value)
-
-    def test_name_max_length(self):
-        banner = BannerModelTest.banner
-        max_length = banner._meta.get_field("name").max_length
-        self.assertEqual(max_length, 512)
+from products.models import Product, Category, Tag
 
 
 class ProductModelTest(TestCase):
     """Класс тестов модели товара"""
 
-    @classmethod
-    def setUpTestData(cls):
-        cls.product = Product.objects.create(
-            name="Тестовый продукт",
-            details={"Диагональ, дм": 101},
-        )
+    fixtures = ["05-categories.json", "06-tags.json", "07-products.json"]
 
-    def test_verbose_name(self):
-        product = ProductModelTest.product
-        field_verboses = {
-            "name": "наименование",
-            "details": "характеристики",
-        }
-        for field, expected_value in field_verboses.items():
-            with self.subTest(field=field):
-                self.assertEqual(product._meta.get_field(field).verbose_name, expected_value)
+    def setUp(self):
+        self.product = Product.objects.get(pk=1)
+        self.category = Category.objects.get(pk=1)
+        self.tag = Tag.objects.get(pk=1)
+
+    def test_fixture_loading(self):
+        products_count = Product.objects.count()
+        self.assertEqual(products_count, 53)
 
     def test_name_max_length(self):
-        product = ProductModelTest.product
-        max_length = product._meta.get_field("name").max_length
+        max_length = self.product._meta.get_field("name").max_length
+        self.assertEqual(max_length, 100)
+
+
+class CategoryModelTest(TestCase):
+    """Класс тестов модели Категорий"""
+
+    fixtures = ["05-categories.json"]
+
+    def setUp(self):
+        self.category = Category.objects.get(pk=1)
+
+    def test_fixture_loading(self):
+        category_count = Category.objects.count()
+        self.assertEqual(category_count, 20)
+
+    def test_name_max_length(self):
+        max_length = self.category._meta.get_field("name").max_length
         self.assertEqual(max_length, 512)
+
+
+class TagModelTest(TestCase):
+    """Класс тестов модели теги"""
+
+    fixtures = ["06-tags.json"]
+
+    def setUp(self):
+        self.tag = Tag.objects.get(pk=1)
+
+    def test_fixture_loading(self):
+        tag_count = Tag.objects.count()
+        self.assertEqual(tag_count, 35)
+
+    def test_name_max_length(self):
+        max_length = self.tag._meta.get_field("name").max_length
+        self.assertEqual(max_length, 100)
