@@ -24,9 +24,10 @@ class ShopModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        category = Category.objects.create(name="тестовая категория")
         cls.product = Product.objects.create(
             name="тестовый продукт",
-            category_id=1,
+            category=category,
             details={"Диагональ, дм": 101},
         )
         cls.shop = Shop.objects.create(name="тестовый магазин")
