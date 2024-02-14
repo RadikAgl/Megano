@@ -5,17 +5,25 @@ from django import setup
 
 def load_all_fixtures():
     """
-    Загружает все фикстуры из каталога './fixtures'.
+    Загрузить все фикстуры Django из указанного каталога.
 
-    Каждый файл с расширением '.json' в указанном каталоге обрабатывается
-    командой 'python load_fixtures.py', которая загружает данные из файла в базу данных Django.
+    Этот скрипт ищет файлы JSON в каталоге 'fixtures' и загружает их с использованием команды управления 'loaddata'.
+
+    Использование:
+        - Убедитесь, что переменная среды DJANGO_SETTINGS_MODULE установлена на модуль настроек вашего проекта Django.
+        - Запустите скрипт с использованием интерпретатора Python.
+
+    Пример:
+        python load_fixtures.py
     """
 
     fixture_dir = "./fixtures"
 
-    for file_name in os.listdir(fixture_dir):
-        if file_name.endswith(".json"):
-            file_path = os.path.join(fixture_dir, file_name)
+    for file_name in sorted(os.listdir(fixture_dir)):
+        file_path = os.path.join(fixture_dir, file_name)
+
+        # Check if file_name is a file before attempting to load it
+        if os.path.isfile(file_path) and file_name.endswith(".json"):
             call_command("loaddata", file_path)
 
 
