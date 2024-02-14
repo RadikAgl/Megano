@@ -21,8 +21,8 @@ class Shop(models.Model):
     """Модель магазина, который является продавцом на маркетплейсе Megano"""
 
     name = models.CharField(max_length=512, verbose_name=_("название"), blank=True, null=True)
-    contact_info = models.CharField(max_length=512, verbose_name=_("Контактная информация"), blank=True, null=True)
-    description_of_seller = models.TextField(verbose_name=_("Описание"), blank=True, null=True)
+    contact_info = models.CharField(max_length=512, verbose_name=_("контактная информация"), blank=True, null=True)
+    description = models.TextField(verbose_name=_("описание"), blank=True, null=True)
     products = models.ManyToManyField(
         "products.Product",
         through="Offer",

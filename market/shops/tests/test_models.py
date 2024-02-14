@@ -1,5 +1,5 @@
 from django.test import TestCase
-
+from accounts.models import User
 from products.models import Product, Category
 from shops.models import Shop, Offer
 
@@ -22,7 +22,9 @@ class ShopModelTest(TestCase):
             category=category,
             details={"Диагональ, дм": 101},
         )
-        cls.shop = Shop.objects.create(name="тестовый магазин")
+
+        cls.user = User.objects.create(username="testuser")
+        cls.shop = Shop.objects.create(name="тестовый магазин", user=cls.user)
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25)
 
     def test_verbose_name(self):
@@ -52,7 +54,8 @@ class OfferModelTest(TestCase):
             category=cls.category,
             details={"Диагональ, дм": 101},
         )
-        cls.shop = Shop.objects.create(name="тестовый магазин")
+        cls.user = User.objects.create(username="testuser")
+        cls.shop = Shop.objects.create(name="тестовый магазин", user=cls.user)
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=35)
 
     def test_verbose_name(self):
