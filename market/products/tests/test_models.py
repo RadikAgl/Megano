@@ -56,7 +56,7 @@ class TagModelTest(TestCase):
         self.assertEqual(max_length, 100)
 
 
-class BaseModelTest(TestCase):
+class BannerModelTest(TestCase):
     """Класс тестов для модели баннер"""
 
     fixtures = ["15-banners.json"]
