@@ -28,27 +28,41 @@ DATABASE_URL = postgresql://skillbox:secret@127.0.0.1:5439/market
 REDIS_URL = redis://127.0.0.1:6379/0
 ```
 
-Запуск СУБД Postgresql
+## Загрузка фикстур Django
+
+Этот скрипт предназначен для загрузки всех фикстур Django из каталога 'fixtures' в db проекта.
+
+### Использование
+
+- Запустите скрипт, используя интерпретатор Python:
+
+    ```bash
+    python load_fixtures.py
+    ```
+
+Скрипт автоматически обнаружит и загрузит все файлы JSON в указанном каталоге 'fixtures'. Если порядок загрузки важен, файлы будут обработаны в отсортированном порядке.
+
+### Запуск СУБД Postgresql
 ```shell
 docker run --name skillbox-db-39 -e POSTGRES_USER=skillbox -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=market -p 5439:5432 -d postgres
 ```
-Запуск брокера сообщений REDIS
+### Запуск брокера сообщений REDIS
 ```shell
 docker run --name redis-db -d -p 6379:6379 redis
 ```
-Установка и активация виртуального окружения
+### Установка и активация виртуального окружения
 ```shell
 poetry install  ; установка пакетов
 poetry shell  ; активация виртуального окружения
 pre-commit install  ; установка pre-commit для проверки форматирования кода, см. .pre-commit-config.yaml
 ```
-### Как удалить контейнеры
-СУБД Postgres
+## Как удалить контейнеры
+### СУБД Postgres
 ```shell
 docker rm -f -v skillbox-db-39
 ```
 
-Брокер сообщений REDIS
+### Брокер сообщений REDIS
 ```shell
 docker rm -f -v redis-db
 ```
