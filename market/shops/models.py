@@ -55,3 +55,4 @@ class Offer(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint("shop", "product", name="unique_product_in_shop")]
+        verbose_name_plural = _("предложение")
