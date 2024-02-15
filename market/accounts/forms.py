@@ -7,12 +7,14 @@ class RegistrationForm(UserCreationForm):
     """
     Форма регистрации нового пользователя.
     """
+
     email = forms.EmailField(required=True)
 
     class Meta(UserCreationForm.Meta):
         """
         форма для регистрации пользователя
         """
+
         model = get_user_model()
         fields = ["email", "password1"]
 
@@ -25,6 +27,7 @@ class RegistrationForm(UserCreationForm):
 
 class LoginForm(AuthenticationForm):
     """форма для входа в аккаунт"""
+
     email = forms.EmailField(required=True)
 
     class Meta:
@@ -43,6 +46,7 @@ class CustomPasswordForm(SetPasswordForm):
 
     class Meta:
         """поля для измены пароля"""
+
         fields = ["new_password1"]
 
     def __init__(self, *args, **kwargs):
