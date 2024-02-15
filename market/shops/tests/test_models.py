@@ -1,5 +1,5 @@
 from django.test import TestCase
-
+from accounts.models import User
 from products.models import Product, Category
 from shops.models import Shop, Offer
 
@@ -7,15 +7,24 @@ from shops.models import Shop, Offer
 class ShopModelTest(TestCase):
     """Класс тестов модели Магазин"""
 
+    fixtures = ["02-users.json", "04-shops.json"]
+
+    def test_fixture_loading(self):
+        shop_count = Shop.objects.count()
+        print(f"Actual shop count: {shop_count}")
+        self.assertEqual(shop_count, 9)
+
     @classmethod
     def setUpTestData(cls):
-        cls.category = Category.objects.create(name="TestCategory")
+        category = Category.objects.create(name="тестовая категория")
         cls.product = Product.objects.create(
             name="тестовый продукт",
-            category=cls.category,
+            category=category,
             details={"Диагональ, дм": 101},
         )
-        cls.shop = Shop.objects.create(name="тестовый магазин")
+
+        cls.user = User.objects.create(username="testuser")
+        cls.shop = Shop.objects.create(name="тестовый магазин", user=cls.user)
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=25)
 
     def test_verbose_name(self):
@@ -45,7 +54,8 @@ class OfferModelTest(TestCase):
             category=cls.category,
             details={"Диагональ, дм": 101},
         )
-        cls.shop = Shop.objects.create(name="тестовый магазин")
+        cls.user = User.objects.create(username="testuser")
+        cls.shop = Shop.objects.create(name="тестовый магазин", user=cls.user)
         cls.offer = Offer.objects.create(shop=cls.shop, product=cls.product, price=35)
 
     def test_verbose_name(self):
