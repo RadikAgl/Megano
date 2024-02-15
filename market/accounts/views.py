@@ -1,14 +1,17 @@
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from django.contrib.auth.views import (
     PasswordResetView,
-    PasswordResetConfirmView,
+    PasswordResetConfirmView, LoginView,
 )
 from django.contrib import messages
+from django.views.generic import FormView
+
 from .forms import RegistrationForm, LoginForm, CustomPasswordForm
 
 
@@ -17,67 +20,40 @@ def main_page(request):
     return render(request, "accounts/catalog.jinja2")
 
 
-def register(request):
-    """
-    Обрабатывает запросы на регистрацию пользователя.
+class RegistrationView(FormView):
+    """вью класс для регистрации"""
+    template_name = "accounts/registr.jinja2"
+    form_class = RegistrationForm
+    success_url = reverse_lazy("user:main_page")
 
-    Args:
-        request: HttpRequest объект.
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)
 
-    Returns:
-        HttpResponse: Возвращает HttpResponse с редиректом на указанный URL в случае успешной регистрации.
-                      В случае ошибки возвращает HttpResponse с отображением формы регистрации и ошибок.
+    def form_invalid(self, form):
+        messages.error(self.request, "не валидная форма или такой пользователь уже есть")
+        return super().form_invalid(form)
 
-    """
-    if request.method == "POST":
-        form = RegistrationForm(request.POST)
 
-        if form.is_valid():
+class MyLoginView(LoginView):
+    template_name = 'accounts/login.jinja2'
+    form_class = LoginForm
+    redirect_authenticated_user = True
 
-            user = form.save()
-            login(request, user)
-            return redirect("user:main_page")
+    def form_valid(self, form):
+        email = form.cleaned_data.get("email")
+        password = form.cleaned_data.get("password")
+        user = authenticate(self.request, email=email, password=password)
+        if user:
+            login(self.request, user)
+            return super().form_valid(form)
         else:
-            return render(request, "accounts/registr.jinja2", {"form": form.errors})
-    else:
-        form = RegistrationForm()
-        return render(request, "accounts/registr.jinja2", {"form": form.errors})
+            messages.error(self.request, 'нет пользователя с таким Email или неверный пароль')
+            return super().form_invalid(form)
 
 
-def login_view(request):
-    """
-    Обрабатывает запросы на вход пользователя.
-
-    Args:
-        request: HttpRequest объект.
-
-    Returns:
-        HttpResponse: Возвращает HttpResponse с редиректом на указанный URL в случае успешного входа.
-                      В случае ошибки возвращает HttpResponse с отображением формы входа и сообщением об ошибке.
-
-    """
-    if request.method == "POST":
-        form = LoginForm(request, request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get("email")
-            password = form.cleaned_data.get("password")
-            user = authenticate(request, email=email, password=password)
-            if user:
-                login(request, user)
-                return redirect("user:main_page")
-            else:
-                messages.error(request, "нет пользователя с таким Email или неверный пароль")
-                return render(request, "accounts/login.jinja2", {"form": form})
-
-        else:
-            messages.error(request, 'не верно указаны данные')
-            return render(request, "accounts/login.jinja2", {"form": form})
-    else:
-        form = LoginForm()
-        return render(request, "accounts/login.jinja2", {"form": form})
-
-
-class PasswordReset(PasswordResetView):
+class PasswordReset(LoginRequiredMixin, PasswordResetView):
     """
     Представление для сброса пароля. Отправляет электронное письмо с инструкциями
     по сбросу пароля на указанный электронный адрес.
