@@ -29,6 +29,7 @@ class Category(models.Model):
     sort_index = models.PositiveIntegerField(verbose_name=_("индекс сортировки"), null=True, unique=True)
 
     def is_active(self):
+        """Проверяет, активна ли категория, имея ли хотя бы один продукт."""
         return self.product_set.exists()
 
     class Meta:

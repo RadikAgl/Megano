@@ -33,7 +33,6 @@ def register(request):
         form = RegistrationForm(request.POST)
 
         if form.is_valid():
-
             user = form.save()
             login(request, user)
             return redirect("user:main_page")
@@ -70,7 +69,7 @@ def login_view(request):
                 return render(request, "accounts/login.jinja2", {"form": form})
 
         else:
-            messages.error(request, 'не верно указаны данные')
+            messages.error(request, "не верно указаны данные")
             return render(request, "accounts/login.jinja2", {"form": form})
     else:
         form = LoginForm()
