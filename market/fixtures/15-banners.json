@@ -5,7 +5,7 @@
     "fields": {
       "name": "Тестовый_баннер_1",
       "actual": true,
-      "preview": "img/preview/bigGoods.png",
+      "preview": "uploads/banners/bigGoods.png",
       "link": "http://www.example.com/Тестовый_баннер_1"
     }
   },
@@ -15,7 +15,7 @@
     "fields": {
       "name": "Тестовый_баннер_2",
       "actual": true,
-      "preview": "img/preview/bigGoods2.jpg",
+      "preview": "uploads/banners/bigGoods2.jpg",
       "link": "http://www.example.com/Тестовый_баннер_2"
     }
   },
@@ -25,7 +25,7 @@
     "fields": {
       "name": "Тестовый_баннер_3",
       "actual": true,
-      "preview": "img/preview/card.jpg",
+      "preview": "uploads/banners/card.jpg",
       "link": "http://www.example.com/Тестовый_баннер_3"
     }
   },
@@ -35,7 +35,7 @@
     "fields": {
       "name": "Тестовый_баннер_4",
       "actual": true,
-      "preview": "img/preview/slider.png",
+      "preview": "uploads/banners/slider.png",
       "link": "http://www.example.com/Тестовый_баннер_4"
     }
   }
