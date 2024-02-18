@@ -2,6 +2,8 @@
 
 import os
 from pathlib import Path
+
+from django.urls import reverse_lazy
 from dotenv import load_dotenv
 
 import dj_database_url
@@ -128,7 +130,7 @@ USE_TZ = True
 AUTH_USER_MODEL = "accounts.User"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "/static")
-
+LOGIN_REDIRECT_URL = reverse_lazy('user:main_page')
 STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
