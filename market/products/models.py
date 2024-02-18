@@ -4,6 +4,22 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+class Banner(models.Model):
+    """Баннер"""
+
+    name = models.CharField(max_length=512, verbose_name=_("название"))
+    actual = models.BooleanField(default=True, verbose_name=_("актуальность"))
+    preview = models.ImageField(verbose_name=_("превью"), upload_to="banners")
+    link = models.URLField(verbose_name=_("ссылка"), unique=True, db_index=True)
+
+    class Meta:
+        verbose_name = _("Баннер")
+        verbose_name_plural = _("Баннеры")
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Category(models.Model):
     """Модель django orm категорий товара"""
 
@@ -13,6 +29,7 @@ class Category(models.Model):
     sort_index = models.PositiveIntegerField(verbose_name=_("индекс сортировки"), null=True, unique=True)
 
     def is_active(self):
+        """Проверяет, активна ли категория, имея ли хотя бы один продукт."""
         return self.product_set.exists()
 
     class Meta:
