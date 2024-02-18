@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 
 
 class UserModelTest(TestCase):
-    """класс для тестов юзера"""
+    """класс для тестов юзераf"""
 
     fixtures = ["fixtures/01-groups.json", "fixtures/02-users.json"]
 
