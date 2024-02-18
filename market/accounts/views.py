@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
+
 from django.urls import reverse_lazy
 
 from django.contrib.auth.views import (
@@ -13,11 +13,6 @@ from django.contrib import messages
 from django.views.generic import FormView
 
 from .forms import RegistrationForm, LoginForm, CustomPasswordForm
-
-
-def main_page(request):
-    """ф-я которая возвращает на главную страницу"""
-    return render(request, "accounts/catalog.jinja2")
 
 
 class RegistrationView(FormView):
