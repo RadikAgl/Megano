@@ -71,11 +71,10 @@ class Product(models.Model):
 class ProductImage(models.Model):
     """Модель фотографии товара"""
 
-    image = models.ImageField(upload_to="products/%Y/%m/%d/", blank=True, null=True, verbose_name=_("изображение"))
+    image = models.ImageField(upload_to="products/%Y/%m/%d/", verbose_name=_("изображение"))
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name=_("продукт"))
 
     class Meta:
-        db_table = "product_image"
         verbose_name = _("изображение")
         verbose_name_plural = _("изображения")
 
