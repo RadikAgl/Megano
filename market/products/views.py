@@ -12,7 +12,5 @@ class MainPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         main_page_service = MainPageService()
-        context["top_categories"] = main_page_service.get_top_categories()
-        context["most_popular_products"] = main_page_service.get_most_popular_products()
-        context["limited_products"] = main_page_service.get_limited_products()
+        context["products"] = main_page_service.get_products()
         return context
