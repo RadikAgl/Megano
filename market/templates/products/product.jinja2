@@ -25,11 +25,11 @@
                                 <div class="ProductCard-info">
                                     <div class="ProductCard-cost">
                                         <div class="ProductCard-price">
-                                        {% for shop in product.shops.all() %}
-                                            {% for offer in shop.offer_set.all() %}
-                                                {{ offer.price }}
+                                            {% for shop in product.shops.all() %}
+                                                {% for offer in shop.offer_set.all() %}
+                                                    {{ offer.price }}
+                                                {% endfor %}
                                             {% endfor %}
-                                        {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -89,6 +89,24 @@
                             <div class="Tabs-block" id="description">
                                 <h2>{{ product.description[:25] }}</h2>
                                 <p>{{ product.description }}</p>
+                                <div class="clearfix">
+                                </div>
+                                <div class="table">
+                                    <table>
+                                        <tr>
+                                            <th>Характеристика
+                                            </th>
+                                            <th>Значение
+                                            </th>
+                                        </tr>
+                                        {% for key, value in product.details.items() %}
+                                            <tr>
+                                                <td>{{ key }}</td>
+                                                <td>{{ value }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
                             </div>
 
                             <div class="Tabs-block" id="sellers">
