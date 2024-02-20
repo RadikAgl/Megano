@@ -3,7 +3,7 @@ from django.contrib.auth.views import (
     PasswordResetDoneView,
     PasswordResetCompleteView,
 )
-from .views import RegistrationView, MyLoginView, PasswordReset, UpdatePasswordView,AcountView
+from .views import RegistrationView, MyLoginView, PasswordReset, UpdatePasswordView, AcountView
 
 app_name = "accounts"
 """url пути"""
