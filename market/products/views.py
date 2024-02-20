@@ -2,6 +2,8 @@ from typing import Optional
 
 from django.shortcuts import render
 from django.views import View
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from shops.models import Offer, Shop
 from .models import Product
@@ -12,7 +14,7 @@ from .services.product_services import (
 )
 
 
-class ProductDetailView(View):
+class DetailView(View):
     """
     Представление для детальной страницы продукта.
 
@@ -54,12 +56,10 @@ class ProductDetailView(View):
 
         return render(request, self.template_name, context)
 
-    @staticmethod
-    def invalidate_cache(product_id: int) -> None:
+    @receiver(post_save, sender=Product)
+    def invalidate_product_cache(sender, instance, **kwargs):
         """
-        Сбросить кэш при обновлении продукта.
-
-        Параметры:
-        - product_id: Идентификатор продукта.
+        Функция-получатель сигнала для сброса кэша при сохранении экземпляра Product.
         """
+        product_id = instance.id
         invalidate_product_details_cache(product_id)

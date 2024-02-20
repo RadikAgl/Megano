@@ -1,8 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from products.models import Product, Category, Tag
-from shops.models import Shop
+from products.models import Product, Category
 
 
 class ProductDetailViewTest(TestCase):
@@ -22,17 +21,6 @@ class ProductDetailViewTest(TestCase):
         "08-offers.json",
     ]
 
-    def setUp(self):
-        """
-        Метод настройки тестового окружения перед выполнением каждого теста.
-
-        Создает экземпляры продукта, категории, магазина и тега для использования в тестах.
-        """
-        self.product = Product.objects.get(pk=1)
-        self.category = Category.objects.get(pk=1)
-        self.shop = Shop.objects.get(pk=1)
-        self.tag = Tag.objects.get(pk=1)
-
     def test_product_detail_view(self):
         """
         Тест для проверки детального просмотра продукта.
@@ -40,22 +28,24 @@ class ProductDetailViewTest(TestCase):
         Параметры:
         - product: Экземпляр продукта.
         - category: Экземпляр категории.
-        - shop: Экземпляр магазина.
+        - shops: Список магазинов.
         - response: Ответ сервера на запрос детальной информации о продукте.
 
         Проверяет, что при запросе детальной информации о продукте:
         - Код ответа сервера равен 200 (успех).
         - Имя продукта содержится в ответе.
         - Имя категории содержится в ответе.
-        - Имя магазина содержится в ответе.
+        - Имена всех магазинов содержатся в ответе.
         """
         product = Product.objects.get(pk=1)
         category = Category.objects.get(pk=1)
-        shop = Shop.objects.get(pk=1)
+        shops = list(product.shops.all())
 
-        response = self.client.get(reverse("product:details", args=[product.id]))
+        response = self.client.get(reverse("product:product-details", args=[product.id]))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, product.name)
         self.assertContains(response, category.name)
-        self.assertContains(response, shop.name)
+
+        for shop in shops:
+            self.assertContains(response, shop.name)
