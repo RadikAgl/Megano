@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from .models import User
 
 from django.urls import reverse_lazy
 
@@ -10,9 +11,20 @@ from django.contrib.auth.views import (
     PasswordResetConfirmView, LoginView,
 )
 from django.contrib import messages
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 
 from .forms import RegistrationForm, LoginForm, CustomPasswordForm
+
+
+class AcountView(TemplateView):
+    """вюь для страницы п-я"""
+    template_name = "accounts/account.jinja2"
+
+    def get_context_data(self, **kwargs):
+        print(self.request.user)
+        context = super().get_context_data(**kwargs)
+        context['name'] = self.request.user
+        return context
 
 
 class RegistrationView(FormView):
@@ -37,6 +49,7 @@ class MyLoginView(LoginView):
     redirect_authenticated_user = True
 
     def form_valid(self, form):
+
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password")
         user = authenticate(self.request, email=email, password=password)

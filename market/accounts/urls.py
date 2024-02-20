@@ -3,8 +3,7 @@ from django.contrib.auth.views import (
     PasswordResetDoneView,
     PasswordResetCompleteView,
 )
-from .views import RegistrationView, MyLoginView, PasswordReset, UpdatePasswordView, main_page
-
+from .views import RegistrationView, MyLoginView, PasswordReset, UpdatePasswordView,AcountView
 
 app_name = "accounts"
 """url пути"""
@@ -19,5 +18,6 @@ urlpatterns = [
         PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-    path("main_page/", main_page, name="main_page"),
+    path("main_page/", AcountView.as_view(), name='main')
+
 ]

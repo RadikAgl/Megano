@@ -130,7 +130,7 @@ USE_TZ = True
 AUTH_USER_MODEL = "accounts.User"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "/static")
-LOGIN_REDIRECT_URL = reverse_lazy('user:main_page')
+LOGIN_REDIRECT_URL = reverse_lazy('user:main')
 STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
