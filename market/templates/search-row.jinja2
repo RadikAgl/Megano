@@ -38,7 +38,7 @@
                     <div class="search">
                         <form class="form form_search" action="#" method="post">
                             {% csrf_token %}
-                            <input class="search-input" id="query" name="query" type="text" placeholder="Random product name from db" />
+                            <input class="search-input" id="query" name="query" type="text" placeholder="{{ product_name().name }}" />
                             <button class="search-button" type="submit" name="search" id="search"><img src="{{ static('img/icons/search.svg') }}" alt="search.svg" />Поиск
                             </button>
                         </form>
