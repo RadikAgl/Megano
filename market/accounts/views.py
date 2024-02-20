@@ -16,12 +16,11 @@ from django.views.generic import FormView, TemplateView
 from .forms import RegistrationForm, LoginForm, CustomPasswordForm
 
 
-class AcountView(TemplateView):
+class AcountView(LoginRequiredMixin, TemplateView):
     """вюь для страницы п-я"""
     template_name = "accounts/account.jinja2"
 
     def get_context_data(self, **kwargs):
-        print(self.request.user)
         context = super().get_context_data(**kwargs)
         context['name'] = self.request.user
         return context
