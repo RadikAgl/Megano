@@ -28,7 +28,11 @@
                 <div class="clear"></div>
 
             </form>
-            {{ form }}
+             {% if messages %}
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+                {% endif %}
         </div>
         {% endblock %}
 
