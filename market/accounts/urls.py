@@ -18,6 +18,5 @@ urlpatterns = [
         PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-    path("main_page/", AcountView.as_view(), name='main')
-
+    path("main_page/", AcountView.as_view(), name="main"),
 ]

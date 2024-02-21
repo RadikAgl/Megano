@@ -1,8 +1,10 @@
 """ Маршруты приложения products """
 
 from django.urls import path
-from products import views
+
+from .views import MainPageView, DetailView
 
 urlpatterns = [
-    path("", views.MainPageView.as_view(), name="index"),
+    path("", MainPageView.as_view(), name="index"),
+    path("<int:product_id>/", DetailView.as_view(), name="product-details"),
 ]

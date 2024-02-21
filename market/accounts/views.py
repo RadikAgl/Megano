@@ -7,7 +7,8 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.views import (
     PasswordResetView,
-    PasswordResetConfirmView, LoginView,
+    PasswordResetConfirmView,
+    LoginView,
 )
 from django.contrib import messages
 from django.views.generic import FormView, TemplateView
@@ -17,16 +18,18 @@ from .forms import RegistrationForm, LoginForm, CustomPasswordForm
 
 class AcountView(LoginRequiredMixin, TemplateView):
     """вюь для страницы п-я"""
+
     template_name = "accounts/account.jinja2"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['name'] = self.request.user
+        context["name"] = self.request.user
         return context
 
 
 class RegistrationView(FormView):
     """вью класс для регистрации"""
+
     template_name = "accounts/registr.jinja2"
     form_class = RegistrationForm
     success_url = reverse_lazy("user:main_page")
@@ -42,12 +45,11 @@ class RegistrationView(FormView):
 
 
 class MyLoginView(LoginView):
-    template_name = 'accounts/login.jinja2'
+    template_name = "accounts/login.jinja2"
     form_class = LoginForm
     redirect_authenticated_user = True
 
     def form_valid(self, form):
-
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password")
         user = authenticate(self.request, email=email, password=password)
@@ -55,7 +57,7 @@ class MyLoginView(LoginView):
             login(self.request, user)
             return super().form_valid(form)
         else:
-            messages.error(self.request, 'нет пользователя с таким Email или неверный пароль')
+            messages.error(self.request, "нет пользователя с таким Email или неверный пароль")
             return super().form_invalid(form)
 
 
