@@ -8,9 +8,8 @@
                     <div class="ProductCard">
                         <div class="ProductCard-look">
                             <div class="ProductCard-photo">
-
-                                    <img src="{{ product.images.first().image.url }}" alt="{{ product.name }}"/>
-                         </div>
+                                <img src="{{ product.images.first().image.url }}" alt="{{ product.name }}"/>
+                            </div>
                             <div class="ProductCard-picts">
                                 {% if product.images %}
                                     {% for image in product.images.all() %}
