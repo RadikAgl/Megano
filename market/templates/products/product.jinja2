@@ -8,13 +8,11 @@
                     <div class="ProductCard">
                         <div class="ProductCard-look">
                             <div class="ProductCard-photo">
-                                <img src="{{ product.image_url }}" alt="{{ product.name }}"/>
-                            </div>
+
+                                    <img src="{{ product.images.first().image.url }}" alt="{{ product.name }}"/>
+                         </div>
                             <div class="ProductCard-picts">
                                 {% if product.images %}
-                                    <a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ product.image_url }}">
-                                        <img src="{{ product.image_url }}" alt="{{ product.name }}"/>
-                                    </a>
                                     {% for image in product.images.all() %}
                                         <a class="ProductCard-pict" href="{{ image.image.url }}">
                                             <img src="{{ image.image.url }}" alt="{{ product.name }} Image">
