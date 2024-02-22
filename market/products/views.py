@@ -1,21 +1,17 @@
 """ Представления приложения products """
-from django.views.generic import TemplateView
-
-from market.products.services.mainpage_services import MainPageService
 from typing import Optional
 
 from django.shortcuts import render
 from django.views import View
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.views.generic import TemplateView
 
+from market.products.services.mainpage_services import MainPageService
+from shops.models import Offer, Shop
 from .models import Product, ProductImage
 from .services.product_services import (
     cache_product_details,
     fetch_product_details_from_database,
-    invalidate_product_details_cache,
 )
-from shops.models import Offer, Shop
 
 
 class MainPageView(TemplateView):
@@ -73,11 +69,3 @@ class DetailView(View):
         }
 
         return render(request, self.template_name, context)
-
-    @receiver(post_save, sender=Product)
-    def invalidate_product_cache(sender, instance, **kwargs):
-        """
-        Функция-получатель сигнала для сброса кэша при сохранении экземпляра Product.
-        """
-        product_id = instance.id
-        invalidate_product_details_cache(product_id)
