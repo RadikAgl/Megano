@@ -5,7 +5,7 @@ from django.core.cache import cache
 from products.models import Product
 
 
-def cache_product_details(product_id: int, expiration_time: int = 86400) -> None:  # 86400 one day
+def cache_product_details(product_id: int, expiration_time: int = 86400) -> None:
     """
     Кэшировать детали продукта и установить опциональное время истечения срока действия.
 
@@ -16,7 +16,6 @@ def cache_product_details(product_id: int, expiration_time: int = 86400) -> None
     cache_key = f"product_details_{product_id}"
     product = fetch_product_details_from_database(product_id)
 
-    # Кэшировать детали продукта
     cache.set(cache_key, product, expiration_time)
 
 

@@ -37,12 +37,14 @@ class DetailViewTest(TestCase):
         - Имя категории содержится в ответе.
         - Имена всех магазинов содержатся в ответе.
         """
+
         product = Product.objects.get(pk=1)
         category = Category.objects.get(pk=1)
         shops = list(product.shops.all())
         images = list(product.images.all())
 
-        response = self.client.get(reverse("product:product-details", args=[product.id]))
+        # Use the 'pk' as the URL parameter for the detail view
+        response = self.client.get(reverse("product:product-details", kwargs={"product_id": product.id}))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, product.name)
@@ -53,5 +55,5 @@ class DetailViewTest(TestCase):
         count = 0
         for image in images:
             count += 1
-            self.assertContains(response, image.image)
+            self.assertContains(response, image.image)  # Assuming 'image' is a string field
         print(f"product images: {count}")
