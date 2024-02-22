@@ -25,7 +25,6 @@ class DetailViewTest(TestCase):
     def test_product_detail_view(self):
         """
         Тест для проверки детального просмотра продукта.
-
         Параметры:
         - product: Экземпляр продукта.
         - category: Экземпляр категории.
