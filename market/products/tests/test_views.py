@@ -55,4 +55,4 @@ class DetailViewTest(TestCase):
         count = 0
         for image in images:
             count += 1
-            self.assertContains(response, image.image)  # Assuming 'image' is a string field
+            self.assertContains(response, image.image)
