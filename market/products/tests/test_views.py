@@ -44,7 +44,7 @@ class DetailViewTest(TestCase):
         images = list(product.images.all())
 
         # Use the 'pk' as the URL parameter for the detail view
-        response = self.client.get(reverse("product:product-details", kwargs={"product_id": product.id}))
+        response = self.client.get(reverse("product:product-details", kwargs={"pk": product.pk}))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, product.name)
@@ -56,4 +56,3 @@ class DetailViewTest(TestCase):
         for image in images:
             count += 1
             self.assertContains(response, image.image)  # Assuming 'image' is a string field
-        print(f"product images: {count}")

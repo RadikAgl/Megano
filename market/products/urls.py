@@ -6,5 +6,5 @@ from .views import MainPageView, ProductDetailView
 
 urlpatterns = [
     path("", MainPageView.as_view(), name="index"),
-    path("<int:product_id>/", ProductDetailView.as_view(), name="product-details"),
+    path("<int:pk>/", ProductDetailView.as_view(), name="product-details"),
 ]
