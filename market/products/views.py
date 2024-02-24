@@ -1,7 +1,7 @@
 """ Представления приложения products """
 from django.views.generic import TemplateView
 from products.services import MainPageService
-from services.review_services import ReviewsService
+from products.services.review_services import ReviewsService
 from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import redirect
 from .forms import ReviewsForm
