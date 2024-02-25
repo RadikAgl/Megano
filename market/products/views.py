@@ -1,10 +1,13 @@
 """ Представления приложения products """
+
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.generic import DetailView
 from django.views.generic import TemplateView
-from products.services import MainPageService
-from products.services.review_services import ReviewsService
-from django.core.handlers.wsgi import WSGIRequest
-from django.shortcuts import redirect
-from .forms import ReviewsForm
+
+from market.products.services.mainpage_services import MainPageService
+from shops.models import Offer, Shop
+from .models import Product, ProductImage
 
 
 class MainPageView(TemplateView):
@@ -19,16 +22,31 @@ class MainPageView(TemplateView):
         return context
 
 
-def add_review(request: WSGIRequest):
+class ProductDetailView(DetailView):
     """
-    Добавляет отзыв о товаре
-    :param request: пост запрос
-    :return: обновляет страницу
+    Представление для детальной страницы продукта.
+
+    Атрибуты:
+    - template_name (str): Имя шаблона для отображения страницы продукта.
+    - model: Класс модели для этого представления.
+    - context_object_name: Имя переменной контекста для объекта модели.
     """
-    if request.method == "POST":
-        form = ReviewsForm(request.POST)
-        if form.is_valid():
-            review = ReviewsService(request, request.user, request.POST["product"])
-            text = form.cleaned_data["text"]
-            review.add(review=text)
-    return redirect(request.META.get("HTTP_REFERER"))
+
+    template_name = "products/product.jinja2"
+    model = Product
+    context_object_name = "product"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product = self.object
+
+        # Fetch related data
+        context["offers"] = Offer.objects.filter(product=product)
+        context["shops"] = Shop.objects.filter(products=product)
+        context["images"] = ProductImage.objects.filter(product=product)
+
+        return context
+
+    @method_decorator(cache_page(86400))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)

@@ -17,6 +17,7 @@ class Banner(models.Model):
     class Meta:
         verbose_name = _("Баннер")
         verbose_name_plural = _("Баннеры")
+        app_label = "products"
 
     def __str__(self):
         return f"{self.name}"
