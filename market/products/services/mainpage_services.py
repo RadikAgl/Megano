@@ -20,6 +20,6 @@ class MainPageService:
         cache_key = "banners_cache"
         data = cache.get(cache_key)
         if not data:
-            data = Banner.objects.all().filter(actual=True).order_by("?")[:3]
+            data = Banner.objects.filter(actual=True).order_by("?")[:3]
             cache.set(cache_key, data, expiration_time)
         return data

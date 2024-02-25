@@ -4,7 +4,7 @@ from django.urls import reverse
 from products.models import Product, Banner
 
 
-class ProductsIndexViewTest(TestCase):
+class ProductDetailViewTestCase(TestCase):
     """
     Класс тестирования главной страницы
     """
