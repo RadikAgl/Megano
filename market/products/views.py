@@ -4,8 +4,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
-
-from market.products.services.mainpage_services import MainPageService
+from products.services.mainpage_services import MainPageService
 from shops.models import Offer, Shop
 from .models import Product, ProductImage
 

@@ -1,7 +1,6 @@
 """ Маршруты приложения products """
 
 from django.urls import path
-
 from .views import MainPageView, ProductDetailView
 
 urlpatterns = [
