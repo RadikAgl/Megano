@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm
 from django import forms
 
 
@@ -71,4 +71,3 @@ class ProfilePasswordForm(SetPasswordForm):
         self.fields["new_password2"].required = False
         # Убираем поле для повторного ввода нового пароля
         self.fields.pop("new_password2", None)
-

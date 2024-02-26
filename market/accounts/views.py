@@ -23,11 +23,11 @@ class ProfileView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        messages.error(self.request, f"успешно")
+        messages.error(self.request, "успешно")
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, f"не верный ввод полей")
+        messages.error(self.request, "не верный ввод полей")
         return super().form_invalid(form)
 
     def get_form_kwargs(self):
