@@ -18,6 +18,7 @@ class MainPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         main_page_service = MainPageService()
         context["products"] = main_page_service.get_products()
+        context["banners"] = main_page_service.banners_cache()
         return context
 
 
