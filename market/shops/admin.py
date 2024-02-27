@@ -1,3 +1,4 @@
+"""Настройки админ панели приложения shops"""
 from django.contrib import admin  # noqa F401
 from .models import Shop, Offer
 

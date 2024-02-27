@@ -1,7 +1,6 @@
+"""Функции для кэширования данных о товаре приложения products"""
 from typing import Optional
-
 from django.core.cache import cache
-
 from products.models import Product
 
 
