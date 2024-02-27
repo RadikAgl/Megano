@@ -1,6 +1,5 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 from products.models import Product
 from products.services.product_services import invalidate_product_details_cache
 
