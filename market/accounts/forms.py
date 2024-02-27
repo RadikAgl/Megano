@@ -55,3 +55,19 @@ class CustomPasswordForm(SetPasswordForm):
         self.fields["new_password2"].required = False
         # Убираем поле для повторного ввода нового пароля
         self.fields.pop("new_password2", None)
+
+
+class ProfilePasswordForm(SetPasswordForm):
+    email = forms.EmailField(required=True)
+    """форма для изменения пароля и email"""
+
+    class Meta:
+        model = get_user_model()
+        fields = ['email', 'new_password1']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Делаем поле для повторного ввода нового пароля не обязательным
+        self.fields["new_password2"].required = False
+        # Убираем поле для повторного ввода нового пароля
+        self.fields.pop("new_password2", None)
