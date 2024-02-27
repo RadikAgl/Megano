@@ -1,23 +1,43 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
-
-from django.urls import reverse_lazy
-
 from django.contrib.auth.views import (
     PasswordResetView,
     PasswordResetConfirmView,
     LoginView,
 )
-from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView
 
-from .forms import RegistrationForm, LoginForm, CustomPasswordForm
+from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm
+
+
+class ProfileView(LoginRequiredMixin, FormView):
+    """вью для изменения пароля и email"""
+    template_name = 'accounts/profile.jinja2'
+    form_class = ProfilePasswordForm
+    success_url = reverse_lazy('user:profile')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        messages.error(self.request, "успешно")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "не верный ввод полей")
+        return super().form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class AcountView(LoginRequiredMixin, TemplateView):
-    """вюь для страницы п-я"""
+    """вюь для страницы пользователя """
 
     template_name = "accounts/account.jinja2"
 
