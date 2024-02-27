@@ -1,6 +1,7 @@
+"""Сервис для работы с отзывами приложения products"""
+from typing import Tuple, Any
 from django.db.models import QuerySet
 from products.models import Review, Product
-from typing import Tuple, Any
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.http import HttpRequest
@@ -8,7 +9,7 @@ from django.http import HttpRequest
 User = get_user_model()
 
 
-class ReviewsService:
+class ReviewService:
     """Сервис для работы с отзывами"""
 
     def __init__(self, request: HttpRequest, profile: User, product: Product):

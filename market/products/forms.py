@@ -1,3 +1,4 @@
+""" Формы приложения products """
 from django import forms
 from django.forms import Textarea
 from .models import Review
