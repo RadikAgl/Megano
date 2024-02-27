@@ -1,7 +1,11 @@
+"""Сервисы главной страницы"""
+
 from django.db.models import QuerySet
 from django.core.cache import cache
-from products.models import Product, Banner
 from django.conf import settings
+
+from products.models import Banner
+from shops.models import Offer
 
 
 class MainPageService:
@@ -9,7 +13,7 @@ class MainPageService:
 
     def get_products(self) -> QuerySet:
         """Самые продаваемые продукты"""
-        return Product.objects.all().prefetch_related("images")
+        return Offer.objects.all().select_related("product").prefetch_related("product__images")
 
     def banners_cache(self) -> QuerySet:
         """

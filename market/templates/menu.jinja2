@@ -25,9 +25,9 @@
                                 <a class="dropdown-content-a" href="#">Выход</a>
                             </div>
                         </div>
-                        <a class="CartBlock-block" href="#"><img class="CartBlock-img" src="{{ static('img/icons/cart.svg') }}" alt="cart.svg" /><span class="CartBlock-amount">0</span></a>
+                        <a class="CartBlock-block" href="{{ url('cart:cart') }}"><img class="CartBlock-img" src="{{ static('img/icons/cart.svg') }}" alt="cart.svg" /><span class="CartBlock-amount">0</span></a>
                         <div class="CartBlock-block">
-							<span class="CartBlock-price">{{ cart_cost() }}$</span>
+							<span class="CartBlock-price">{{ cart_cost }}$</span>
                         </div>
                     </div>
                 </div>

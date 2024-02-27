@@ -10,24 +10,25 @@
             </h2>
           </header>
           <div class="Cards">
-              {% for product in products %}
+              {% for offer in products %}
                 <div class="Card">
                     <a class="Card-picture" href="#">
-                        <img src="{{  product.images.first().image.url  }}" alt="card.jpg"/>
+                        <img src="{{  offer.product.images.first().image.url  }}" alt="card.jpg"/>
                     </a>
                    <div class="Card-content">
                        <strong class="Card-title">
-                        <a href="#">{{ product }}</a>
+                        <a href="#">{{ offer.product }}</a>
                        </strong>
                        <div class="Card-description">
-                           <div class="Card-cost"><span class="Card-price">$0</span>
+                           <div class="Card-cost"><span class="Card-price">${{ offer.price }}</span>
                            </div>
                            <div class="Card-category">
-                               {% with parent = product.category.parent %}
-                                   {% if parent %}{{ parent }} / {% endif %}{{ product.category }}
+                               {% with parent = offer.product.category.parent %}
+                                   {% if parent %}{{ parent }} / {% endif %}{{ offer.product.category }}
                                {% endwith %}
                            </div>
-                           <div class="Card-hover"><a class="Card-btn" href="#"><img src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg"/></a>
+                           <div class="Card-hover">
+                               <a class="Card-btn" href="{{ url('cart:cart_add', offer.id) }}"><img src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg"/></a>
                            </div>
                        </div>
                    </div>
