@@ -122,25 +122,25 @@ def log_and_notify_error(error_message, user_id, file_name, total_products, succ
     - failed_imports: количество неудачных импортов
     """
     try:
-        import_log = ImportLog.objects.create(file_name=file_name, status="Completed with error")
+        import_log = ImportLog.objects.create(file_name=file_name, status="Завершён с ошибкой")
         import_log.error_details = error_message
         import_log.save()
 
         user = User.objects.get(id=user_id)
 
         send_mail(
-            "Error in import",
-            f"Error occurred during import of file {file_name}.\nError: {error_message}\n"
-            f"Uploaded by: {user.username} ({user.email}).\n"
-            f"Total products: {total_products}\n"
-            f"Successful imports: {successful_imports}\n"
-            f"Failed imports: {failed_imports}",
+            "Ошибка при импорте",
+            f"Возникла ошибка во время импорта файла {file_name}.\nОшибка: {error_message}\n"
+            f"Загружено пользователем: {user.username} ({user.email}).\n"
+            f"Всего товаров: {total_products}\n"
+            f"Успешные импорты: {successful_imports}\n"
+            f"Неудачные импорты: {failed_imports}",
             settings.DEFAULT_FROM_EMAIL,
             [settings.DEFAULT_FROM_EMAIL],
             fail_silently=False,
         )
     except Exception as e:
-        print(f"Error logging and notifying: {str(e)}")
+        print(f"Ошибка при записи лога и уведомлении: {str(e)}")
 
 
 def log_successful_import(file_name):
@@ -150,7 +150,7 @@ def log_successful_import(file_name):
     Параметры:
     - file_name: имя файла импорта
     """
-    ImportLog.objects.create(file_name=file_name, status="Completed")
+    ImportLog.objects.create(file_name=file_name, status="Выполнен")
 
 
 def create_or_update_tag(name):
@@ -179,14 +179,14 @@ def notify_admin_about_import_success(user_id, file_name, total_products, succes
     """
     user = User.objects.get(id=user_id)
     message = (
-        f"Import of file {file_name} was successful.\n"
-        f"Uploaded by: {user.username} ({user.email}).\n"
-        f"Total products: {total_products}\n"
-        f"Successful imports: {successful_imports}\n"
-        f"Failed imports: {failed_imports}"
+        f"Импорт файла {file_name} успешно завершен.\n"
+        f"Загружено пользователем: {user.username} ({user.email}).\n"
+        f"Всего товаров: {total_products}\n"
+        f"Успешных импортов: {successful_imports}\n"
+        f"Неудачных импортов: {failed_imports}"
     )
     send_mail(
-        "Import completed successfully",
+        "Импорт успешно завершен",
         message,
         settings.DEFAULT_FROM_EMAIL,
         [settings.DEFAULT_FROM_EMAIL],
@@ -194,7 +194,7 @@ def notify_admin_about_import_success(user_id, file_name, total_products, succes
     )
 
 
-def process_import_common(uploaded_file, user, import_log_instance):
+def process_import_common(uploaded_file, user_id, import_log_instance):
     """
     Общий процесс импорта.
 
@@ -213,7 +213,13 @@ def process_import_common(uploaded_file, user, import_log_instance):
         successful_imports = 0
         failed_imports = 0
 
+        import_log_instance.status = "В процессе выполнения"
+        import_log_instance.save()
+
         for row in csv_rows:
+            product_data = extract_data_from_row(row)
+            if product_data is None:
+                continue
             try:
                 (
                     name,
@@ -224,7 +230,7 @@ def process_import_common(uploaded_file, user, import_log_instance):
                     tags,
                     price,
                     remains,
-                ) = extract_data_from_row(row, import_log_instance)
+                ) = extract_data_from_row(row)
                 main_category, _ = create_or_update_category(main_category_name)
                 create_or_update_category(subcategory_name, parent_name=main_category_name)
                 tag_objects = [create_or_update_tag(tag) for tag in tags]
@@ -233,30 +239,29 @@ def process_import_common(uploaded_file, user, import_log_instance):
                     name, main_category_name, subcategory_name, description, details, tag_objects, import_log_instance
                 )
 
-                shop = get_user_shop(user.id)
+                shop = get_user_shop(user_id)
                 create_or_update_offer(shop, product, price, remains)
 
                 total_products += 1
                 successful_imports += 1
 
             except Exception as e:
-                log_and_notify_error(str(e), user.id, file_name, total_products, successful_imports, failed_imports)
+                log_and_notify_error(str(e), user_id, file_name, total_products, successful_imports, failed_imports)
                 failed_imports += 1
 
-        # Update ImportLog instance with import status and counts
-        import_log_instance.status = "Completed"  # You may want to set a different status based on your criteria
-        import_log_instance.file_name = file_name  # Set the file name
+        import_log_instance.status = "Выполнен"
+        import_log_instance.file_name = file_name
         import_log_instance.total_products = total_products
         import_log_instance.successful_imports = successful_imports
         import_log_instance.failed_imports = failed_imports
         import_log_instance.save()
 
-        notify_admin_about_import_success(user.id, file_name, total_products, successful_imports, failed_imports)
+        notify_admin_about_import_success(user_id, file_name, total_products, successful_imports, failed_imports)
 
     except IntegrityError as e:
         log_and_notify_error(
-            f"Integrity error during import: {str(e)}",
-            user.id,
+            f"Ошибка целостности данных при импорте: {str(e)}",
+            user_id,
             file_name,
             total_products,
             successful_imports,
@@ -265,8 +270,8 @@ def process_import_common(uploaded_file, user, import_log_instance):
 
     except Exception as e:
         log_and_notify_error(
-            f"Unexpected error during import: {str(e)}",
-            user.id,
+            f"Неожиданная ошибка во время импорта: {str(e)}",
+            user_id,
             file_name,
             total_products,
             successful_imports,
@@ -274,7 +279,7 @@ def process_import_common(uploaded_file, user, import_log_instance):
         )
 
 
-def extract_data_from_row(row, my_import_log_instance):
+def extract_data_from_row(row):
     """
     Извлекает данные из строки CSV.
 
@@ -284,6 +289,11 @@ def extract_data_from_row(row, my_import_log_instance):
 
     Возвращает кортеж с данными о продукте.
     """
+    # Check if the row is the header
+    if row[0].lower() == "name":
+        # Skip processing the header row
+        return None
+
     name = row[0]
     main_category_name = row[1]
     subcategory_name = row[2]

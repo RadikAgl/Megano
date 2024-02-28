@@ -4,35 +4,33 @@
     <div>
         <h2>Детали импорта</h2>
 
-       {% if import_log %}
-    <table>
-        <thead>
-            <tr>
-                <th>ID импорта</th>
-                <th>Имя файла</th>
-                <th>Статус</th>
-                <th>Временная метка</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ import_log.id }}</td>
-                <td>{{ import_log.file_name }}</td>
-                <td>{{ import_log.status }}</td>
-                <td>{{ import_log.timestamp }}</td>
-            </tr>
-        </tbody>
-    </table>
-{% else %}
-    <p>Нет данных об импорте.</p>
-{% endif %}
-        {% if import_log.error_details %}
-            <p style="color: red;">Детали ошибки: {{ import_log.error_details }}</p>
+        {% if import_log %}
+            <table>
+                <thead>
+                <tr>
+                    <th>ID импорта</th>
+                    <th>Имя файла</th>
+                    <th>Статус</th>
+                    <th>Временная метка</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ import_log.id }}</td>
+                    <td>{{ import_log.file_name }}</td>
+                    <td>{{ import_log.status }}</td>
+                    <td>{{ import_log.timestamp }}</td>
+                </tr>
+                </tbody>
+            </table>
+        {% else %}
+            <p>Нет данных об импорте.</p>
         {% endif %}
 
         <h3>Импортированные товары</h3>
+        {% set has_imported_products = imported_products is defined and imported_products %}
         {% if imported_products %}
+            <h3>Импортированные товары</h3>
             <table>
                 <thead>
                 <tr>
@@ -53,30 +51,27 @@
             <p>Нет импортированных товаров.</p>
         {% endif %}
 
-       {% if imported_products %}
-    <h3>Итоги импорта</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Всего товаров</th>
-                <th>Успешные импорты</th>
-                <th>Неудачные импорты</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ imported_products|length }}</td>
-                <td>{{ imported_products|selectattr('complete', 'eq', True)|list|length }}</td>
-                <td>{{ imported_products|list|length - imported_products|selectattr('success', 'eq', True)|list|length }}</td>
-
-            </tr>
-        </tbody>
-    </table>
-{% else %}
-    <p>Нет импортированных товаров.</p>
-{% endif %}
-
+        <h3>Итоги импорта</h3>
+        {% if has_imported_products %}
+            <table>
+                <thead>
+                <tr>
+                    <th>Всего товаров</th>
+                    <th>Успешные импорты</th>
+                    <th>Неудачные импорты</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ imported_products|list|length }}</td>
+                    <td>{{ imported_products|selectattr('Выполнен', 'eq', True)|list|length }}</td>
+                    <td>{{ imported_products|selectattr('Завершён с ошибкой', 'eq', False)|list|length }}</td>
+                </tr>
+                </tbody>
+            </table>
+        {% else %}
+            <p>Нет импортированных товаров.</p>
+        {% endif %}
 
         <a href="{{ url('importer:import-page') }}">Назад к списку импортов</a>
     </div>

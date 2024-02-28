@@ -1,6 +1,5 @@
+from django.contrib.auth import get_user_model
 from django.db import models
-
-from accounts.models import User
 
 
 class ImportLog(models.Model):
@@ -13,7 +12,8 @@ class ImportLog(models.Model):
         ("Выполнен", "Выполнен"),
         ("Завершён с ошибкой", "Завершён с ошибкой"),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="imports", verbose_name="user")
     file_name = models.CharField(max_length=255, verbose_name="Имя файла импорта")
     status = models.CharField(max_length=25, choices=STATUS_CHOICES, verbose_name="Статус")
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Время начала импорта")

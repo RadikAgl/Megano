@@ -1,16 +1,21 @@
 import logging
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.staticfiles import finders
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView
 
 from .common_utils import process_import_common
 from .models import ImportLog
 
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
-class ImportPageView(TemplateView):
+
+class ImportPageView(LoginRequiredMixin, TemplateView):
     """
     Представление для отображения страницы импорта.
 
@@ -28,7 +33,8 @@ class ImportPageView(TemplateView):
         return context
 
 
-class StartImportView(View):
+@method_decorator(login_required, name="dispatch")
+class StartImportView(LoginRequiredMixin, View):
     """
     Представление для начала процесса импорта.
 
@@ -38,6 +44,7 @@ class StartImportView(View):
 
     template_name = "importer/start-import.jinja2"
     success_template_name = "importer/start-import.jinja2"
+    error_template_name = "importer/start-import.jinja2"
 
     def get(self, request, *args, **kwargs):
         """
@@ -51,24 +58,36 @@ class StartImportView(View):
 
         Параметры:
         - importFile: файл для импорта
-        - subcategoryName: имя подкатегории
 
         Если пользователь аутентифицирован, создается экземпляр ImportLog,
         и вызывается процесс импорта через common_utils.process_import_common.
-        В случае успеха, возвращается успешный шаблон, иначе возвращается сообщение о невалидности пользователя.
+        В случае успеха, возвращается успешный шаблон, иначе возвращается шаблон с ошибкой.
         """
-        file_name = request.FILES["importFile"]
-        user = request.user if request.user.is_authenticated else None
+        try:
+            file_name = request.FILES.get("importFile")
+            user = request.user  # Ensure you are getting the user from the request
 
-        if user:
-            import_log_instance = ImportLog.objects.create(user=user)
-            process_import_common(file_name, user, import_log_instance)
-            return render(request, self.success_template_name)
-        else:
-            return HttpResponse("Пользователь не аутентифицирован")
+            # Ensure the user is authenticated before creating the ImportLog
+            if user.is_authenticated:
+                import_log_instance = ImportLog.objects.create(user=user, file_name=file_name.name)
+                process_import_common(file_name, user.id, import_log_instance)
+
+                return render(
+                    request,
+                    self.success_template_name,
+                    {"success_message": "Процесс импорта успешно запущен.", "import_complete": True},
+                )
+            else:
+                # Redirect to the login page if the user is not authenticated
+                return redirect(reverse_lazy("account_login"))
+        except Exception as e:
+            error_message = str(e)
+            return render(
+                request, self.error_template_name, {"error_message": error_message, "import_complete": False}
+            )
 
 
-class ImportDetailsView(TemplateView):
+class ImportDetailsView(LoginRequiredMixin, TemplateView):
     """
     Представление для отображения деталей импорта.
 
@@ -96,11 +115,12 @@ class ImportDetailsView(TemplateView):
         import_log = get_object_or_404(ImportLog, id=import_id)
         imported_products = import_log.products.all()
 
-        context = {"import_log": import_log, "imported_products": imported_products}
+        context = {"import_log": import_log, "imported_products": list(imported_products)}
+
         return self.render_to_response(context)
 
 
-class DownloadCSVTemplateView(View):
+class DownloadCSVTemplateView(LoginRequiredMixin, View):
     """
     Представление для скачивания шаблона CSV-файла.
 
@@ -127,5 +147,5 @@ class DownloadCSVTemplateView(View):
                 response["Content-Disposition"] = 'attachment; filename="Sheet1.csv"'
             return response
         except Exception as e:
-            logging.error(f"Error opening file: {str(e)}")
+            logging.error(f"Ошибка при открытии файла: {str(e)}")
             return HttpResponse("Ошибка при открытии файла.")

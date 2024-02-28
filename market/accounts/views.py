@@ -16,9 +16,10 @@ from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePassw
 
 class ProfileView(LoginRequiredMixin, FormView):
     """вью для изменения пароля и email"""
-    template_name = 'accounts/profile.jinja2'
+
+    template_name = "accounts/profile.jinja2"
     form_class = ProfilePasswordForm
-    success_url = reverse_lazy('user:profile')
+    success_url = reverse_lazy("user:profile")
 
     def form_valid(self, form):
         user = form.save()
@@ -32,12 +33,12 @@ class ProfileView(LoginRequiredMixin, FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
+        kwargs["user"] = self.request.user
         return kwargs
 
 
 class AcountView(LoginRequiredMixin, TemplateView):
-    """вюь для страницы пользователя """
+    """вюь для страницы пользователя"""
 
     template_name = "accounts/account.jinja2"
 

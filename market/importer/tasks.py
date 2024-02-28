@@ -1,10 +1,7 @@
-from celery import shared_task
-
 from .common_utils import process_import_common
 
 
-@shared_task
-def process_import(file_name, user, import_log_instance):
+def process_import(file_name, user_id, import_log_instance):
     """
     Задача для обработки импорта продукции из CSV-файла.
 
@@ -18,4 +15,4 @@ def process_import(file_name, user, import_log_instance):
     Возвращает:
     - None
     """
-    process_import_common(file_name, user, import_log_instance)
+    process_import_common(file_name, user_id, import_log_instance)
