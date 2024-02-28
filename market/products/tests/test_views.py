@@ -39,10 +39,9 @@ class ProductDetailViewTestCase(TestCase):
          - Имя продукта содержится в ответе
         """
 
-        product = Product.objects.get(pk=1)
         response = self.client.get(reverse("products:index"))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "banners")
         self.assertContains(response, "products")
-        self.assertContains(response, product.name)
+        self.assertContains(response, self.product.name)
