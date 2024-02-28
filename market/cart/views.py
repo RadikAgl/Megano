@@ -1,11 +1,12 @@
 """ Модуль с представлениями приложения cart """
-
-from django.http import HttpResponseRedirect
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, get_object_or_404
+from django.views.decorators.http import require_POST, require_GET
 from django.views.generic import TemplateView
 
-from cart.cart import Cart
-from cart.forms import CartAddProductForm
+from cart.cart import CartInstance
+from cart.forms import CartAddProductForm, CartAddProductModelForm
+from cart.models import ProductInCart
 from shops.models import Offer
 
 
@@ -16,37 +17,55 @@ class CartView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        cart = Cart(self.request)
+        cart = CartInstance(self.request)
         context["cart"] = cart
-        for item in cart:
-            item["update_quantity_form"] = CartAddProductForm(initial={"quantity": item["quantity"], "update": False})
+        if self.request.user.is_authenticated:
+            context["forms"] = [CartAddProductModelForm(instance=item) for item in cart.qs]
+        else:
+            for item in cart:
+                item["update_quantity_form"] = CartAddProductForm(
+                    initial={"quantity": item["quantity"], "update": False}
+                )
         return context
 
 
-def change_quantity_in_cart(request, pk: int) -> HttpResponseRedirect:
-    """Изменение количества товаров в корзине"""
-    cart = Cart(request)
+@require_POST
+def cart_change_quantity(request, pk):
+    cart = CartInstance(request)
     offer = get_object_or_404(Offer, id=pk)
-    form = CartAddProductForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        cart.add(offer=offer, quantity=cd["quantity"], override_quantity=True)
-
+    if request.user.is_authenticated:
+        product_in_cart = get_object_or_404(ProductInCart, offer=offer)
+        form = CartAddProductModelForm(request.POST, instance=product_in_cart)
+        form.save()
+    else:
+        form = CartAddProductForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            cart.add(offer=offer, quantity=cd["quantity"], update_quantity=cd["update"])
     return redirect("cart:cart")
 
 
-def cart_add(request, pk: int) -> HttpResponseRedirect:
-    """Добавление товара в корзину"""
-    cart = Cart(request)
+@require_POST
+def cart_add(request, pk):
+    """Добавление товара в корзину из карточки товара"""
+    cart = CartInstance(request)
     offer = get_object_or_404(Offer, id=pk)
-    cart.add(offer=offer)
-
+    user = request.user
+    if user.is_authenticated:
+        try:
+            product_in_cart = ProductInCart.objects.filter(cart=cart.cart).get(offer=offer)
+            product_in_cart.quantity += 1
+            product_in_cart.save()
+        except ObjectDoesNotExist:
+            ProductInCart.objects.create(cart=cart.cart, offer=offer, quantity=1)
+    else:
+        cart.add(offer, quantity=1, update_quantity=True)
     return redirect(request.META.get("HTTP_REFERER"))
 
 
-def cart_remove(request, pk: int) -> HttpResponseRedirect:
-    """Удаление товара из корзины"""
-    cart = Cart(request)
-    offer = get_object_or_404(Offer, id=pk)
-    cart.remove(offer)
+@require_GET
+def cart_remove(request, pk):
+    cart = CartInstance(request)
+    product = get_object_or_404(Offer, id=pk)
+    cart.remove(product)
     return redirect("cart:cart")

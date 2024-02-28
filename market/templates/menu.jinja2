@@ -20,12 +20,15 @@
                         <div class="dropdown">
                             <button class="dropbtn"><img class="CartBlock-img" src="{{ static('img/icons/loon-icon.svg') }}" alt="loon-icon.svg" /></button>
                             <div class="dropdown-content">
-                                <a class="dropdown-content-a" href="#">Личный кабинет</a>
+                                <a class="dropdown-content-a" href="{{ url('accounts:profile') }}">Личный кабинет</a>
                                 <a class="dropdown-content-a" href="#">Административный раздел</a>
-                                <a class="dropdown-content-a" href="#">Выход</a>
+                                <a class="dropdown-content-a" href="{{ url('accounts:logout') }}">Выход</a>
                             </div>
                         </div>
-                        <a class="CartBlock-block" href="{{ url('cart:cart') }}"><img class="CartBlock-img" src="{{ static('img/icons/cart.svg') }}" alt="cart.svg" /><span class="CartBlock-amount">0</span></a>
+                        <a class="CartBlock-block" href="{{ url('cart:cart') }}">
+                            <img class="CartBlock-img" src="{{ static('img/icons/cart.svg') }}" alt="cart.svg" />
+                            <span class="CartBlock-amount">{{ cart_amount }}</span>
+                        </a>
                         <div class="CartBlock-block">
 							<span class="CartBlock-price">{{ cart_cost }}$</span>
                         </div>
