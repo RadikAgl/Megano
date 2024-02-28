@@ -8,7 +8,7 @@ from .views import RegistrationView, MyLoginView, PasswordReset, UpdatePasswordV
 app_name = "accounts"
 """url пути"""
 urlpatterns = [
-    path("profile/", ProfileView.as_view(), name='profile'),
+    path("profile/", ProfileView.as_view(), name="profile"),
     path("register/", RegistrationView.as_view(), name="register"),
     path("login/", MyLoginView.as_view(), name="login"),
     path("reset_password/", PasswordReset.as_view(), name="password_reset"),
