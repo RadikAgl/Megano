@@ -84,7 +84,17 @@
                             <a class="Tabs-link_ACTIVE Tabs-link" href="#description"><span>Описание</span></a>
                             <a class="Tabs-link_ACTIVE Tabs-link" href="#sellers"><span>Продавцы</span></a>
                             <a class="Tabs-link" href="#addit"><span>Характеристика</span></a>
-                            <a class="Tabs-link" href="#reviews"><span>Отзывы ({{ product.reviews_count }})</span></a>
+                            <a class="Tabs-link" href="#reviews"><span>Отзывы: ({{ product.reviews_count }})
+                            {% if reviews|count in (11, 12, 13, 14) %}
+                              отзывов
+                            {% elif reviews|count % 10 == 1 %}
+                              отзыв
+                            {% elif reviews|count % 10 in (2, 3, 4) %}
+                              отзыва
+                            {% else %}
+                              отзывов
+                            {% endif %}
+                            </span></a>
                         </div>
 
                         <div class="Tabs-wrap">
@@ -167,41 +177,90 @@
                             </div>
 
                             <div class="Tabs-block" id="reviews">
-                                <header class="Section-header">
-                                    <h3 class="Section-title">{{ product.reviews_count }} отзывов</h3>
-                                </header>
-                                <div class="Comments">
-                                    {% for review in product.reviews %}
-                                        <div class="Comment">
-                                            <div class="Comment-column Comment-column_pict">
-                                                <div class="Comment-avatar"></div>
+                                {% if reviews %}
+                                    <header class="Section-header">
+                                        <h3 class="Section-title">{{ product.reviews_count }}
+                                            {% if reviews|count in (11, 12, 13, 14) %}
+                                                отзывов
+                                            {% elif reviews|count % 10 == 1 %}
+                                                отзыв
+                                            {% elif reviews|count % 10 in (2, 3, 4) %}
+                                                отзыва
+                                            {% else %}
+                                                отзывов
+                                            {% endif %}
+                                        </h3>
+                                    </header>
+                                    <div class="Comments">
+                                        {% for review in page_obj %}
+                                            <div class="Comment">
+                                                <div class="Comment-column">
+                                                    <header class="Comment-header">
+                                                        <div>
+                                                            <strong class="Comment-title">{{ review.user.username }}</strong>
+                                                            <span class="Comment-date">{{ review.created_at.strftime('%H:%M %Y-%m-%d') }}</span>
+                                                        </div>
+                                                    </header>
+                                                    <div class="Comment-content">{{ review.text }}</div>
+                                                </div>
                                             </div>
-                                            <div class="Comment-column">
-                                                <header class="Comment-header">
-                                                    <div>
-                                                        <strong class="Comment-title">{{ review.author }}</strong>
-                                                        <span class="Comment-date">{{ review.date }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="pagination">
+                                        <ul class="pagination__list">
+                                            <div>Страницы:</div>
+                                            {% for p in paginator.page_range %}
+                                                {% if page_obj.number == p %}
+                                                    <li class="pagination__item">{{ p }}</li>
+                                                {% else %}
+                                                    <li class="pagination__item">
+                                                        <a href="?page={{ p }}">{{ p }}</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                {% if request.user.is_authenticated %}
+                                    <header class="Section-header Section-header_product">
+                                        <h3 class="Section-title">Написать отзыв</h3>
+                                    </header>
+                                    <div class="Tabs-addComment">
+                                        <form class="form" method="post"
+                                              action="{{ url('product:add_review') }}">{% csrf_token %}
+                                            <div class="form-group">
+                                                <textarea class="form-textarea" name="text" id="review"
+                                                          placeholder="Текст отзыва"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="row-block">
+                                                        <input class="form-input" id="name" name="name" type="text"
+                                                               placeholder="Name" value="{{ request.user.username }}"
+                                                               readonly="readonly">
                                                     </div>
-                                                </header>
-                                                <div class="Comment-content">{{ review.content }}</div>
+                                                    <div class="row-block">
+                                                        <input class="form-input" id="email" name="email" type="text"
+                                                               placeholder="Email" value="{{ request.user.email }}"
+                                                               readonly="readonly">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <header class="Section-header Section-header_product">
-                                    <h3 class="Section-title">Добавить отзыв</h3>
-                                </header>
-                                <div class="Tabs-addComment">
-                                    <form class="form" action="#" method="post">
-                                        <div class="form-group">
-                                            <textarea class="form-textarea" name="review" id="review"
-                                                      placeholder="Отзыв"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn_muted" type="submit">Отправить отзыв</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                            <input type="hidden" name="product" value="{{ product.id }}">
+                                            <div class="form-group">
+                                                <button class="btn btn_primary" type="submit" style="margin-top: 25px;">
+                                                    Добавить отзыв
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                {% else %}
+                                    <h4>Для того чтобы оставить комментарий вы должны
+                                        <a href="{{ url('login') }}?next={{ url('product:product', product.id) }}">Войти</a>
+                                        или
+                                        <a href="{{ url('register') }}?next={{ url('product:product', product.id ) }}">Зарегистрироваться</a>
+                                    </h4>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

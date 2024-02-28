@@ -1,7 +1,8 @@
-from django.db.models import QuerySet
-from django.core.cache import cache
-from products.models import Product, Banner
 from django.conf import settings
+from django.core.cache import cache
+from django.db.models import QuerySet
+
+from products.models import Product, Banner
 
 
 class MainPageService:

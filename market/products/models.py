@@ -2,6 +2,8 @@
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
+from django.core import validators
 
 from importer.models import ImportLog
 
@@ -70,6 +72,30 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class Review(models.Model):
+    """Модель отзыва на товар"""
+
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="reviews", verbose_name="user")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews", verbose_name="product")
+    text = models.TextField(
+        verbose_name="text",
+        validators=[
+            validators.MinLengthValidator(10),
+            validators.MaxLengthValidator(1000),
+        ],
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
+    rating = models.IntegerField()
+
+    class Meta:
+        verbose_name = "отзыв"
+        verbose_name_plural = "отзывы"
+        unique_together = ("user", "product")
+
+    def __str__(self):
+        return f"Review for {self.product} by {self.user} from {self.created_at}"
 
 
 class ProductImage(models.Model):
