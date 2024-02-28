@@ -3,6 +3,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from importer.models import ImportLog
+
 
 class Banner(models.Model):
     """Баннер"""
@@ -61,6 +63,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
     details = models.JSONField(default=dict, blank=True, verbose_name=_("детали"))
     tags = models.ManyToManyField(Tag, related_name="product")
+    import_log = models.ForeignKey(ImportLog, related_name="products", on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = _("продукт")

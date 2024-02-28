@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "products",
     "shops",
     "accounts",
+    "importer",
 ]
 
 MIDDLEWARE = [
@@ -146,12 +147,13 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 """Gmail reset password settings"""
-EMAIL_HOST = os.getenv("GMAIL_HOST")
+EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = "kudakaevnikita@yandex.ru"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("GMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
 BANNERS_EXPIRATION_TIME = 600
+DEFAULT_FROM_EMAIL = "joseph.fareez@yandex.ru"
