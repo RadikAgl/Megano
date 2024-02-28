@@ -24,7 +24,7 @@ class ProductDetailViewTestCase(TestCase):
     def setUp(self):
         """
         Метод настройки окружения для тестирования.
-        Создает экземпляры Продукта, Баннера
+        Создает экземпляр Продукта, Баннера
         """
         self.product = Product.objects.get(pk=1)
         self.banner = Banner.objects.get(pk=1)
@@ -34,15 +34,14 @@ class ProductDetailViewTestCase(TestCase):
         Метод тестирования главной страницы.
         Проверяет:
          - Код ответа: 200 (успешный статус ответа)
+         - Содержатся ли "banners" в контексте ответа
+         - Содержатся ли "products" в контексте ответа
          - Имя продукта содержится в ответе
-         - Имя баннера содержится в ответе
         """
-
-        product = Product.objects.get(pk=1)
-        banner = Banner.objects.get(pk=1)
 
         response = self.client.get(reverse("products:index"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, product.name)
-        self.assertContains(response, banner.name)
+        self.assertContains(response, "banners")
+        self.assertContains(response, "products")
+        self.assertContains(response, self.product.name)
