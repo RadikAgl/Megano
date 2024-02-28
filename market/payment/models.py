@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Order(models.Model):
-    """модель заказа"""
+    """Модель заказа"""
 
     name = models.CharField(null=False, blank=False, max_length=20)
     date_created = models.DateTimeField(auto_now_add=True)
