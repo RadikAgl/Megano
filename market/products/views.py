@@ -1,15 +1,16 @@
 """ Представления приложения products """
 
+from django.core.handlers.wsgi import WSGIRequest
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, TemplateView
+
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
-from django.shortcuts import redirect
-from django.core.handlers.wsgi import WSGIRequest
-from .models import Product, ProductImage
 from .forms import ReviewsForm
+from .models import Product, ProductImage
 
 
 class MainPageView(TemplateView):
