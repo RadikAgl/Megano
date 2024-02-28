@@ -16,6 +16,7 @@ from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePassw
 
 class ProfileView(LoginRequiredMixin, FormView):
     """вью для изменения пароля и email"""
+
     template_name = 'accounts/profile.jinja2'
     form_class = ProfilePasswordForm
     success_url = reverse_lazy('user:profile')
@@ -76,17 +77,15 @@ class MyLoginView(LoginView):
         if user:
             login(self.request, user)
             return super().form_valid(form)
-        else:
-            messages.error(self.request, "нет пользователя с таким Email или неверный пароль")
-            return super().form_invalid(form)
+
+        messages.error(self.request, "нет пользователя с таким Email или неверный пароль")
+        return super().form_invalid(form)
 
 
 class PasswordReset(LoginRequiredMixin, PasswordResetView):
     """
     Представление для сброса пароля. Отправляет электронное письмо с инструкциями
     по сбросу пароля на указанный электронный адрес.
-
-
 
     success_url: str
         URL-адрес, на который перенаправляется пользователь после успешного
@@ -125,7 +124,6 @@ class UpdatePasswordView(PasswordResetConfirmView):
     """
     Представление для обновления пароля. Позволяет пользователю изменить свой пароль
     после успешного запроса на сброс.
-
 
     success_url: str
         URL-адрес, на который перенаправляется пользователь после успешного

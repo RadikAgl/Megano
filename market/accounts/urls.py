@@ -5,8 +5,8 @@ from django.contrib.auth.views import (
 )
 from .views import RegistrationView, MyLoginView, PasswordReset, UpdatePasswordView, AcountView, ProfileView
 
-app_name = "accounts"
-"""url пути"""
+app_name = "accounts"  # pylint: disable=invalid-name
+
 urlpatterns = [
     path("profile/", ProfileView.as_view(), name='profile'),
     path("register/", RegistrationView.as_view(), name="register"),

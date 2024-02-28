@@ -5,7 +5,7 @@ from products.services.product_services import invalidate_product_details_cache
 
 
 @receiver(post_save, sender=Product)
-def invalidate_product_cache(sender, instance, **kwargs):
+def invalidate_product_cache(sender, instance, **kwargs):  # pylint: disable=unused-argument
     """
     Функция-получатель сигнала для сброса кэша при сохранении экземпляра Product.
     """
