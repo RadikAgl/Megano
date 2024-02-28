@@ -1,10 +1,9 @@
+"""Django-модели приложения shops"""
 import os
-
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 from market.config.settings import MEDIA_ROOT
 
 
