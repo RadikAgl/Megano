@@ -45,7 +45,7 @@ def cart_change_quantity(request, pk):
     return redirect("cart:cart")
 
 
-@require_POST
+@require_GET
 def cart_add(request, pk):
     """Добавление товара в корзину из карточки товара"""
     cart = CartInstance(request)
