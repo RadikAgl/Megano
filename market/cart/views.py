@@ -63,9 +63,9 @@ def cart_add(request, pk):
     return redirect(request.META.get("HTTP_REFERER"))
 
 
-@require_GET
+@require_POST
 def cart_remove(request, pk):
     cart = CartInstance(request)
-    product = get_object_or_404(Offer, id=pk)
-    cart.remove(product)
+    offer = get_object_or_404(Offer, id=pk)
+    cart.remove(offer)
     return redirect("cart:cart")

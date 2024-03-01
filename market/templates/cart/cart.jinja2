@@ -41,7 +41,7 @@
                                 <div class="Cart-block Cart-block_amount">
                                     <div class="Cart-amount">
                                         <div class="Amount">
-                                            {% csrf_token %}
+
                                             <button class="Amount-remove" type="submit">
                                             </button>
                                             {{ form.quantity }}
@@ -50,12 +50,16 @@
                                             <input type="submit" value="&#8634;" name="product_quantity">
                                             <input type="hidden" class="product_id" id="product_id" name="product_id"
                                                    value="{{ offer.id }}">
+
                                         </div>
                                     </div>
                                 </div>
-                                <div class="Cart-block Cart-block_delete"><a class="Cart-delete"
-                                                                             href="{{ url('cart:cart-remove', offer.id) }}"><img
-                                        src="{{ static('img/icons/card/delete.svg') }}" alt="Delete"/></a>
+                                <div class="Cart-block Cart-block_delete">
+                                    <div class="Cart-block_delete_inner">
+                                        <input type="image" class="Cart-delete" formaction="{{ url("cart:cart-remove", offer.id) }}"
+                                                src = "{{ static('img/icons/card/delete.svg') }}"
+                                               alt = "Remove">
+                                    </div>
                                 </div>
                             </div>
                         </div>
