@@ -31,9 +31,10 @@
                                    {% endwith %}
                                </div>
                                <div class="Card-hover">
-                                   <a class="Card-btn" href="{{ url('cart:cart-add', product.offer_set.order_by("price").first().id) }}">
-                                    <img src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg"/>
-                                   </a>
+                                   <form method="post" action="{{ url('cart:cart-add', product.offer_set.order_by("price").first().id) }}">
+                                       {% csrf_token %}
+                                       <input class="Card-btn" type="image" src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg">
+                                   </form>
                                </div>
                            </div>
                        </div>

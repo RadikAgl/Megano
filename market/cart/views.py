@@ -1,7 +1,7 @@
 """ Модуль с представлениями приложения cart """
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, get_object_or_404
-from django.views.decorators.http import require_POST, require_GET
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
 from cart.cart import CartInstance
@@ -45,7 +45,7 @@ def cart_change_quantity(request, pk):
     return redirect("cart:cart")
 
 
-@require_GET
+@require_POST
 def cart_add(request, pk):
     """Добавление товара в корзину из карточки товара"""
     cart = CartInstance(request)
