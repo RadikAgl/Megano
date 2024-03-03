@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "products",
     "shops",
     "accounts",
-    "importer",
+    "imports",
 ]
 
 MIDDLEWARE = [
@@ -92,6 +92,7 @@ TEMPLATES = [
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 FIXTURE_DIRS = ("fixtures",)
+DOCS_DIR = ("docs",)
 
 WSGI_APPLICATION = "config.wsgi.application"
 

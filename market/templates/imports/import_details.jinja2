@@ -30,7 +30,7 @@
         <h3>Импортированные товары</h3>
         {% set has_imported_products = imported_products is defined and imported_products %}
         {% if imported_products %}
-            <h3>Импортированные товары</h3>
+
             <table>
                 <thead>
                 <tr>
@@ -41,8 +41,8 @@
                 <tbody>
                 {% for product in imported_products %}
                     <tr>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.category.name }}</td>
+                        <td>{{ product.product.name }}</td>
+                        <td>{{ product.product.category.name }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -63,9 +63,9 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>{{ imported_products|list|length }}</td>
-                    <td>{{ imported_products|selectattr('Выполнен', 'eq', True)|list|length }}</td>
-                    <td>{{ imported_products|selectattr('Завершён с ошибкой', 'eq', False)|list|length }}</td>
+                    <td>{{ imported_products|length }}</td>
+                    <td>{{ successful_imports_count }}</td>
+                    <td>{{ failed_imports_count }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -73,6 +73,7 @@
             <p>Нет импортированных товаров.</p>
         {% endif %}
 
-        <a href="{{ url('importer:import-page') }}">Назад к списку импортов</a>
+
+        <a href="{{ url('imports:import-page') }}">Назад к списку импортов</a>
     </div>
 {% endblock %}
