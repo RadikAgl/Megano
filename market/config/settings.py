@@ -15,6 +15,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 MEDIA_URL = "/uploads/"
 
+CART_SESSION_ID = "cart"
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     "products",
     "shops",
     "accounts",
+    "cart",
     "imports",
 ]
 
@@ -71,6 +74,7 @@ TEMPLATES = [
                 "cart_cost": "templatetags.globals.get_cart_cost",
             },
             "context_processors": [
+                "context_processors.cart_context.get_cart_cost",
                 "django.contrib.messages.context_processors.messages",
             ],
         },
@@ -150,7 +154,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 """Gmail reset password settings"""
-EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_HOST = os.getenv("GMAIL_HOST")
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True

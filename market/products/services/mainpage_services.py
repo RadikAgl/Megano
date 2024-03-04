@@ -10,7 +10,7 @@ class MainPageService:
 
     def get_products(self) -> QuerySet:
         """Самые продаваемые продукты"""
-        return Product.objects.all().prefetch_related("images")
+        return Product.objects.all().prefetch_related("offer_set", "images")
 
     def banners_cache(self) -> QuerySet:
         """

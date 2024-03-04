@@ -11,27 +11,35 @@
           </header>
           <div class="Cards">
               {% for product in products %}
-                <div class="Card">
-                    <a class="Card-picture" href="#">
-                        <img src="{{  product.images.first().image.url  }}" alt="card.jpg"/>
-                    </a>
-                   <div class="Card-content">
-                       <strong class="Card-title">
-                        <a href="#">{{ product }}</a>
-                       </strong>
-                       <div class="Card-description">
-                           <div class="Card-cost"><span class="Card-price">$0</span>
-                           </div>
-                           <div class="Card-category">
-                               {% with parent = product.category.parent %}
-                                   {% if parent %}{{ parent }} / {% endif %}{{ product.category }}
-                               {% endwith %}
-                           </div>
-                           <div class="Card-hover"><a class="Card-btn" href="#"><img src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg"/></a>
+                {% if product.offer_set.all() %}
+                    <div class="Card">
+                        <a class="Card-picture" href="{{ url('products:product-details', product.id) }}">
+                            <img src="{{  product.images.first().image.url  }}" alt="card.jpg"/>
+                        </a>
+                       <div class="Card-content">
+                           <strong class="Card-title">
+                            <a href="{{ url('products:product-details', product.id) }}">{{ product }}</a>
+                           </strong>
+                           <div class="Card-description">
+                               <div class="Card-cost">
+                                   <span class="Card-price">${{ product.offer_set.order_by("price")
+                                                                .first().price }}</span>
+                               </div>
+                               <div class="Card-category">
+                                   {% with parent = product.category.parent %}
+                                       {% if parent %}{{ parent }} / {% endif %}{{ product.category }}
+                                   {% endwith %}
+                               </div>
+                               <div class="Card-hover">
+                                   <form method="post" action="{{ url('cart:cart-add', product.offer_set.order_by("price").first().id) }}">
+                                       {% csrf_token %}
+                                       <input class="Card-btn" type="image" src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg">
+                                   </form>
+                               </div>
                            </div>
                        </div>
-                   </div>
-                </div>
+                    </div>
+                {% endif %}
               {% endfor %}
           </div>
         </div>
