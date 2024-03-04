@@ -34,6 +34,7 @@ class ViewHistory(models.Model):
 
     class Meta:
         verbose_name = "история просмотров"
+        verbose_name_plural = "истории просмотров"
 
     def __str__(self):
         return f"{self.user} - {self.product} - {self.view_date}"
