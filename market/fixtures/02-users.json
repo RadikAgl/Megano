@@ -3,20 +3,20 @@
     "model": "accounts.user",
     "pk": 1,
     "fields": {
-      "password": "pbkdf2_sha256$600000$UbaiKb2x62M9wqIOuyYtL9$huGQx5Mwq7+swCyJhZMI2NHcCHMfI0sJY1V32ZYx+h0=",
-      "last_login": "2024-02-27T21:07:25.072Z",
-      "is_superuser": true,
-      "first_name": "Joseph",
-      "last_name": "Fareez",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2024-02-10T12:24:03Z",
-      "username": "Joseph",
-      "email": "joseph.fareez@yandex.ru",
-      "groups": [],
-      "user_permissions": []
+        "password": "pbkdf2_sha256$600000$UbaiKb2x62M9wqIOuyYtL9$huGQx5Mwq7+swCyJhZMI2NHcCHMfI0sJY1V32ZYx+h0=",
+        "last_login": "2024-02-10T12:24:04Z",
+        "is_superuser": false,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-02-10T12:24:03Z",
+        "username": "",
+        "email": "user1@gmail.com",
+        "groups": [],
+        "user_permissions": []
     }
-  },
+},
 {
     "model": "accounts.user",
     "pk": 2,
