@@ -28,58 +28,14 @@ class ImportPageViewTest(TestCase):
         )
 
 
-class StartImportViewTest(TestCase):
-    """
-    Класс тестирования представления начала импорта.
-
-    Methods: setUp(): Подготовка данных перед выполнением тестов. test_get_start_import_view(): Тестирование
-    GET-запроса для начала импорта. test_post_start_import_view_authenticated_user(): Тестирование POST-запроса для
-    начала импорта (аутентифицированный пользователь).
-    """
-
-    def setUp(self):
-        self.user = User.objects.create_user(username="testuser", password="testpassword")
-
-    def test_get_start_import_view(self):
-        """
-        Тестирование GET-запроса для начала импорта.
-
-        Ожидается, что не аутентифицированный пользователь будет перенаправлен на страницу входа.
-        """
-        response = self.client.get(reverse("imports:start-import"))
-        # Update the assertion based on the actual behavior
-        self.assertRedirects(
-            response, reverse("accounts:login") + "?next=" + reverse("imports:start-import"), target_status_code=200
-        )
-
-    def test_post_start_import_view_authenticated_user(self):
-        """
-        Тестирование POST-запроса для начала импорта (аутентифицированный пользователь).
-
-        Ожидается успешный статус код.
-        """
-        self.client.force_login(self.user)
-        response = self.client.post(reverse("imports:start-import"))
-        self.assertEqual(response.status_code, 200)
-
-
 class ImportDetailsViewTest(TestCase):
     """
-    Класс тестирования представления подробностей об импорте.
-
-    Methods:
-        setUp(): Подготовка данных перед выполнением тестов.
-        test_import_details_view(): Тестирование GET-запроса для представления подробностей об импорте.
-        test_authenticated_user_access(): Тестирование доступа аутентифицированного пользователя.
-        test_context_data(): Тестирование контекстных данных представления.
-        test_import_counts(): Тестирование подсчета импортированных продуктов.
+    Тестовый класс для представления деталей импорта.
     """
 
     def setUp(self):
         """
-        Подготовка данных перед выполнением тестов.
-
-        Создает пользователя, лог импорта и категорию для использования в тестах.
+        Настройка данных для тестов.
         """
         self.user_email = f"testuser_{uuid.uuid4()}@example.com"
         self.user = User.objects.create_user(username="testuser", password="testpassword", email=self.user_email)
@@ -88,55 +44,66 @@ class ImportDetailsViewTest(TestCase):
 
     def test_import_details_view(self):
         """
-        Тестирование GET-запроса для представления подробностей об импорте.
-
-        Ожидается, что не аутентифицированный пользователь будет перенаправлен на страницу входа.
+        Тестирование GET-запроса для представления деталей импорта.
         """
-        response = self.client.get(reverse("imports:import-details", args=[self.import_log.id]))
+        response = self.client.get(reverse("imports:import-details"), follow=True)
         self.assertRedirects(
             response,
-            reverse("accounts:login") + "?next=" + reverse("imports:import-details", args=[self.import_log.id]),
+            reverse("accounts:login") + "?next=" + reverse("imports:import-details"),
             target_status_code=200,
         )
 
     def test_authenticated_user_access(self):
         """
-        Тестирование доступа аутентифицированного пользователя.
-
-        Ожидается, что аутентифицированный пользователь будет перенаправлен на страницу входа.
+        Тестирование доступа для аутентифицированного пользователя.
         """
+
+        # Аутентификация пользователя
         self.client.login(username="testuser", password="testpassword")
-        response = self.client.get(reverse("imports:import-details", args=[self.import_log.id]))
+
+        # Отправка GET-запроса для представления деталей импорта
+        response = self.client.get(reverse("imports:import-details"), follow=True)
+
+        # Проверка, что ответ перенаправляет на страницу входа
         self.assertRedirects(
             response,
-            reverse("accounts:login") + "?next=" + reverse("imports:import-details", args=[self.import_log.id]),
+            reverse("accounts:login") + "?next=" + reverse("imports:import-details"),
         )
 
-    def test_context_data(self):
+    def test_unauthenticated_user_access(self):
         """
-        Тестирование контекстных данных представления.
+        Тестирование доступа для неаутентифицированного пользователя.
+        """
 
-        Ожидается, что аутентифицированный пользователь будет перенаправлен на страницу входа.
-        """
-        self.client.login(username="testuser", password="testpassword")
-        response = self.client.get(reverse("imports:import-details", args=[self.import_log.id]))
+        # Отправка GET-запроса для представления деталей импорта
+        response = self.client.get(reverse("imports:import-details"), args=[self.import_log.id], follow=True)
+
+        # Проверка, что ответ перенаправляет на страницу входа
         self.assertRedirects(
             response,
-            reverse("accounts:login") + "?next=" + reverse("imports:import-details", args=[self.import_log.id]),
+            reverse("accounts:login") + "?next=" + reverse("imports:import-details"),
         )
 
     def test_import_counts(self):
         """
-        Тестирование подсчета импортированных продуктов.
-
-        Создает продукты, связывает их с логом импорта и проверяет корректность подсчета.
+        Тестирование импорта количества.
         """
+
+        # Создание некоторых продуктов
         some_product = Product.objects.create(name="Some Product", category=self.category)
         another_product = Product.objects.create(name="Another Product", category=self.category)
+
+        # Создание импорта продуктов для журнала импорта
         ImportLogProduct.objects.create(import_log=self.import_log, product=some_product)
         ImportLogProduct.objects.create(import_log=self.import_log, product=another_product)
+
+        # Аутентификация пользователя
         self.client.login(username="testuser", password="testpassword")
-        response = self.client.get(reverse("imports:import-details", args=[self.import_log.id]), follow=True)
+
+        # Отправка GET-запроса для представления деталей импорта
+        response = self.client.get(reverse("imports:import-details"), follow=True)
+
+        # Проверка, что код статуса ответа равен 200
         self.assertEqual(response.status_code, 200)
 
 

@@ -2,6 +2,12 @@
 
 {% block content %}
     <div>
+        <h2>Импорт начат</h2>
+        <p>Импорт товаров запущен. Подождите, пожалуйста...</p>
+        <div><a href="{{ url('imports:import-page') }}">Вернуться на страницу импорта</a></div>
+    </div>
+
+    <div>
         <h2>Детали импорта</h2>
 
         {% if import_log %}
@@ -73,7 +79,6 @@
             <p>Нет импортированных товаров.</p>
         {% endif %}
 
-
-        <a href="{{ url('imports:import-page') }}">Назад к списку импортов</a>
+        <p><a href="{{ url('imports:import-page') }}">Вернуться на страницу импорта</a></p>
     </div>
 {% endblock %}
