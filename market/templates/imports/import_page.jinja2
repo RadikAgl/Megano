@@ -1,0 +1,82 @@
+{% extends 'base.jinja2' %}
+
+{% block content %}
+    <div>
+        <h2>Импорт товаров</h2>
+
+        <form action="{{ url('imports:import-details') }}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="importFile">Выберите файл для импорта:</label>
+            <input type="file" name="importFile" accept=".csv" required>
+            <button type="submit">Запустить импорт</button>
+        </form>
+
+        <div>
+            <p><a href="{{ url('imports:download-csv-template') }}">Скачать шаблон CSV</a></p>
+        </div>
+
+        {% if import_logs %}
+            <h3>Предыдущие импорты:</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Имя файла</th>
+                    <th>Статус</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for log in import_logs %}
+                    <tr class="import-row clickable-row" data-import-id="{{ log.id }}">
+                        <td>{{ log.file_name }}</td>
+                        <td>{{ log.status }}</td>
+                    </tr>
+                    <!-- Add a new row for details -->
+                    <tr class="details-row" data-import-id="{{ log.id }}" style="display: none;">
+                        <td colspan="2">
+                            <table class="import-details-table">
+
+                                <tr>
+                                    <th>ID импорта</th>
+                                    <th>Имя файла</th>
+                                    <th>Статус</th>
+                                    <th>Временная метка</th>
+                                </tr>
+                                <tr>
+                                    <td>{{ log.id }}</td>
+                                    <td>{{ log.file_name }}</td>
+                                    <td>{{ log.status }}</td>
+                                    <td>{{ log.timestamp }}</td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            У вас пока нет импортов ...
+        {% endif %}
+    </div>
+
+
+    <style>
+        .clickable-row {
+            cursor: pointer;
+            background-color: #c1d4ec;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Handle click event on entire row
+            $(".clickable-row").on("click", function () {
+                var importId = $(this).data("import-id");
+                var detailsRow = $(".details-row[data-import-id=" + importId + "]");
+
+                // Toggle visibility
+                detailsRow.toggle();
+            });
+        });
+    </script>
+{% endblock %}
