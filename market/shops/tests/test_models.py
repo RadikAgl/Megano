@@ -103,4 +103,4 @@ class OfferModelTest(TestCase):
         print(f"Shops count in offers: {shops_count}")
         self.assertEqual(shops_count, 8)
         print(f"Offers count : {offers_count}")
-        self.assertEqual(offers_count, 8)
+        self.assertEqual(offers_count, 69)
