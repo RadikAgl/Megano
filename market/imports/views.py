@@ -13,6 +13,7 @@ from django.views.generic import TemplateView
 
 from .common_utils import process_import_common
 from .models import ImportLog, ImportLogProduct
+from .tasks import async_import_task
 
 
 class ImportPageView(LoginRequiredMixin, TemplateView):
@@ -66,7 +67,7 @@ class ImportDetailsView(LoginRequiredMixin, View):
                 user = request.user
 
                 process_import_common(file_name, user.id)
-
+                async_import_task.apply_async((file_name.name, user.id))
                 import_log = ImportLog.objects.latest("timestamp")
                 imported_products = (
                     ImportLogProduct.objects.filter(import_log=import_log)
