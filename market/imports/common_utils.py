@@ -1,4 +1,5 @@
 from _csv import reader
+from typing import List, Optional, Tuple
 
 from django.conf import settings
 from django.core.mail import send_mail
@@ -7,11 +8,11 @@ from django.utils import timezone
 
 from accounts.models import User
 from products.models import Category, Product, Tag
-from shops.models import Offer
+from shops.models import Offer, Shop
 from .models import ImportLog, ImportLogProduct
 
 
-def create_or_update_category(name, parent_name=None, parent_id=None):
+def create_or_update_category(name: str, parent_name: str = None, parent_id: int = None) -> Tuple[Category, bool]:
     """
     Создает или обновляет категорию.
 
@@ -21,7 +22,8 @@ def create_or_update_category(name, parent_name=None, parent_id=None):
         parent_id (int, optional): ID родительской категории. По умолчанию None.
 
     Returns:
-        tuple: Кортеж с объектом категории и флагом, указывающим на создание (True) или обновление (False).
+        Tuple[Category, bool]: Кортеж с объектом категории и флагом, указывающим на создание (True)
+         или обновление (False).
     """
     sort_index = get_next_sort_index(parent_id)
 
@@ -42,7 +44,7 @@ def create_or_update_category(name, parent_name=None, parent_id=None):
         return None, False
 
 
-def get_next_sort_index(parent_id=None):
+def get_next_sort_index(parent_id: int = None) -> int:
     """
     Возвращает следующий уникальный sort_index для категории.
 
@@ -61,7 +63,15 @@ def get_next_sort_index(parent_id=None):
     return sort_index
 
 
-def create_product(name, main_category_name, subcategory_name, description, details, tags, import_log_instance):
+def create_product(
+    name: str,
+    main_category_name: str,
+    subcategory_name: str,
+    description: str,
+    details: dict,
+    tags: List[str],
+    import_log_instance: ImportLog,
+) -> Product:
     """
     Создает продукт и связанный лог импорта.
 
@@ -71,7 +81,7 @@ def create_product(name, main_category_name, subcategory_name, description, deta
         subcategory_name (str): Название подкатегории продукта.
         description (str): Описание продукта.
         details (dict): Детали продукта.
-        tags (list): Список тегов продукта.
+        tags (List[str]): Список тегов продукта.
         import_log_instance (ImportLog): Экземпляр лога импорта.
 
     Returns:
@@ -90,7 +100,7 @@ def create_product(name, main_category_name, subcategory_name, description, deta
     return product
 
 
-def get_user_shop(user_id):
+def get_user_shop(user_id: int) -> Shop:
     """
     Возвращает магазин пользователя.
 
@@ -104,7 +114,7 @@ def get_user_shop(user_id):
     return user.shop
 
 
-def create_or_update_offer(shop, product, price, remains):
+def create_or_update_offer(shop: Shop, product: Product, price: float, remains: int) -> bool:
     """
     Создает или обновляет предложение в магазине для продукта.
 
@@ -123,7 +133,9 @@ def create_or_update_offer(shop, product, price, remains):
     return created
 
 
-def log_and_notify_error(error_message, user_id, file_name, total_products, successful_imports, failed_imports):
+def log_and_notify_error(
+    error_message: str, user_id: int, file_name: str, total_products: int, successful_imports: int, failed_imports: int
+) -> str:
     """
     Логгирует ошибку импорта и отправляет уведомление о ошибке.
 
@@ -159,7 +171,7 @@ def log_and_notify_error(error_message, user_id, file_name, total_products, succ
         return str(e)
 
 
-def log_successful_import(file_name):
+def log_successful_import(file_name: str) -> None:
     """
     Логгирует успешный импорт.
 
@@ -169,7 +181,7 @@ def log_successful_import(file_name):
     ImportLog.objects.create(file_name=file_name, status="Выполнен")
 
 
-def create_or_update_tag(name):
+def create_or_update_tag(name: str) -> Tag:
     """
     Создает или обновляет тег.
 
@@ -184,8 +196,14 @@ def create_or_update_tag(name):
 
 
 def create_import_log(
-    file_name, user, status, total_products=0, successful_imports=0, failed_imports=0, error_details=None
-):
+    file_name: str,
+    user: User,
+    status: str,
+    total_products: int = 0,
+    successful_imports: int = 0,
+    failed_imports: int = 0,
+    error_details: str = None,
+) -> ImportLog:
     """
     Создает лог импорта.
 
@@ -214,7 +232,9 @@ def create_import_log(
     return import_log
 
 
-def notify_admin_about_import_success(user_id, file_name, total_products, successful_imports, failed_imports):
+def notify_admin_about_import_success(
+    user_id: int, file_name: str, total_products: int, successful_imports: int, failed_imports: int
+) -> None:
     """
     Оповещает администратора о успешном завершении импорта.
 
@@ -242,12 +262,12 @@ def notify_admin_about_import_success(user_id, file_name, total_products, succes
     )
 
 
-def process_import_common(uploaded_file, user_id):
+def process_import_common(uploaded_file, user_id: int) -> None:
     """
     Общий процесс импорта.
 
     Args:
-        uploaded_file (File): Загруженный файл для импорта.
+        uploaded_file: Загруженный файл для импорта.
         user_id (int): ID пользователя, выполнившего импорт.
 
     Returns:
@@ -323,22 +343,23 @@ def process_import_common(uploaded_file, user_id):
         return str(e)
 
 
-def extract_data_from_row(row):
+def extract_data_from_row(row: List[str]) -> Optional[Tuple[str, str, str, str, dict, List[str], str, str]]:
     """
     Извлекает данные из строки CSV.
 
     Args:
-        row (list): Список значений строки CSV.
+        row (List[str]): Список значений строки CSV.
 
     Returns:
-        tuple or None: Кортеж с данными (если строка не является заголовком) или None.
+        Optional[Tuple[str, str, str, str, dict, List[str], str, str]]: Кортеж с данными (
+        если строка не является заголовком) или None.
             Возвращаемый кортеж содержит следующие элементы:
             - name (str): Название продукта.
             - main_category_name (str): Название основной категории продукта.
             - subcategory_name (str): Название подкатегории продукта.
             - description (str): Описание продукта.
             - details (dict): Детали продукта в виде словаря.
-            - tags (list): Список тегов продукта.
+            - tags (List[str]): Список тегов продукта.
             - price (str): Цена продукта.
             - remains (str): Остаток продукта.
     """
