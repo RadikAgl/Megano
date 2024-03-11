@@ -1,3 +1,5 @@
+""" Сервисы главной страницы """
+
 from django.conf import settings
 from django.core.cache import cache
 from django.db.models import QuerySet

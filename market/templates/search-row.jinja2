@@ -14,12 +14,12 @@
                                 {% set pk = category.pk %}
                                 {% set children = all_categories()["children"][pk] %}
                                 <div class="CategoriesButton-link">
-                                    <a href="#">
+                                    <a href="{{ url('product:catalog') }}?category={{ category.name }}">
                                         <div class="CategoriesButton-icon">
                                             <img src="{{ static('img/icons/departments/6.svg') }}" alt="6.svg"/>
                                         </div>
                                         <span class="CategoriesButton-text">{{ category.name }}</span>
-                                </a>
+                                    </a>
                                 {% if children %}
                                     <a class="CategoriesButton-arrow" href="#"></a>
                                     <div class="CategoriesButton-submenu">
