@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from accounts.models import User  # noqa
 from products.models import Product
 
 
@@ -22,9 +23,9 @@ class ImportLog(models.Model):
     """
 
     STATUS_CHOICES = [
-        ("В процессе выполнения", "В процессе выполнения"),
-        ("Выполнен", "Выполнен"),
-        ("Завершён с ошибкой", "Завершён с ошибкой"),
+        ("in_progress", _("В процессе выполнения")),
+        ("completed", _("Выполнен")),
+        ("error", _("Завершён с ошибкой")),
     ]
 
     user = models.ForeignKey(

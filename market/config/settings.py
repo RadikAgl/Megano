@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "imports",
     "django_celery_beat",
     "django_celery_results",
+    "lock_tokens",
 ]
 
 MIDDLEWARE = [
@@ -99,6 +100,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 FIXTURE_DIRS = ("fixtures",)
 DOCS_DIR = ("docs",)
+SUCCESSFUL_IMPORTS_DIR = "successful_imports"
+FAILED_IMPORTS_DIR = "failed_imports"
 
 WSGI_APPLICATION = "config.wsgi.application"
 

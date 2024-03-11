@@ -1,15 +1,46 @@
+import logging
+import os
+import time
 from _csv import reader
 from typing import List, Optional, Tuple
 
 from django.conf import settings
+from django.core.cache import cache
 from django.core.mail import send_mail
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.utils import timezone
 
 from accounts.models import User
 from products.models import Category, Product, Tag
 from shops.models import Offer, Shop
 from .models import ImportLog, ImportLogProduct
+
+logger = logging.getLogger(__name__)
+
+lock_key = "import_lock"
+
+
+def acquire_lock():
+    """
+    Acquires the lock. If the lock already exists, waits for 1 second and retries.
+    Creates a cache entry for the lock.
+
+    Returns:
+        None
+    """
+    while cache.get(lock_key):
+        time.sleep(1)
+    cache.set(lock_key, "locked")
+
+
+def release_lock():
+    """
+    Releases the lock by deleting the cache entry.
+
+    Returns:
+        None
+    """
+    cache.delete(lock_key)
 
 
 def create_or_update_category(name: str, parent_name: str = None, parent_id: int = None) -> Tuple[Category, bool]:
@@ -63,41 +94,31 @@ def get_next_sort_index(parent_id: int = None) -> int:
     return sort_index
 
 
-def create_product(
-    name: str,
-    main_category_name: str,
-    subcategory_name: str,
-    description: str,
-    details: dict,
-    tags: List[str],
-    import_log_instance: ImportLog,
-) -> Product:
-    """
-    Создает продукт и связанный лог импорта.
+def create_product_and_offer(product_data, import_log, user_id):
+    (
+        name,
+        main_category_name,
+        subcategory_name,
+        description,
+        details,
+        tags,
+        price,
+        remains,
+    ) = product_data
 
-    Args:
-        name (str): Название продукта.
-        main_category_name (str): Название основной категории продукта.
-        subcategory_name (str): Название подкатегории продукта.
-        description (str): Описание продукта.
-        details (dict): Детали продукта.
-        tags (List[str]): Список тегов продукта.
-        import_log_instance (ImportLog): Экземпляр лога импорта.
-
-    Returns:
-        Product: Созданный продукт.
-    """
-    main_category, created_main = create_or_update_category(main_category_name)
-    subcategory, created_sub = create_or_update_category(subcategory_name, parent_id=main_category.id)
-    category = subcategory if subcategory else main_category
+    main_category, _ = create_or_update_category(main_category_name)
+    create_or_update_category(subcategory_name, parent_name=main_category_name)
+    tag_objects = [create_or_update_tag(tag) for tag in tags]  # noqa
+    category = create_or_update_category(main_category_name)[0]
 
     product = Product.objects.create(name=name, category=category, description=description, details=details)
     product.tags.set(tags)
 
-    import_log_product = ImportLogProduct.objects.create(import_log=import_log_instance, product=product)  # noqa
-    import_log_instance.products.add(product)
+    import_log_product = ImportLogProduct.objects.create(import_log=import_log, product=product)  # noqa
+    import_log.products.add(product)
 
-    return product
+    shop = get_user_shop(user_id)
+    create_or_update_offer(shop, product, price, remains)
 
 
 def get_user_shop(user_id: int) -> Shop:
@@ -112,6 +133,21 @@ def get_user_shop(user_id: int) -> Shop:
     """
     user = User.objects.get(id=user_id)
     return user.shop
+
+
+def get_shop_name(user_id: int) -> str:
+    """
+    Retrieves the shop name for a given user ID.
+
+    Args:
+        user_id (int): ID of the user.
+
+    Returns:
+        str: Shop name.
+    """
+    user = User.objects.get(id=user_id)
+    shop = user.shop
+    return shop.name
 
 
 def create_or_update_offer(shop: Shop, product: Product, price: float, remains: int) -> bool:
@@ -171,16 +207,6 @@ def log_and_notify_error(
         return str(e)
 
 
-def log_successful_import(file_name: str) -> None:
-    """
-    Логгирует успешный импорт.
-
-    Args:
-        file_name (str): Имя файла импорта.
-    """
-    ImportLog.objects.create(file_name=file_name, status="Выполнен")
-
-
 def create_or_update_tag(name: str) -> Tag:
     """
     Создает или обновляет тег.
@@ -219,6 +245,7 @@ def create_import_log(
     Returns:
         ImportLog: Созданный лог импорта.
     """
+    logger.info(f"Creating import log for file: {file_name}, user: {user.id}")
     import_log = ImportLog.objects.create(
         file_name=file_name,
         user=user,
@@ -229,6 +256,7 @@ def create_import_log(
         failed_imports=failed_imports,
         error_details=error_details,
     )
+    logger.info(f"Import log created for file: {file_name}, user: {user.id}")
     return import_log
 
 
@@ -262,85 +290,108 @@ def notify_admin_about_import_success(
     )
 
 
-def process_import_common(uploaded_file, user_id: int) -> None:
-    """
-    Общий процесс импорта.
+@transaction.atomic
+def process_import_common(uploaded_file, user_id: int) -> str:
+    logger.info(f"Processing import for file: {uploaded_file.name}, user: {user_id}")
+    successful_imports_dir = os.path.join(settings.DOCS_DIR[0], settings.SUCCESSFUL_IMPORTS_DIR)
+    failed_imports_dir = os.path.join(settings.DOCS_DIR[0], settings.FAILED_IMPORTS_DIR)
 
-    Args:
-        uploaded_file: Загруженный файл для импорта.
-        user_id (int): ID пользователя, выполнившего импорт.
-
-    Returns:
-        None: Функция не возвращает значений.
-    """
     try:
+        acquire_lock()
         file_name = uploaded_file.name
         content = uploaded_file.read().decode("utf-8")
+
+        if not content.strip():
+            return handle_empty_file(file_name, user_id)
+
         lines = content.split("\n")
         csv_rows = reader(lines)
-        total_products = 0
-        successful_imports = 0
-        failed_imports = 0
-        user = User.objects.get(id=user_id)
+        total_products, successful_imports, failed_imports = 0, 0, 0
 
-        import_log = ImportLog.objects.create(file_name=file_name, user=user, status="В процессе выполнения")
+        user = User.objects.get(id=user_id)
+        import_log = create_import_loger(file_name, user)
 
         for row in csv_rows:
-            product_data = extract_data_from_row(row)
-            if product_data is None:
-                continue
             try:
-                (
-                    name,
-                    main_category_name,
-                    subcategory_name,
-                    description,
-                    details,
-                    tags,
-                    price,
-                    remains,
-                ) = product_data
+                product_data = extract_data_from_row(row)
 
-                main_category, _ = create_or_update_category(main_category_name)
+                if product_data is None:
+                    continue
 
-                create_or_update_category(subcategory_name, parent_name=main_category_name)
-
-                tag_objects = [create_or_update_tag(tag) for tag in tags]
-
-                category = create_or_update_category(main_category_name)[0]  # noqa
-
-                product = create_product(
-                    name, main_category_name, subcategory_name, description, details, tag_objects, import_log
-                )
-                import_log_product = ImportLogProduct.objects.create(import_log=import_log, product=product)  # noqa
-                import_log.products.add(product)
-
-                shop = get_user_shop(user_id)
-                create_or_update_offer(shop, product, price, remains)
-
+                create_product_and_offer(product_data, import_log, user_id)
                 total_products += 1
                 successful_imports += 1
 
-            except Exception as e:
-                error_details = log_and_notify_error(  # noqa
-                    str(e), user_id, file_name, total_products, successful_imports, failed_imports
+            except IndexError as index_error:
+                print(f"Failed to process row due to error: {str(index_error)}")
+                handle_failed_import(
+                    index_error, file_name, user_id, total_products, successful_imports, failed_imports
                 )
                 failed_imports += 1
 
+            except Exception as e:
+                print(f"Unhandled exception occurred: {str(e)}")
+                handle_failed_import(e, file_name, user_id, total_products, successful_imports, failed_imports)
+                failed_imports += 1
+
+    except (IntegrityError, Exception) as e:
+        error_message = f"Error occurred: {str(e)}"
+        print(error_message)
+        handle_failed_import(e, file_name, user_id, total_products, successful_imports, failed_imports)
+        return error_message
+    finally:
+        logger.info(f"Import processing completed for file: {uploaded_file.name}, user: {user_id}")
+        handle_import_log_status(import_log, successful_imports, failed_imports)
+        handle_destination_path(file_name, content, import_log, successful_imports_dir, failed_imports_dir)
+        transaction.on_commit(lambda: release_lock())
+
+
+def handle_empty_file(file_name, user_id):
+    error_message = "Uploaded file is empty"
+    return log_and_notify_error(error_message, user_id, file_name, 0, 0, 1)
+
+
+def create_import_loger(file_name, user):
+    return ImportLog.objects.create(file_name=file_name, user=user, status="in_progress")
+
+
+def handle_failed_import(error, file_name, user_id, total_products, successful_imports, failed_imports):
+    log_and_notify_error(str(error), user_id, file_name, total_products, successful_imports, failed_imports)
+
+
+def handle_import_log_status(import_log, successful_imports, failed_imports):
+    if failed_imports > 0:
+        import_log.status = "Завершён с ошибкой"
+    else:
         import_log.status = "Выполнен"
-        import_log.total_products = total_products
-        import_log.successful_imports = successful_imports
-        import_log.failed_imports = failed_imports
-        import_log.save()
 
-        if failed_imports == 0:
-            notify_admin_about_import_success(user_id, file_name, total_products, successful_imports, failed_imports)
+    import_log.total_products = successful_imports + failed_imports
+    import_log.successful_imports = successful_imports
+    import_log.failed_imports = failed_imports
+    import_log.save()
 
-    except IntegrityError as e:
-        return str(e)
 
-    except Exception as e:
-        return str(e)
+def handle_destination_path(file_name, content, import_log, successful_imports_dir, failed_imports_dir):
+    os.makedirs(failed_imports_dir, exist_ok=True)
+
+    new_file_name = f"{import_log.timestamp.strftime('%H-%M-%S_%d-%m-%Y')}_{get_shop_name(import_log.user.id)}.csv"
+
+    destination_dir = successful_imports_dir if import_log.failed_imports == 0 else failed_imports_dir
+    destination_path = os.path.join(destination_dir, new_file_name)
+
+    print(f"Saving to destination path: {destination_path}")
+
+    with open(destination_path, "w", encoding="utf-8") as dest_file:
+        dest_file.write(content)
+
+    if import_log.failed_imports == 0:
+        notify_admin_about_import_success(
+            import_log.user.id,
+            new_file_name,
+            import_log.total_products,
+            import_log.successful_imports,
+            import_log.failed_imports,
+        )
 
 
 def extract_data_from_row(row: List[str]) -> Optional[Tuple[str, str, str, str, dict, List[str], str, str]]:
@@ -348,6 +399,7 @@ def extract_data_from_row(row: List[str]) -> Optional[Tuple[str, str, str, str, 
     Извлекает данные из строки CSV.
 
     Args:
+
         row (List[str]): Список значений строки CSV.
 
     Returns:
@@ -363,6 +415,7 @@ def extract_data_from_row(row: List[str]) -> Optional[Tuple[str, str, str, str, 
             - price (str): Цена продукта.
             - remains (str): Остаток продукта.
     """
+
     if row[0].lower() == "name":
         return None
 
@@ -370,10 +423,8 @@ def extract_data_from_row(row: List[str]) -> Optional[Tuple[str, str, str, str, 
     main_category_name = row[1]
     subcategory_name = row[2]
     description = row[3]
-
     details_raw = {row[i]: row[i + 1] for i in range(4, len(row) - 4, 2) if row[i]}
     details = {key.strip(): value.strip() for key, value in details_raw.items()}
-
     tags = [tag.strip() for tag in row[-3].split(",")]
     price = row[-2]
     remains = row[-1]
