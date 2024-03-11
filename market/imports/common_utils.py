@@ -340,7 +340,7 @@ def process_import_common(uploaded_file, user_id: int) -> str:
         handle_failed_import(e, file_name, user_id, total_products, successful_imports, failed_imports)
         return error_message
     finally:
-        logger.info(f"Import processing completed for file: {uploaded_file.name}, user: {user_id}")
+        logger.info(f"Import process completed for file: {uploaded_file.name}, user: {user_id}")
         handle_import_log_status(import_log, successful_imports, failed_imports)
         handle_destination_path(file_name, content, import_log, successful_imports_dir, failed_imports_dir)
         transaction.on_commit(lambda: release_lock())
