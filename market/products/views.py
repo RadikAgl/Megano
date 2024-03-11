@@ -1,11 +1,13 @@
 """ Представления приложения products """
 
 from django.core.handlers.wsgi import WSGIRequest
-from django.shortcuts import redirect
+from django.http import JsonResponse
+from django.shortcuts import redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, TemplateView
-
+from django.utils import timezone
+from accounts.models import ViewHistory
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
@@ -24,6 +26,27 @@ class MainPageView(TemplateView):
         context["products"] = main_page_service.get_products()
         context["banners"] = main_page_service.banners_cache()
         return context
+
+
+def add_to_view_history(request, product_id):
+    """
+    Функция добавляет информацию о просмотре товара в историю просмотров пользователя.
+
+    """
+    if not request.user.is_authenticated:
+        return JsonResponse({"status": "error", "message": "User is not authenticated"})
+
+    product = get_object_or_404(Product, pk=product_id)
+    view_history, created = ViewHistory.objects.get_or_create(user=request.user, product=product)
+
+    if not created:
+        view_history.view_count += 1
+        view_history.view_date = timezone.now()
+    else:
+        view_history.view_count = 1
+
+    view_history.save()
+    return JsonResponse({"status": "success"})
 
 
 class ProductDetailView(DetailView):
@@ -56,6 +79,8 @@ class ProductDetailView(DetailView):
 
     @method_decorator(cache_page(86400))
     def dispatch(self, *args, **kwargs):
+        product_id = self.kwargs.get("pk")
+        add_to_view_history(self.request, product_id)
         return super().dispatch(*args, **kwargs)
 
 
