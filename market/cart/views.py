@@ -31,6 +31,7 @@ class CartView(TemplateView):
 
 @require_POST
 def cart_change_quantity(request, pk):
+    """Обновление количества товара в корзине"""
     cart = CartInstance(request)
     offer = get_object_or_404(Offer, id=pk)
     if request.user.is_authenticated:
@@ -65,6 +66,7 @@ def cart_add(request, pk):
 
 @require_POST
 def cart_remove(request, pk):
+    """Удаление товара из корзины"""
     cart = CartInstance(request)
     offer = get_object_or_404(Offer, id=pk)
     cart.remove(offer)
