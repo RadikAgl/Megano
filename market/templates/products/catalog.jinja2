@@ -21,10 +21,10 @@
                                     most_expensive=view.object_list|max(attribute='price') %}
                                     <div class="range Section-columnRange">
                                         <input class="range-line" id="price_range" name="price_range" type="text" data-type="double"
-                                               data-min="{% if cheapest %}{{ cheapest.price }}{% endif %}"
-                                               data-max="{% if most_expensive %}{{ most_expensive.price }}{% endif %}"
-                                               data-from="{% if cheapest %}{{ cheapest.price }}{% endif %}"
-                                               data-to="{% if most_expensive %}{{ most_expensive.price }}{% endif %}"/>
+                                               data-min="10"
+                                               data-max="5000"
+                                               data-from="10"
+                                               data-to="5000"/>
                                         <div class="range-price">Цена:&#32;
                                             <div class="rangePrice">
                                             </div>
@@ -33,20 +33,20 @@
                                     {% endwith %}
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-input form-input_full" id="name__iexact" name="name__iexact" type="text" placeholder="{{ _('Название') }}" />
+                                    <input class="form-input form-input_full" id="name" name="name" type="text" placeholder="{{ _('Название') }}" />
                                 </div>
                                 <div class="form-group">
                                     <!-- - var options = setOptions(items, ['value', 'selected', 'disabled']);-->
                                 </div>
                                 <div class="form-group">
                                     <label class="toggle">
-                                        <input type="checkbox"/><span class="toggle-box"></span><span
+                                        <input type="checkbox" id="is_exist" name="is_exist"/><span class="toggle-box"></span><span
                                             class="toggle-text">Только товары в наличии</span>
                                     </label>
                                 </div>
                                 <div class="form-group">
                                     <label class="toggle">
-                                        <input type="checkbox"/><span class="toggle-box"></span><span
+                                        <input type="checkbox" id="free_delivery" name="free_delivery"/><span class="toggle-box"></span><span
                                             class="toggle-text">С бесплатной доставкой</span>
                                     </label>
                                 </div>
