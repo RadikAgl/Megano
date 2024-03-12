@@ -1,0 +1,85 @@
+{% extends 'base.jinja2' %}
+
+{% block content %}
+    <div>
+        <h2>Импорт начат</h2>
+        <p>Импорт товаров запущен. Подождите, пожалуйста...</p>
+        <div><a href="{{ url('imports:import-page') }}">Вернуться на страницу импорта</a></div>
+    </div>
+
+    <div>
+        <h2>Детали импорта</h2>
+
+        {% if import_log %}
+            <table>
+                <thead>
+                <tr>
+                    <th>ID импорта</th>
+                    <th>Имя файла</th>
+                    <th>Статус</th>
+                    <th>Временная метка</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ import_log.id }}</td>
+                    <td>{{ import_log.file_name }}</td>
+                    <td>{{ import_log.status }}</td>
+                    <td>{{ import_log.timestamp }}</td>
+                </tr>
+                </tbody>
+            </table>
+        {% else %}
+            <p>Нет данных об импорте.</p>
+        {% endif %}
+
+        <h3>Импортированные товары</h3>
+        {% set has_imported_products = imported_products is defined and imported_products %}
+        {% if imported_products %}
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Main Category</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in imported_products %}
+                    <tr>
+                        <td>{{ product.product.name }}</td>
+                        <td>{{ product.product.category.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Нет импортированных товаров.</p>
+        {% endif %}
+
+        <h3>Итоги импорта</h3>
+        {% if has_imported_products %}
+            <table>
+                <thead>
+                <tr>
+                    <th>Всего товаров</th>
+                    <th>Успешные импорты</th>
+                    <th>Неудачные импорты</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ imported_products|length }}</td>
+                    <td>{{ successful_imports_count }}</td>
+                    <td>{{ failed_imports_count }}</td>
+                </tr>
+                </tbody>
+            </table>
+        {% else %}
+            <p>Нет импортированных товаров.</p>
+        {% endif %}
+
+        <p><a href="{{ url('imports:import-page') }}">Вернуться на страницу импорта</a></p>
+    </div>
+
+{% endblock %}

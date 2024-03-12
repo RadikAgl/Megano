@@ -63,7 +63,7 @@ class ProfilePasswordForm(SetPasswordForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['email', 'new_password1']
+        fields = ["email", "new_password1"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

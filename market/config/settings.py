@@ -15,6 +15,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 MEDIA_URL = "/uploads/"
 
+CART_SESSION_ID = "cart"
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -39,6 +41,10 @@ INSTALLED_APPS = [
     "products",
     "shops",
     "accounts",
+    "cart",
+    "imports",
+    "django_celery_beat",
+    "django_celery_results",
 ]
 
 MIDDLEWARE = [
@@ -70,6 +76,7 @@ TEMPLATES = [
                 "cart_cost": "templatetags.globals.get_cart_cost",
             },
             "context_processors": [
+                "context_processors.cart_context.get_cart_cost",
                 "django.contrib.messages.context_processors.messages",
             ],
         },
@@ -91,6 +98,9 @@ TEMPLATES = [
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 FIXTURE_DIRS = ("fixtures",)
+DOCS_DIR = ("docs",)
+SUCCESSFUL_IMPORTS_DIR = "successful_imports"
+FAILED_IMPORTS_DIR = "failed_imports"
 
 WSGI_APPLICATION = "config.wsgi.application"
 
@@ -124,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "ru-RU"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 
@@ -146,12 +156,23 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 """Gmail reset password settings"""
 EMAIL_HOST = os.getenv("GMAIL_HOST")
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = "kudakaevnikita@yandex.ru"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("GMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
 BANNERS_EXPIRATION_TIME = 600
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CELERY_BROKER_URL = REDIS_URL
+CELERY_TASK_TRACK_STARTED = True
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_BROKER_TRANSPORT_OPTION = {"visibility_timeout": 3600}
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TASK_DEFAULT_QUEUE = "default"
