@@ -1,16 +1,23 @@
 """ Представления приложения products """
 
+from typing import Any, Dict
+
 from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import Avg, Sum
+from django.db.models.functions import Round
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, TemplateView
+from django_filters.views import FilterView
 
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
+from .filters import ProductFilter
 from .forms import ReviewsForm
 from .models import Product, ProductImage
+from .services.catalog_services import get_ordering_fields, get_popular_tags
 
 
 class MainPageView(TemplateView):
@@ -24,6 +31,27 @@ class MainPageView(TemplateView):
         context["products"] = main_page_service.get_products()
         context["banners"] = main_page_service.banners_cache()
         return context
+
+
+class CatalogView(FilterView):
+    """Представление для каталога товаров"""
+
+    template_name = "products/catalog.jinja2"
+    filterset_class = ProductFilter
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["ordering_fields"] = get_ordering_fields(ProductFilter())
+        context["tags"] = get_popular_tags()
+
+        return context
+
+    def get_queryset(self):
+        return (
+            Product.objects.all()
+            .annotate(avg_price=Round(Avg("offer__price"), 2))
+            .annotate(remains=Sum("offer__remains"))
+        ).exclude(avg_price=None)
 
 
 class ProductDetailView(DetailView):
