@@ -1,6 +1,8 @@
 """Сервисы приложения cart"""
 
 from decimal import Decimal
+import random
+
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Sum, F
@@ -83,6 +85,7 @@ class CartInstance:
                 product_in_cart = self.qs.select_for_update().get(offer=offer)
             else:
                 product_in_cart = ProductInCart(offer=offer, cart=self.cart, quantity=0)
+            print("cart_add", product_in_cart)
             if update_quantity:
                 product_in_cart.quantity += quantity
             else:
@@ -172,3 +175,18 @@ class CartInstance:
         else:
             if self.qs:
                 self.qs.delete()
+
+    def get_offer(self, product):
+        """Подбор предложения для товара"""
+        if self.use_db:
+            products_in_cart = self.qs.filter(offer__product=product)
+            if products_in_cart:
+                return products_in_cart[0].offer
+
+        else:
+            offers = Offer.objects.filter(product=product)
+            for offer in offers:
+                if str(offer.id) in self.cart:
+                    return offer
+
+        return random.choice(Offer.objects.filter(product=product))

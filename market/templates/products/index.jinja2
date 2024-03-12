@@ -11,7 +11,6 @@
           </header>
           <div class="Cards">
               {% for product in products %}
-                {% if product.offer_set.all() %}
                     <div class="Card">
                         <a class="Card-picture" href="{{ url('products:product-details', product.id) }}">
                             <img src="{{  product.images.first().image.url  }}" alt="card.jpg"/>
@@ -22,8 +21,7 @@
                            </strong>
                            <div class="Card-description">
                                <div class="Card-cost">
-                                   <span class="Card-price">${{ product.offer_set.order_by("price")
-                                                                .first().price }}</span>
+                                   <span class="Card-price">${{ product.avg_price }}</span>
                                </div>
                                <div class="Card-category">
                                    {% with parent = product.category.parent %}
@@ -31,7 +29,7 @@
                                    {% endwith %}
                                </div>
                                <div class="Card-hover">
-                                   <form method="post" action="{{ url('cart:cart-add', product.offer_set.order_by("price").first().id) }}">
+                                   <form method="post" action="{{ url('cart:cart-add', product.id) }}">
                                        {% csrf_token %}
                                        <input class="Card-btn" type="image" src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg">
                                    </form>
@@ -39,7 +37,6 @@
                            </div>
                        </div>
                     </div>
-                {% endif %}
               {% endfor %}
           </div>
         </div>
