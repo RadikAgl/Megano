@@ -13,6 +13,7 @@ from django.views.generic import TemplateView
 
 from .common_utils import process_import_common
 from .models import ImportLog, ImportLogProduct
+from .tasks import async_import_task
 
 
 class ImportPageView(LoginRequiredMixin, TemplateView):
@@ -64,9 +65,8 @@ class ImportDetailsView(LoginRequiredMixin, View):
             if request.user.is_authenticated:
                 file_name = request.FILES.get("importFile")
                 user = request.user
-
                 process_import_common(file_name, user.id)
-
+                async_import_task.apply_async((file_name.name, user.id))
                 import_log = ImportLog.objects.latest("timestamp")
                 imported_products = (
                     ImportLogProduct.objects.filter(import_log=import_log)
@@ -89,8 +89,25 @@ class ImportDetailsView(LoginRequiredMixin, View):
             else:
                 return redirect(reverse_lazy("account_login"))
         except Exception as e:
+            # Обработка исключения и предоставление необходимого контекста
             error_message = str(e)
-            return render(request, self.template_name, {"error_message": error_message, "import_complete": False})
+            import_log = ImportLog.objects.latest("timestamp")
+            imported_products = (
+                ImportLogProduct.objects.filter(import_log=import_log).select_related("product").distinct("product")
+            )
+            successful_imports_count = imported_products.filter(import_log__status="Выполнен").count()
+            failed_imports_count = imported_products.filter(import_log__status="Завершён с ошибкой").count()
+
+            context = {
+                "import_log": import_log,
+                "imported_products": imported_products,
+                "successful_imports_count": successful_imports_count,
+                "failed_imports_count": failed_imports_count,
+                "error_message": error_message,
+                "import_complete": False,
+            }
+
+            return render(request, self.template_name, context)
 
 
 class DownloadCSVTemplateView(LoginRequiredMixin, View):
@@ -118,7 +135,7 @@ class DownloadCSVTemplateView(LoginRequiredMixin, View):
         Returns:
             HttpResponse: HTTP-ответ с содержимым CSV-файла.
         """
-        docs_dir = settings.DOCS_DIR
+        docs_dir = settings.DOCS_DIR[0]  # Access the first element of the tuple
         file_name = "Sheet1.csv"
         file_path = os.path.join(docs_dir, file_name)
 
