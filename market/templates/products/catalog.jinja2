@@ -17,8 +17,6 @@
                         <div class="Section-columnContent">
                           <form class="form" action="{{ url('products:catalog') }}" method="get">
                                 <div class="form-group">
-                                    {% with cheapest=view.object_list|min(attribute='price'),
-                                    most_expensive=view.object_list|max(attribute='price') %}
                                     <div class="range Section-columnRange">
                                         <input class="range-line" id="price_range" name="price_range" type="text" data-type="double"
                                                data-min="10"
@@ -30,7 +28,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% endwith %}
                                 </div>
                                 <div class="form-group">
                                     <input class="form-input form-input_full" id="name" name="name" type="text" placeholder="{{ _('Название') }}" />
@@ -94,26 +91,25 @@
                         </div>
                       </div>
                       <div class="Cards">
-                          {% for offer in filter.qs %}
+                          {% for product in filter.qs %}
                               <div class="Card">
-                                  <a class="Card-picture" href="{{ url('products:product-details', offer.product.id) }}">
-                                  <img src="{{ offer.product.images.first().image.url }}" alt="card.jpg"/></a>
+                                  <a class="Card-picture" href="{{ url('products:product-details', product.id) }}">
+                                  <img src="{{ product.images.first().image.url }}" alt="card.jpg"/></a>
                                   <div class="Card-content">
                                       <strong class="Card-title">
-                                          <a href="{{ url('products:product-details', offer.product.id) }}">
-                                              {{ offer.product.name }}</a>
+                                          <a href="{{ url('products:product-details', product.id) }}">
+                                              {{ product.name }}</a>
                                       </strong>
                                       <div class="Card-description">
-                                          <div class="Card-cost"><span class="Card-price">${{ offer.price }}</span>
+                                          <div class="Card-cost"><span class="Card-price">${{ product.avg_price }}</span>
                                           </div>
                                           <div class="Card-category">
-                                              {% with parent = offer.product.category.parent %}
-                                                  {% if parent %}{{ parent }} / {% endif %}{{ offer.product.category }}
+                                              {% with parent = product.category.parent %}
+                                                  {% if parent %}{{ parent }} / {% endif %}{{ product.category }}
                                               {% endwith %}
                                           </div>
                                           <div class="Card-hover">
-                                              <form method="post" action="{{ url('cart:cart-add',
-                                              offer.product.id) }}">
+                                              <form method="post" action="{{ url('cart:cart-add', product.id) }}">
                                                   {% csrf_token %}
                                                   <input class="Card-btn" type="image"
                                                          src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg">

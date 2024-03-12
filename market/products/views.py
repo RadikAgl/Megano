@@ -1,7 +1,10 @@
 """ Представления приложения products """
+
 from typing import Any, Dict
 
 from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import Avg, Sum
+from django.db.models.functions import Round
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -33,7 +36,6 @@ class MainPageView(TemplateView):
 class CatalogView(FilterView):
     """Представление для каталога товаров"""
 
-    model = Offer
     template_name = "products/catalog.jinja2"
     filterset_class = ProductFilter
 
@@ -43,6 +45,13 @@ class CatalogView(FilterView):
         context["tags"] = get_popular_tags()
 
         return context
+
+    def get_queryset(self):
+        return (
+            Product.objects.all()
+            .annotate(avg_price=Round(Avg("offer__price"), 2))
+            .annotate(remains=Sum("offer__remains"))
+        ).exclude(avg_price=None)
 
 
 class ProductDetailView(DetailView):
