@@ -14,6 +14,7 @@ from django_filters.views import FilterView
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
+from . import constants
 from .filters import ProductFilter
 from .forms import ReviewsForm
 from .models import Product, ProductImage
@@ -49,7 +50,7 @@ class CatalogView(FilterView):
     def get_queryset(self):
         return (
             Product.objects.all()
-            .annotate(avg_price=Round(Avg("offer__price"), 2))
+            .annotate(avg_price=Round(Avg("offer__price"), constants.DECIMAL_PRECISION))
             .annotate(remains=Sum("offer__remains"))
         ).exclude(avg_price=None)
 
