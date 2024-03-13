@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "settings_app",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -100,9 +101,9 @@ TEMPLATES = [
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 FIXTURE_DIRS = ("fixtures",)
-DOCS_DIR = ("docs",)
-SUCCESSFUL_IMPORTS_DIR = "successful_imports"
-FAILED_IMPORTS_DIR = "failed_imports"
+DOCS_DIR = ("docs",)  #
+SUCCESSFUL_IMPORTS_DIR = "successful_imports"  #
+FAILED_IMPORTS_DIR = "failed_imports"  #
 
 WSGI_APPLICATION = "config.wsgi.application"
 
@@ -161,12 +162,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 """Gmail reset password settings"""
 EMAIL_HOST = os.getenv("GMAIL_HOST")
-EMAIL_PORT = 465
+EMAIL_PORT = 465  #
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("GMAIL_HOST_PASSWORD")
-BANNERS_EXPIRATION_TIME = 600
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  #
+EMAIL_HOST_PASSWORD = os.getenv("GMAIL_HOST_PASSWORD")  #
+BANNERS_EXPIRATION_TIME = 600  #
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CELERY_BROKER_URL = REDIS_URL
