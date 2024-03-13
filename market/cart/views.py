@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 from cart.cart import CartInstance
 from cart.forms import CartAddProductForm, CartAddProductModelForm
 from cart.models import ProductInCart
+from products.models import Product
 from shops.models import Offer
 
 
@@ -31,6 +32,7 @@ class CartView(TemplateView):
 
 @require_POST
 def cart_change_quantity(request, pk):
+    """Обновление количества товара в корзине"""
     cart = CartInstance(request)
     offer = get_object_or_404(Offer, id=pk)
     if request.user.is_authenticated:
@@ -49,8 +51,9 @@ def cart_change_quantity(request, pk):
 def cart_add(request, pk):
     """Добавление товара в корзину из карточки товара"""
     cart = CartInstance(request)
-    offer = get_object_or_404(Offer, id=pk)
+    product = get_object_or_404(Product, id=pk)
     user = request.user
+    offer = cart.get_offer(product)
     if user.is_authenticated:
         try:
             product_in_cart = ProductInCart.objects.filter(cart=cart.cart).get(offer=offer)
@@ -65,6 +68,7 @@ def cart_add(request, pk):
 
 @require_POST
 def cart_remove(request, pk):
+    """Удаление товара из корзины"""
     cart = CartInstance(request)
     offer = get_object_or_404(Offer, id=pk)
     cart.remove(offer)
