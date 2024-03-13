@@ -5,6 +5,7 @@ from django.core.cache import cache
 from django.db.models import QuerySet, Avg
 from django.db.models.functions import Round
 
+from products import constants
 from products.models import Product, Banner
 
 
@@ -16,7 +17,7 @@ class MainPageService:
         return (
             Product.objects.all()
             .prefetch_related("offer_set", "images")
-            .annotate(avg_price=Round(Avg("offer__price"), 2))
+            .annotate(avg_price=Round(Avg("offer__price"), constants.DECIMAL_PRECISION))
         )
 
     def banners_cache(self) -> QuerySet:
