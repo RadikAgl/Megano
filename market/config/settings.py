@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_jinja",
+    "django_filters",
+    "django_extensions",
     "products",
     "shops",
     "accounts",

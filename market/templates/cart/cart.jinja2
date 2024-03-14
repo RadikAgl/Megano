@@ -109,9 +109,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="Cart-block Cart-block_delete"><a class="Cart-delete"
-                                                                             href="{{ url('cart:cart-remove', offer.id) }}"><img
-                                        src="{{ static('img/icons/card/delete.svg') }}" alt="Delete"/></a>
+                                <div class="Cart-block Cart-block_delete">
+                                    <input class="Cart-delete" type="image"
+                                           formaction="{{ url('cart:cart-remove', offer.id) }}"
+                                           src="{{ static('img/icons/card/delete.svg') }}" alt="cart.svg">
                                 </div>
                             </div>
                         </div>
