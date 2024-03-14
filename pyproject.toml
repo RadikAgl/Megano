@@ -28,6 +28,7 @@ flake8 = "^6.0.0"
 black = "^23.7.0"
 pre-commit = "^3.3.3"
 pylint-django = "^2.5.5"
+python-dotenv = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core"]
