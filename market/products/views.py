@@ -108,8 +108,8 @@ class ProductDetailView(DetailView):
 
     @method_decorator(cache_page(86400))
     def dispatch(self, *args, **kwargs):
-        product_id = self.get_object().id
-        add_to_view_history(self.request, product_id)
+        product = self.get_object()
+        add_to_view_history(self.request, product)
         return super().dispatch(*args, **kwargs)
 
 
