@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>История просмотров товаров</title>
-</head>
-<body>
-    <h1>История просмотров товаров</h1>
-    <ul>
-        {% for product in viewed_products %}
-            <li>{{ product.name }}</li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends 'base.jinja2' %}
+
+{% block content %}
+    История просмотров товаров
+
+    {% for product in viewed_products %}
+    {{ product.name }}
+    {% endfor %}
+
+{% endblock %}

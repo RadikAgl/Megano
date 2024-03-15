@@ -171,11 +171,11 @@ class UpdatePasswordView(PasswordResetConfirmView):
         return super().form_invalid(form)
 
 
-class UserHistoryView(View):
+class UserHistoryView(LoginRequiredMixin, View):
     template_name = "viewing_history.jinja2"
 
     def get(self, request, *args, **kwargs):
-        user = get_user_model().objects.get(id=request.user.id)
+        user = request.user
         user_history = ViewHistory.objects.filter(user=user).order_by("-timestamp")
         viewed_products = [history.product for history in user_history]
 
