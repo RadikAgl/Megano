@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+  <h2>Edit Site Settings</h2>
+  <form method="post" enctype="multipart/form-data" action="{% url 'settings_app:edit_settings' %}">
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="fieldWrapper">
+        {{ field.label_tag }} {{ field }}
+      </div>
+    {% endfor %}
+
+    <button type="submit">Save</button>
+  </form>
+
+  <h2><a href="{% url 'settings_app:reset_cache' %}">Cache Reset</a></h2>
+{% endblock %}
