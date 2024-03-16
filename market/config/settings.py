@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "imports",
     "django_celery_beat",
     "django_celery_results",
+    "discounts",
 ]
 
 MIDDLEWARE = [
