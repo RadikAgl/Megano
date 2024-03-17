@@ -21,9 +21,10 @@ from django.conf.urls.static import static
 from market.config import settings
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("accounts/", include("accounts.urls", namespace="user")),
-    path("cart/", include("cart.urls", namespace="cart")),
-    path("", include(("products.urls", "products"), namespace="product")),
-    path("", include(("imports.urls", "imports"), namespace="imports")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path("admin/", admin.site.urls),
+                  path("accounts/", include("accounts.urls", namespace="user")),
+                  path("cart/", include("cart.urls", namespace="cart")),
+                  path("", include(("products.urls", "products"), namespace="product")),
+                  path("pay/", include("order.urls", namespace="url")),
+                  path("", include(("imports.urls", "imports"), namespace="imports")),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
