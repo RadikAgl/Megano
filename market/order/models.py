@@ -32,7 +32,8 @@ class Order(models.Model):
                                      default=DeliveryTypes.REGULAR)
     city = models.CharField(max_length=50, verbose_name='city')
     address = models.CharField(max_length=255, verbose_name='address')
-    payment_type = models.CharField(max_length=50, choices=PaymentTypes.choices, blank=False, default=PaymentTypes.CARD,
+    payment_type = models.CharField(max_length=50, choices=PaymentTypes.choices, blank=False,
+                                    default=PaymentTypes.CARD,
                                     verbose_name='payment type')
     status = models.CharField(max_length=15, choices=OrderStatus.choices, default=OrderStatus.CREATED,
                               verbose_name='status')
