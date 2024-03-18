@@ -17,6 +17,7 @@ class SiteSettingsForm(forms.ModelForm):
         model: Type[SiteSettings] = SiteSettings  # Модель, связанная с формой
         fields: list[str] = [
             "docs_dir",
+            "fixture_dir",
             "successful_imports_dir",
             "failed_imports_dir",
             "banners_expiration_time",

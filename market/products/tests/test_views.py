@@ -1,7 +1,11 @@
-﻿from django.test import TestCase
+﻿import os
+
+from django.core.serializers import deserialize
+from django.test import TestCase
 from django.urls import reverse
 
 from products.models import Product, Banner
+from settings_app.models import SiteSettings
 
 
 class ProductDetailViewTestCase(TestCase):
@@ -9,19 +13,25 @@ class ProductDetailViewTestCase(TestCase):
     Класс тестирования главной страницы
     """
 
-    fixtures = [
-        "01-groups.json",
-        "02-users.json",
-        "04-shops.json",
-        "05-categories.json",
-        "06-tags.json",
-        "07-products.json",
-        "08-offers.json",
-        "14-images.json",
-        "15-banners.json",
-    ]
+    @classmethod
+    def setUpTestData(cls) -> None:
+        cls.fixture_dir: str = SiteSettings.load().fixture_dir
+        cls.fixtures = [
+            os.path.join(cls.fixture_dir, "05-categories.json"),
+            os.path.join(cls.fixture_dir, "06-tags.json"),
+            os.path.join(cls.fixture_dir, "07-products.json"),
+            os.path.join(cls.fixture_dir, "15-banners.json"),
+        ]
+        cls.load_fixtures()
 
-    def setUp(self):
+    @classmethod
+    def load_fixtures(cls) -> None:
+        for fixture_file in cls.fixtures:
+            with open(fixture_file, "rb") as fixture:
+                for obj in deserialize("json", fixture, ignorenonexistent=True):
+                    obj.save()
+
+    def setUp(self) -> None:
         """
         Метод настройки окружения для тестирования.
         Создает экземпляр Продукта, Баннера
@@ -29,7 +39,7 @@ class ProductDetailViewTestCase(TestCase):
         self.product = Product.objects.get(pk=1)
         self.banner = Banner.objects.get(pk=1)
 
-    def test_index_view(self):
+    def test_index_view(self) -> None:
         """
         Метод тестирования главной страницы.
         Проверяет:

@@ -388,27 +388,19 @@ def notify_admin_about_import_success(
         print("Subject:", "Импорт успешно завершен")
         print("Message:", message)
         print("Email Host:", email_host)
+        print("To:", site_settings.email_access_settings.get("EMAIL_HOST_USER"))
         print("Sender:", user.email)  # Using the user's email as the sender
-
-        # Fetch the admin user based on your criteria
-        admin_user = User.objects.filter(
-            is_staff=True
-        ).first()  # Fetch the first admin user with is_staff flag set to True
-        if admin_user:
-            admin_email = admin_user.email
-        else:
-            admin_email = site_settings.email_access_settings.get(
-                "DEFAULT_ADMIN_EMAIL", ""
-            )  # Fallback to a default admin email
 
         send_mail(
             "Импорт успешно завершен",
             message,
             user.email,  # Using the user's email as the sender
-            [admin_email],  # Use the admin user's email address as the recipient
+            [
+                site_settings.email_access_settings.get("EMAIL_HOST_USER"),
+            ],  # Use the admin user's email address as the recipient
             fail_silently=False,
         )
-        print(f'email_host_user :{site_settings.email_access_settings.get("EMAIL_HOST_USER", "")}')
+        print(f'EMAIL_HOST_USER :{site_settings.email_access_settings.get("EMAIL_HOST_USER", "")}')
     except Exception as e:  # noqa
         print("An error occurred while sending email:")
         print(traceback.format_exc())

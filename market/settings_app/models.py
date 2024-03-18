@@ -10,6 +10,7 @@ from .singleton_model import (
     FAILED_IMPORTS_DIR,
     SUCCESSFUL_IMPORTS_DIR,
     DOCS_DIR,
+    FIXTURE_DIR,
 )
 
 
@@ -70,6 +71,7 @@ class SiteSettings(SingletonModel):
     failed_imports_dir = models.CharField(
         max_length=255, default=FAILED_IMPORTS_DIR, verbose_name="Директория неудачных импортов"
     )  # Директория для неудачных импортов
+    fixture_dir = models.CharField(max_length=255, default=FIXTURE_DIR, verbose_name="Директория фикстур")
     banners_expiration_time = models.PositiveIntegerField(
         default=BANNERS_EXPIRATION_TIME, verbose_name="Время истечения баннеров"
     )  # Время истечения баннеров (в секундах)
