@@ -4,7 +4,13 @@ from typing import Dict, Any
 from django.db import models
 from django.urls import reverse
 
-from .singleton_model import SingletonModel
+from .singleton_model import (
+    SingletonModel,
+    BANNERS_EXPIRATION_TIME,
+    FAILED_IMPORTS_DIR,
+    SUCCESSFUL_IMPORTS_DIR,
+    DOCS_DIR,
+)
 
 
 def get_default_email_access_settings() -> Dict[str, Any]:
@@ -13,10 +19,19 @@ def get_default_email_access_settings() -> Dict[str, Any]:
     """
     return {
         "EMAIL_HOST": os.getenv("EMAIL_HOST", ""),
-        "EMAIL_PORT": os.getenv("EMAIL_PORT", ""),
         "EMAIL_USE_TLS": os.getenv("EMAIL_USE_TLS", ""),
         "EMAIL_USE_SSL": os.getenv("EMAIL_USE_SSL", ""),
+        "EMAIL__HOST_PORT": os.getenv("EMAIL_HOST_PORT", ""),
+        "EMAIL_HOST_USER": os.getenv("EMAIL_HOST_USER", ""),
+        "EMAIL_HOST_PASSWORD": os.getenv("EMAIL_HOST_PASSWORD", ""),
     }
+
+
+def get_default_email_credentials() -> Dict[str, str]:
+    """
+    Returns the default email credentials as an empty dictionary.
+    """
+    return {}
 
 
 class ProjectSettingsManager(models.Manager):
@@ -47,28 +62,33 @@ class SiteSettings(SingletonModel):
     """
 
     docs_dir = models.CharField(
-        max_length=255, default="docs", verbose_name="Директория документов"
+        max_length=255, default=DOCS_DIR, verbose_name="Директория документов"
     )  # Директория для хранения документов
     successful_imports_dir = models.CharField(
-        max_length=255, default="successful_imports", verbose_name="Директория успешных импортов"
+        max_length=255, default=SUCCESSFUL_IMPORTS_DIR, verbose_name="Директория успешных импортов"
     )  # Директория для успешных импортов
     failed_imports_dir = models.CharField(
-        max_length=255, default="failed_imports", verbose_name="Директория неудачных импортов"
+        max_length=255, default=FAILED_IMPORTS_DIR, verbose_name="Директория неудачных импортов"
     )  # Директория для неудачных импортов
     banners_expiration_time = models.PositiveIntegerField(
-        default=600, verbose_name="Время истечения баннеров"
+        default=BANNERS_EXPIRATION_TIME, verbose_name="Время истечения баннеров"
     )  # Время истечения баннеров (в секундах)
     email_access_settings = models.JSONField(
         default=get_default_email_access_settings,
         verbose_name="Настройки доступа к электронной почте",
         help_text="Настройки доступа к электронной почте из .env",
-    )  # Настройки доступа к электронной почте
+    )
     email_credentials = models.JSONField(
-        default=dict,
+        default=get_default_email_credentials,
         verbose_name="Почтовые учетные данные",
         help_text="Почтовые учетные данные из .env",
     )  # Почтовые учетные данные
     objects = ProjectSettingsManager()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.DEFAULT_FROM_EMAIL = get_default_email_credentials()
 
     def save(self, *args: Any, **kwargs: Any) -> None:
         """

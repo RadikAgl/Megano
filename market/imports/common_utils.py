@@ -1,8 +1,8 @@
 import os
+import traceback
 from _csv import reader
 from typing import List, Optional, Tuple
 
-from django.conf import settings
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.db import IntegrityError, transaction
@@ -12,6 +12,7 @@ from filelock import FileLock
 
 from accounts.models import User
 from products.models import Category, Product, Tag
+from settings_app.models import SiteSettings
 from shops.models import Offer, Shop
 from .models import ImportLog, ImportLogProduct
 
@@ -283,6 +284,7 @@ def log_and_notify_error(
     """
     try:
         user = User.objects.get(id=user_id)
+        site_settings = SiteSettings.load()
         import_log = ImportLog.objects.create(file_name=file_name, status="Завершён с ошибкой", user=user)
         import_log.error_details = error_message
         import_log.save()
@@ -294,8 +296,8 @@ def log_and_notify_error(
             f"Всего товаров: {total_products}\n"
             f"Успешные импорты: {successful_imports}\n"
             f"Неудачные импорты: {failed_imports}",
-            settings.DEFAULT_FROM_EMAIL,
-            [settings.DEFAULT_FROM_EMAIL],
+            site_settings.DEFAULT_FROM_EMAIL,
+            [site_settings.DEFAULT_FROM_EMAIL],
             fail_silently=False,
         )
     except Exception as e:
@@ -359,30 +361,57 @@ def notify_admin_about_import_success(
     user_id: int, file_name: str, total_products: int, successful_imports: int, failed_imports: int
 ) -> None:
     """
-    Уведомление администратора об успешном импорте.
+    Notify the admin about a successful import.
 
     Args:
-        user_id (int): Идентификатор пользователя.
-        file_name (str): Название импортированного файла.
-        total_products (int): Общее количество продуктов.
-        successful_imports (int): Количество успешных импортов.
-        failed_imports (int): Количество неудачных импортов.
+        user_id (int): The user's ID.
+        file_name (str): The name of the imported file.
+        total_products (int): Total number of products imported.
+        successful_imports (int): Number of successful imports.
+        failed_imports (int): Number of failed imports.
     """
-    user = User.objects.get(id=user_id)
-    message = (
-        f"Импорт файла {file_name} успешно завершен.\n"
-        f"Загружено пользователем: {user.username} ({user.email}).\n"
-        f"Всего товаров: {total_products}\n"
-        f"Успешных импортов: {successful_imports}\n"
-        f"Неудачных импортов: {failed_imports}"
-    )
-    send_mail(
-        "Импорт успешно завершен",
-        message,
-        settings.DEFAULT_FROM_EMAIL,
-        [settings.DEFAULT_FROM_EMAIL],
-        fail_silently=False,
-    )
+    try:
+        user = User.objects.get(id=user_id)
+        site_settings = SiteSettings.load()
+
+        message = (
+            f"Импорт файла {file_name} успешно завершен.\n"
+            f"Загружено пользователем: {user.username} ({user.email}).\n"
+            f"Всего товаров: {total_products}\n"
+            f"Успешных импортов: {successful_imports}\n"
+            f"Неудачных импортов: {failed_imports}"
+        )
+
+        email_host = site_settings.email_access_settings.get("EMAIL_HOST", "")
+
+        print("Sending email...")
+        print("Subject:", "Импорт успешно завершен")
+        print("Message:", message)
+        print("Email Host:", email_host)
+        print("Sender:", user.email)  # Using the user's email as the sender
+
+        # Fetch the admin user based on your criteria
+        admin_user = User.objects.filter(
+            is_staff=True
+        ).first()  # Fetch the first admin user with is_staff flag set to True
+        if admin_user:
+            admin_email = admin_user.email
+        else:
+            admin_email = site_settings.email_access_settings.get(
+                "DEFAULT_ADMIN_EMAIL", ""
+            )  # Fallback to a default admin email
+
+        send_mail(
+            "Импорт успешно завершен",
+            message,
+            user.email,  # Using the user's email as the sender
+            [admin_email],  # Use the admin user's email address as the recipient
+            fail_silently=False,
+        )
+        print(f'email_host_user :{site_settings.email_access_settings.get("EMAIL_HOST_USER", "")}')
+    except Exception as e:  # noqa
+        print("An error occurred while sending email:")
+        print(traceback.format_exc())
 
 
 @transaction.atomic
@@ -397,9 +426,6 @@ def process_import_common(uploaded_file, user_id: int) -> str:
     Returns:
         str: Сообщение об ошибке (пустая строка в случае успешного импорта).
     """
-    successful_imports_dir = os.path.join(settings.DOCS_DIR[0], settings.SUCCESSFUL_IMPORTS_DIR)
-    failed_imports_dir = os.path.join(settings.DOCS_DIR[0], settings.FAILED_IMPORTS_DIR)
-
     try:
         acquire_lock()
         file_name = uploaded_file.name
@@ -417,6 +443,10 @@ def process_import_common(uploaded_file, user_id: int) -> str:
 
         if import_log is None:
             import_log = create_import_log(file_name, user, "in_progress")
+
+        site_settings = SiteSettings.load()
+        successful_imports_dir = os.path.join(site_settings.docs_dir, site_settings.successful_imports_dir)
+        failed_imports_dir = os.path.join(site_settings.docs_dir, site_settings.failed_imports_dir)
 
         for row in csv_rows:
             try:
