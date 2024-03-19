@@ -389,18 +389,23 @@ def notify_admin_about_import_success(
         print("Message:", message)
         print("Email Host:", email_host)
         print("To:", site_settings.email_access_settings.get("EMAIL_HOST_USER"))
-        print("Sender:", user.email)  # Using the user's email as the sender
-
-        send_mail(
+        print("Sender:", user.email)
+        response = send_mail(
             "Импорт успешно завершен",
             message,
-            user.email,  # Using the user's email as the sender
-            [
-                site_settings.email_access_settings.get("EMAIL_HOST_USER"),
-            ],  # Use the admin user's email address as the recipient
+            user.email,
+            [site_settings.email_access_settings.get("EMAIL_HOST_USER")],
             fail_silently=False,
         )
-        print(f'EMAIL_HOST_USER :{site_settings.email_access_settings.get("EMAIL_HOST_USER", "")}')
+
+        # Print sending status and server response
+        if response == 1:
+            print("Email sent successfully.")
+        else:
+            print("Failed to send email.")
+
+        print(f"Server response: {response}")
+        print(f'EMAIL_HOST_USER: {site_settings.email_access_settings.get("EMAIL_HOST_USER", "")}')
     except Exception as e:  # noqa
         print("An error occurred while sending email:")
         print(traceback.format_exc())
