@@ -1,48 +1,73 @@
-from unittest.mock import patch, MagicMock
+import unittest
+from unittest.mock import MagicMock, patch
 
-from django.test import TestCase
+from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 
-from accounts.models import User
-from imports.common_utils import notify_admin_about_import_success
+from imports.common_utils import process_import_common
 
 
-class TestNotifyAdminAboutImportSuccess(TestCase):
-    @patch("imports.common_utils.send_mail")
-    @patch("settings_app.models.SiteSettings.load")
+class TestProcessImportCommon(unittest.TestCase):
+    @patch("os.makedirs")
+    @patch("builtins.open", create=True)
     @patch("accounts.models.User.objects.get")
-    def test_notify_admin_about_import_success(self, mock_user_get, mock_site_settings_load, mock_send_mail):
-        # Mock User object
-        user_id = 1
-        user_email = "user@example.com"
-        user_username = "testuser"
-        user = MagicMock(spec=User)
-        user.email = user_email
-        user.username = user_username
-        mock_user_get.return_value = user
+    @patch("settings_app.models.SiteSettings.load")
+    @patch("imports.common_utils.get_user_shop")
+    @patch("imports.common_utils.create_product_and_offer")
+    @patch("imports.models.ImportLog.objects.filter")
+    def test_process_import_common_with_data(
+        self,
+        mock_import_log_filter: MagicMock,
+        mock_create_product_and_offer: MagicMock,
+        mock_get_user_shop: MagicMock,
+        mock_site_settings_load: MagicMock,
+        mock_user_objects_get: MagicMock,
+        mock_open: MagicMock,
+        mock_os_makedirs: MagicMock,
+    ) -> None:
+        """
+        Тестирование функции process_import_common при наличии данных.
 
-        # Mock SiteSettings object
-        site_settings = MagicMock()
-        site_settings.email_access_settings = {"EMAIL_HOST_USER": "admin@example.com"}  # Mock email settings
-        mock_site_settings_load.return_value = site_settings
+        Args:
+            mock_import_log_filter (MagicMock): Мок объекта фильтрации логов импорта.
+            mock_create_product_and_offer (MagicMock): Мок функции создания товара и предложения.
+            mock_get_user_shop (MagicMock): Мок функции получения магазина пользователя.
+            mock_site_settings_load (MagicMock): Мок загрузки настроек сайта.
+            mock_user_objects_get (MagicMock): Мок функции получения пользователя.
+            mock_open (MagicMock): Мок функции открытия файла.
+            mock_os_makedirs (MagicMock): Мок функции создания директории.
 
-        # Call the function
-        file_name = "test.csv"
-        total_products = 10
-        successful_imports = 8
-        failed_imports = 2
-        notify_admin_about_import_success(user_id, file_name, total_products, successful_imports, failed_imports)
+        Returns:
+            None
+        """
+        # Настройка моков
+        mock_user = MagicMock(spec=User)
+        mock_user.id = 1
+        mock_shop = MagicMock()  # Мок атрибута магазина
+        mock_user.shop = mock_shop
+        mock_user_objects_get.return_value = mock_user
 
-        # Assertions
-        mock_user_get.assert_called_once_with(id=user_id)
-        mock_site_settings_load.assert_called_once()
-        mock_send_mail.assert_called_once_with(
-            "Импорт успешно завершен",
-            f"Импорт файла {file_name} успешно завершен.\n"
-            f"Загружено пользователем: {user_username} ({user_email}).\n"
-            f"Всего товаров: {total_products}\n"
-            f"Успешных импортов: {successful_imports}\n"
-            f"Неудачных импортов: {failed_imports}",
-            user_email,  # Sender
-            ["admin@example.com"],  # Recipient
-            fail_silently=False,
+        mock_site_settings = MagicMock()
+        mock_site_settings.docs_dir = "/docs"
+        mock_site_settings.successful_imports_dir = "successful_imports"
+        mock_site_settings.failed_imports_dir = "failed_imports"
+        mock_site_settings_load.return_value = mock_site_settings
+
+        mock_get_user_shop.return_value = MagicMock()  # Мок магазина
+
+        # Мок загрузки файла с предоставленными данными
+        file_content = (
+            "name,main_category,subcategory,description,details,tags,price,remains\n"
+            'Samsung A50,Гаджеты,Смартфоны,Отличный смартфон,"Диагональ экрана, дм",'
+            '5,Цвет,белый,Страна-производитель,Корея,"смартфон, samsung",18000,10\n'
         )
+        uploaded_file = SimpleUploadedFile("test.csv", file_content.encode())
+
+        # Вызов функции
+        result = process_import_common(uploaded_file, 1)
+
+        # Проверки
+        mock_create_product_and_offer.assert_called_once()
+        mock_open.assert_called_once()
+        mock_os_makedirs.assert_called_once()
+        self.assertEqual(result, "")

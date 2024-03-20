@@ -1,12 +1,13 @@
+import logging
 import os
-import traceback
+import smtplib
 from _csv import reader
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from typing import List, Optional, Tuple
 
 from django.core.cache import cache
-from django.core.mail import send_mail
 from django.db import IntegrityError, transaction
-from django.db.models import Max
 from django.utils import timezone
 from filelock import FileLock
 
@@ -18,6 +19,7 @@ from .models import ImportLog, ImportLogProduct
 
 lock_key = "import_lock"
 lock_path = "import_lock.lock"
+logging.basicConfig(filename="email_errors.log", level=logging.ERROR)
 
 
 def acquire_lock():
@@ -63,11 +65,9 @@ def create_or_update_category(name: str, parent_name: str = None, parent_id: int
         if parent_id is not None and not isinstance(parent_id, int):
             parent_id = int(parent_id)
 
-        max_sort_index = Category.objects.filter(parent=parent).aggregate(Max("sort_index"))["sort_index__max"] or 0
+        sort_index = get_next_sort_index(parent_id)
 
-        category, created = Category.objects.get_or_create(
-            name=name, defaults={"sort_index": max_sort_index + 1, **defaults}
-        )
+        category, created = Category.objects.get_or_create(name=name, defaults={"sort_index": sort_index, **defaults})
 
         if not created:
             for key, value in defaults.items():
@@ -145,6 +145,7 @@ def create_product_and_offer(product_data, import_log, user_id):
         import_log: Экземпляр журнала импорта.
         user_id (int): Идентификатор пользователя.
     """
+
     (
         name,
         main_category_name,
@@ -155,7 +156,6 @@ def create_product_and_offer(product_data, import_log, user_id):
         price,
         remains,
     ) = product_data
-
     main_category, _ = create_or_update_category(main_category_name)
     create_or_update_category(subcategory_name, parent_name=main_category_name)
     tag_objects = [create_or_update_tag(tag) for tag in tags]
@@ -265,45 +265,6 @@ def create_or_update_offer(shop: Shop, product: Product, price: float, remains: 
     return created
 
 
-def log_and_notify_error(
-    error_message: str, user_id: int, file_name: str, total_products: int, successful_imports: int, failed_imports: int
-) -> str:
-    """
-    Запись ошибки и уведомление об ошибке при импорте.
-
-    Args:
-        error_message (str): Сообщение об ошибке.
-        user_id (int): Идентификатор пользователя.
-        file_name (str): Название импортированного файла.
-        total_products (int): Общее количество продуктов.
-        successful_imports (int): Количество успешных импортов.
-        failed_imports (int): Количество неудачных импортов.
-
-    Returns:
-        str: Сообщение об ошибке.
-    """
-    try:
-        user = User.objects.get(id=user_id)
-        site_settings = SiteSettings.load()
-        import_log = ImportLog.objects.create(file_name=file_name, status="Завершён с ошибкой", user=user)
-        import_log.error_details = error_message
-        import_log.save()
-
-        send_mail(
-            "Ошибка при импорте",
-            f"Возникла ошибка во время импорта файла {file_name}.\nОшибка: {error_message}\n"
-            f"Загружено пользователем: {user.username} ({user.email}).\n"
-            f"Всего товаров: {total_products}\n"
-            f"Успешные импорты: {successful_imports}\n"
-            f"Неудачные импорты: {failed_imports}",
-            site_settings.DEFAULT_FROM_EMAIL,
-            [site_settings.DEFAULT_FROM_EMAIL],
-            fail_silently=False,
-        )
-    except Exception as e:
-        return str(e)
-
-
 def create_or_update_tag(name: str) -> Tag:
     """
     Создание или обновление тега.
@@ -325,22 +286,22 @@ def create_import_log(
     total_products: int = 0,
     successful_imports: int = 0,
     failed_imports: int = 0,
-    error_details: str = None,
-) -> ImportLog:
+    error_details: Optional[str] = None,
+) -> "ImportLog":
     """
-    Создание журнала импорта.
+    Создает и сохраняет журнал импорта в базе данных.
 
     Args:
-        file_name (str): Название импортированного файла.
-        user (User): Экземпляр пользователя.
-        status (str): Состояние импорта.
-        total_products (int): Общее количество продуктов.
-        successful_imports (int): Количество успешных импортов.
-        failed_imports (int): Количество неудачных импортов.
-        error_details (str): Детали ошибки, если они есть.
+        file_name (str): Имя файла импорта.
+        user (User): Пользователь, выполнивший импорт.
+        status (str): Статус импорта.
+        total_products (int, optional): Общее количество импортированных продуктов (по умолчанию 0).
+        successful_imports (int, optional): Количество успешно импортированных продуктов (по умолчанию 0).
+        failed_imports (int, optional): Количество неудачно импортированных продуктов (по умолчанию 0).
+        error_details (str, optional): Дополнительные детали об ошибках (по умолчанию None).
 
     Returns:
-        ImportLog: Созданный журнал импорта.
+        ImportLog: Созданный объект журнала импорта.
     """
     import_log = ImportLog.objects.create(
         file_name=file_name,
@@ -353,28 +314,104 @@ def create_import_log(
     import_log.failed_imports = failed_imports
     import_log.error_details = error_details
     import_log.save()
-
     return import_log
+
+
+def send_email(sender_email: str, recipient_email: str, subject: str, body: str, site_settings: SiteSettings) -> None:
+    """
+    Отправляет электронное письмо.
+
+    Args:
+        sender_email: Адрес отправителя.
+        recipient_email: Адрес получателя.
+        subject: Тема письма.
+        body: Текст письма.
+        site_settings: Настройки сайта для доступа к электронной почте.
+
+    Raises:
+        Exception: Если произошла ошибка при отправке письма.
+    """
+    try:
+        email_host = site_settings.email_access_settings.get("EMAIL_HOST", os.getenv("EMAIL_HOST"))
+        email_port = site_settings.email_access_settings.get("EMAIL_PORT", os.getenv("EMAIL_HOST_PORT"))
+
+        message = MIMEMultipart()
+        message["From"] = sender_email
+        message["To"] = recipient_email
+        message["Subject"] = subject
+        message.attach(MIMEText(body, "plain"))
+
+        with smtplib.SMTP_SSL(email_host, email_port) as server:
+            server.login(
+                site_settings.email_access_settings.get("EMAIL_HOST_USER"),
+                site_settings.email_access_settings.get("EMAIL_HOST_PASSWORD"),
+            )
+            server.sendmail(sender_email, recipient_email, message.as_string())
+    except Exception as e:  # noqa
+        logging.error("An error occurred while sending email:", exc_info=True)
+
+
+def log_and_notify_error(
+    error_message: str, user_id: int, file_name: str, total_products: int, successful_imports: int, failed_imports: int
+) -> Optional[str]:
+    """
+    Журналирует ошибку и отправляет уведомление об ошибке по электронной почте.
+
+    Args:
+        error_message: Сообщение об ошибке.
+        user_id: Идентификатор пользователя.
+        file_name: Имя файла.
+        total_products: Общее количество товаров.
+        successful_imports: Количество успешных импортов.
+        failed_imports: Количество неудачных импортов.
+
+    Returns:
+        str: Строка с описанием ошибки, если произошла ошибка; в противном случае None.
+    """
+    try:
+        user = User.objects.get(id=user_id)
+        site_settings = SiteSettings.load()
+        sender_email = user.email
+        recipient_email = site_settings.email_access_settings.get("EMAIL_HOST_USER", os.getenv("EMAIL_HOST_USER"))
+        subject = f"Import from {user.email} status"
+
+        body = (
+            f"Импорт файла {file_name} Завершён с ошибкой.\n"
+            f"Загружено пользователем: {user.username} ({user.email}).\n"
+            f"Всего товаров: {total_products}\n"
+            f"Успешных импортов: {successful_imports}\n"
+            f"Неудачных импортов: {failed_imports}"
+        )
+
+        send_email(sender_email, recipient_email, subject, body, site_settings)
+
+    except Exception as e:
+        logging.error("An error occurred while logging and sending email:", exc_info=True)
+        return str(e)
 
 
 def notify_admin_about_import_success(
     user_id: int, file_name: str, total_products: int, successful_imports: int, failed_imports: int
 ) -> None:
     """
-    Notify the admin about a successful import.
+    Оповещает администратора об успешном импорте по электронной почте.
 
     Args:
-        user_id (int): The user's ID.
-        file_name (str): The name of the imported file.
-        total_products (int): Total number of products imported.
-        successful_imports (int): Number of successful imports.
-        failed_imports (int): Number of failed imports.
+        user_id: Идентификатор пользователя.
+        file_name: Имя файла.
+        total_products: Общее количество товаров.
+        successful_imports: Количество успешных импортов.
+        failed_imports: Количество неудачных импортов.
     """
     try:
         user = User.objects.get(id=user_id)
         site_settings = SiteSettings.load()
 
-        message = (
+        sender_email = user.email
+        recipient_email = site_settings.email_access_settings.get("EMAIL_HOST_USER", os.getenv("EMAIL_HOST_USER"))
+        subject = f"Import from {user.email} status"
+
+        body = (
             f"Импорт файла {file_name} успешно завершен.\n"
             f"Загружено пользователем: {user.username} ({user.email}).\n"
             f"Всего товаров: {total_products}\n"
@@ -382,102 +419,10 @@ def notify_admin_about_import_success(
             f"Неудачных импортов: {failed_imports}"
         )
 
-        email_host = site_settings.email_access_settings.get("EMAIL_HOST", "")
+        send_email(sender_email, recipient_email, subject, body, site_settings)
 
-        print("Sending email...")
-        print("Subject:", "Импорт успешно завершен")
-        print("Message:", message)
-        print("Email Host:", email_host)
-        print("To:", site_settings.email_access_settings.get("EMAIL_HOST_USER"))
-        print("Sender:", user.email)
-        response = send_mail(
-            "Импорт успешно завершен",
-            message,
-            user.email,
-            [site_settings.email_access_settings.get("EMAIL_HOST_USER")],
-            fail_silently=False,
-        )
-
-        # Print sending status and server response
-        if response == 1:
-            print("Email sent successfully.")
-        else:
-            print("Failed to send email.")
-
-        print(f"Server response: {response}")
-        print(f'EMAIL_HOST_USER: {site_settings.email_access_settings.get("EMAIL_HOST_USER", "")}')
     except Exception as e:  # noqa
-        print("An error occurred while sending email:")
-        print(traceback.format_exc())
-
-
-@transaction.atomic
-def process_import_common(uploaded_file, user_id: int) -> str:
-    """
-    Общий процесс импорта.
-
-    Args:
-        uploaded_file: Загруженный файл для импорта.
-        user_id (int): Идентификатор пользователя.
-
-    Returns:
-        str: Сообщение об ошибке (пустая строка в случае успешного импорта).
-    """
-    try:
-        acquire_lock()
-        file_name = uploaded_file.name
-        content = uploaded_file.read().decode("utf-8")
-
-        if not content.strip():
-            return handle_empty_file(file_name, user_id)
-
-        lines = content.split("\n")
-        csv_rows = reader(lines)
-        total_products, successful_imports, failed_imports = 0, 0, 0
-
-        user = User.objects.get(id=user_id)
-        import_log = get_existing_in_progress_import_log(user, file_name)
-
-        if import_log is None:
-            import_log = create_import_log(file_name, user, "in_progress")
-
-        site_settings = SiteSettings.load()
-        successful_imports_dir = os.path.join(site_settings.docs_dir, site_settings.successful_imports_dir)
-        failed_imports_dir = os.path.join(site_settings.docs_dir, site_settings.failed_imports_dir)
-
-        for row in csv_rows:
-            try:
-                product_data = extract_data_from_row(row)
-
-                if product_data is None:
-                    continue
-
-                create_product_and_offer(product_data, import_log, user_id)
-                total_products += 1
-                successful_imports += 1
-
-            except IndexError as index_error:
-                handle_failed_import(
-                    index_error, file_name, user_id, total_products, successful_imports, failed_imports
-                )
-                failed_imports += 1
-                break
-
-            except Exception as e:
-                handle_failed_import(e, file_name, user_id, total_products, successful_imports, failed_imports)
-                failed_imports += 1
-                break
-    except (IntegrityError, ImportError, Exception) as e:
-        error_message = f"Error occurred: {str(e)}"
-
-        handle_failed_import(e, file_name, user_id, total_products, successful_imports, failed_imports)
-        return error_message
-    finally:
-        release_lock()
-        handle_import_log_status(import_log, successful_imports, failed_imports)
-        handle_destination_path(file_name, content, import_log, successful_imports_dir, failed_imports_dir)
-
-    return ""
+        logging.error("An error occurred while sending email:", exc_info=True)
 
 
 def get_existing_in_progress_import_log(user, file_name):
@@ -509,7 +454,7 @@ def handle_empty_file(file_name, user_id):
     return log_and_notify_error(error_message, user_id, file_name, 0, 0, 1)
 
 
-def handle_failed_import(error, file_name, user_id, total_products, successful_imports, failed_imports):
+def handle_failed_import(content, error, file_name, user_id, total_products, successful_imports, failed_imports):
     """
     Обработка случая неудачного импорта.
 
@@ -521,8 +466,51 @@ def handle_failed_import(error, file_name, user_id, total_products, successful_i
         successful_imports (int): Количество успешных импортов.
         failed_imports (int): Количество неудачных импортов.
     """
-    log_and_notify_error(str(error), user_id, file_name, total_products, successful_imports, failed_imports)
-    import_log = ImportLog.objects.filter(user_id=user_id, file_name=file_name).order_by("-id").first()  # noqa
+    try:
+        logging.error("Handling failed import for file: %s", file_name)
+
+        import_log = (
+            ImportLog.objects.filter(user_id=user_id, file_name=file_name, status="in_progress")
+            .order_by("-id")
+            .first()
+        )
+
+        if import_log:
+            logging.error("Found existing import log for file: %s", file_name)
+            import_log.status = "Завершён с ошибкой"
+            import_log.error_details = str(error)
+            import_log.save()
+        else:
+            logging.error("Creating new import log for file: %s", file_name)
+            import_log = create_import_log(
+                file_name=file_name,
+                user=User.objects.get(id=user_id),
+                status="Завершён с ошибкой",
+                total_products=total_products,
+                successful_imports=successful_imports,
+                failed_imports=failed_imports,
+                error_details=str(error),
+            )
+
+        new_file_name = f"{import_log.timestamp.strftime('%H-%M-%S_%d-%m-%Y')}_{get_shop_name(import_log.user.id)}.csv"
+        site_settings = SiteSettings.load()
+        failed_imports_dir = os.path.join(site_settings.docs_dir, site_settings.failed_imports_dir)
+        destination_path = os.path.join(failed_imports_dir, new_file_name)
+
+        with open(destination_path, "w", encoding="utf-8") as dest_file:
+            dest_file.write(content)
+
+        if import_log.failed_imports == 0:
+            notify_admin_about_import_success(
+                import_log.user.id,
+                new_file_name,
+                import_log.total_products,
+                import_log.successful_imports,
+                import_log.failed_imports,
+            )
+
+    except Exception as e:  # noqa
+        logging.error("An error occurred while handling failed import:", exc_info=True)
 
 
 @transaction.atomic
@@ -535,6 +523,10 @@ def handle_import_log_status(import_log, successful_imports, failed_imports):
         successful_imports (int): Количество успешных импортов.
         failed_imports (int): Количество неудачных импортов.
     """
+    print(
+        f"Handling import log status for log: {import_log}, successful imports: {successful_imports}, "
+        f"failed imports: {failed_imports}"
+    )
     if failed_imports > 0:
         import_log.status = "Завершён с ошибкой"
     else:
@@ -579,33 +571,124 @@ def handle_destination_path(file_name, content, import_log, successful_imports_d
 
 def extract_data_from_row(row: List[str]) -> Optional[Tuple[str, str, str, str, dict, List[str], str, str]]:
     """
-    Извлечение данных из строки CSV.
+    Извлекает данные из строки CSV и возвращает кортеж с данными продукта.
 
-    Args:
-        row (List[str]): Строка CSV.
-
-    Returns:
-        Optional[Tuple[str, str, str, str, dict, List[str], str, str]]: Кортеж данных продукта или None,
-                                                                      если данные не могут быть извлечены.
+    :param row: Строка CSV.
+    :return: Кортеж с данными продукта или None, если строка содержит заголовок.
     """
     try:
+        if row[0].lower() == "name":
+            return None
+
         name = row[0].strip()
         main_category_name = row[1].strip()
         subcategory_name = row[2].strip()
         description = row[3].strip()
-        details = row[4].strip()
-        tags = [tag.strip() for tag in row[5].split(",")] if row[5] else []
-        price = row[6].strip()
-        remains = row[7].strip()
+        details = row[4::2]
+        values = row[5::2]
+        tags = [tag.strip() for tag in row[10].split(",")] if row[10] else []
+        price = row[11].strip()
+        remains = row[12].strip()
 
         details_dict = {}
 
-        if details:
-            details_list = details.split(",")
-            for detail in details_list:
-                key, value = detail.split(":")
-                details_dict[key.strip()] = value.strip()
+        for detail, value in zip(details, values):
+            details_dict[detail.strip()] = value.strip()
 
         return name, main_category_name, subcategory_name, description, details_dict, tags, price, remains
     except IndexError:
         return None
+
+
+@transaction.atomic
+def process_import_common(uploaded_file, user_id: int) -> str:  # noqa: C901
+    """
+    Обрабатывает общий процесс импорта.
+
+    Args:
+        uploaded_file: Загруженный файл.
+        user_id: Идентификатор пользователя.
+
+    Returns:
+        str: Сообщение об ошибке, если есть, в противном случае пустая строка.
+    """
+    try:
+        print("Starting import process for user:", user_id, "file:", uploaded_file.name)
+        acquire_lock()
+        file_name = uploaded_file.name
+        content = uploaded_file.read().decode("utf-8")
+
+        if not content.strip():
+            return handle_empty_file(file_name, user_id)
+
+        lines = content.split("\n")
+        csv_rows = reader(lines)
+        total_products, successful_imports, failed_imports = 0, 0, 0
+
+        user = User.objects.get(id=user_id)
+        import_log = get_existing_in_progress_import_log(user, file_name)
+
+        if import_log is None:
+            import_log = create_import_log(file_name, user, "in_progress")
+        else:
+            import_log.status = "in_progress"
+            import_log.total_products = 0
+            import_log.successful_imports = 0
+            import_log.failed_imports = 0
+            import_log.error_details = None
+            import_log.save()
+
+        site_settings = SiteSettings.load()
+        successful_imports_dir = os.path.join(site_settings.docs_dir, site_settings.successful_imports_dir)
+        failed_imports_dir = os.path.join(site_settings.docs_dir, site_settings.failed_imports_dir)
+
+        for row in csv_rows:
+            try:
+                product_data = extract_data_from_row(row)
+                if product_data is None:
+                    continue
+                create_product_and_offer(product_data, import_log, user_id)
+                total_products += 1
+                successful_imports += 1
+
+            except (IndexError, Exception) as e:
+                handle_failed_import(e, file_name, user_id, total_products, successful_imports, failed_imports)
+                failed_imports += 1
+
+        if total_products == 0 or failed_imports > 0:
+            import_log.status = "Завершён с ошибкой"
+            log_and_notify_error(
+                "Import process failed", user_id, file_name, total_products, successful_imports, failed_imports
+            )
+            destination_dir = failed_imports_dir
+        else:
+            import_log.status = "Выполнен"
+            destination_dir = successful_imports_dir
+
+        import_log.total_products = total_products
+        import_log.successful_imports = successful_imports
+        import_log.failed_imports = failed_imports
+        import_log.save()
+
+        os.makedirs(destination_dir, exist_ok=True)
+        new_file_name = f"{import_log.timestamp.strftime('%H-%M-%S_%d-%m-%Y')}_{get_shop_name(import_log.user.id)}.csv"
+        destination_path = os.path.join(destination_dir, new_file_name)
+        with open(destination_path, "w", encoding="utf-8") as dest_file:
+            dest_file.write(content)
+        if total_products > 0 and failed_imports == 0:
+            notify_admin_about_import_success(
+                user_id,
+                new_file_name,
+                total_products,
+                successful_imports,
+                failed_imports,
+            )
+
+    except (IntegrityError, ImportError, Exception) as e:
+        error_message = f"Error occurred: {str(e)}"
+        handle_failed_import(e, file_name, user_id, total_products, successful_imports, failed_imports)
+        return error_message
+    finally:
+        release_lock()
+
+    return ""

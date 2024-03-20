@@ -14,9 +14,12 @@ from .singleton_model import (
 )
 
 
-def get_default_email_access_settings() -> Dict[str, Any]:
+def get_default_email_settings() -> Dict[str, Any]:
     """
     Получает настройки доступа к почте по умолчанию из переменных окружения.
+
+    Returns:
+        Dict[str, Any]: Словарь с настройками доступа к почте.
     """
     return {
         "EMAIL_HOST": os.getenv("EMAIL_HOST", ""),
@@ -26,13 +29,6 @@ def get_default_email_access_settings() -> Dict[str, Any]:
         "EMAIL_HOST_USER": os.getenv("EMAIL_HOST_USER", ""),
         "EMAIL_HOST_PASSWORD": os.getenv("EMAIL_HOST_PASSWORD", ""),
     }
-
-
-def get_default_email_credentials() -> Dict[str, str]:
-    """
-    Returns the default email credentials as an empty dictionary.
-    """
-    return {}
 
 
 class ProjectSettingsManager(models.Manager):
@@ -76,54 +72,21 @@ class SiteSettings(SingletonModel):
         default=BANNERS_EXPIRATION_TIME, verbose_name="Время истечения баннеров"
     )  # Время истечения баннеров (в секундах)
     email_access_settings = models.JSONField(
-        default=get_default_email_access_settings,
-        verbose_name="Настройки доступа к электронной почте",
-        help_text="Настройки доступа к электронной почте из .env",
+        default=get_default_email_settings,
+        verbose_name="Email Settings",
+        help_text="Email access settings from .env",
     )
-    email_credentials = models.JSONField(
-        default=get_default_email_credentials,
-        verbose_name="Почтовые учетные данные",
-        help_text="Почтовые учетные данные из .env",
-    )  # Почтовые учетные данные
     objects = ProjectSettingsManager()
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.DEFAULT_FROM_EMAIL = get_default_email_credentials()
 
     def save(self, *args: Any, **kwargs: Any) -> None:
         """
         Переопределенный метод сохранения для модели SiteSettings.
-
-        При сохранении настроек сайта обновляются учетные данные электронной почты из файла .env,
-         если они не предоставлены.
         """
-
-        # Обновление учетных данных электронной почты, если они предоставлены в переменных окружения
-        username = os.getenv("EMAIL_HOST_USER", "")
-        password = os.getenv("EMAIL_HOST_PASSWORD", "")
-        if username and password:
-            email_credentials = {
-                "username": username,
-                "password": password,
-            }
-            self.email_credentials = email_credentials
-        else:
-            # Проверка, установлены ли учетные данные электронной почты или являются ли они пустым словарем
-            if not self.email_credentials or self.email_credentials == {}:
-                # Установка пустого словаря, если учетные данные
-                # электронной почты не предоставлены в переменных окружения
-                self.email_credentials = {}
-
-        super().save(*args, **kwargs)  # Вызов метода сохранения родителя для сохранения изменений
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self) -> str:
         """
         Возвращает URL для просмотра или редактирования настроек сайта.
-
-        Если объект уже существует в базе данных, возвращает URL для редактирования.
-        В противном случае, возвращает URL для добавления новых настроек.
         """
         if self.pk:
             return reverse("settings_app:sitesettings_change", kwargs={"pk": self.pk})

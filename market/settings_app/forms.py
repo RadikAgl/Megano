@@ -22,5 +22,4 @@ class SiteSettingsForm(forms.ModelForm):
             "failed_imports_dir",
             "banners_expiration_time",
             "email_access_settings",
-            "email_credentials",
         ]  # Поля, отображаемые в форме для редактирования настроек сайта
