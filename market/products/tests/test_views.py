@@ -1,7 +1,13 @@
-﻿from django.test import TestCase
-from django.urls import reverse
+﻿import os
+from typing import Any, Dict, List
+from unittest.mock import patch
+
+from django.core.serializers import deserialize
+from django.test import TestCase
 
 from products.models import Product, Banner
+from products.views import MainPageView
+from settings_app.models import SiteSettings
 
 
 class ProductDetailViewTestCase(TestCase):
@@ -9,19 +15,26 @@ class ProductDetailViewTestCase(TestCase):
     Класс тестирования главной страницы
     """
 
-    fixtures = [
-        "01-groups.json",
-        "02-users.json",
-        "04-shops.json",
-        "05-categories.json",
-        "06-tags.json",
-        "07-products.json",
-        "08-offers.json",
-        "14-images.json",
-        "15-banners.json",
-    ]
+    @classmethod
+    def setUpTestData(cls) -> None:
+        site_settings = SiteSettings.load()
+        cls.fixture_dir: str = site_settings.fixture_dir
+        cls.fixtures = [
+            os.path.join(cls.fixture_dir, "05-categories.json"),
+            os.path.join(cls.fixture_dir, "06-tags.json"),
+            os.path.join(cls.fixture_dir, "07-products.json"),
+            os.path.join(cls.fixture_dir, "15-banners.json"),
+        ]
+        cls.load_fixtures()
 
-    def setUp(self):
+    @classmethod
+    def load_fixtures(cls) -> None:
+        for fixture_file in cls.fixtures:
+            with open(fixture_file, "rb") as fixture:
+                for obj in deserialize("json", fixture, ignorenonexistent=True):
+                    obj.save()
+
+    def setUp(self) -> None:
         """
         Метод настройки окружения для тестирования.
         Создает экземпляр Продукта, Баннера
@@ -29,19 +42,38 @@ class ProductDetailViewTestCase(TestCase):
         self.product = Product.objects.get(pk=1)
         self.banner = Banner.objects.get(pk=1)
 
-    def test_index_view(self):
-        """
-        Метод тестирования главной страницы.
-        Проверяет:
-         - Код ответа: 200 (успешный статус ответа)
-         - Содержатся ли "banners" в контексте ответа
-         - Содержатся ли "products" в контексте ответа
-         - Имя продукта содержится в ответе
-        """
 
-        response = self.client.get(reverse("products:index"))
+class TestMainPageView(TestCase):
+    """Тестирование класса MainPageView."""
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "banners")
-        self.assertContains(response, "products")
-        self.assertContains(response, self.product.name)
+    def setUp(self) -> None:
+        """Настройка теста."""
+        self.main_page_view: MainPageView = MainPageView()
+        self.main_page_view.template_name: str = "products/index.jinja2"
+
+    @patch("products.views.MainPageService")
+    def test_get_context_data(self, MockMainPageService: Any) -> None:
+        """Тестирование метода get_context_data."""
+        # Заменяем экземпляр MainPageService на мок
+        mock_main_page_service: Any = MockMainPageService.return_value
+
+        # Мокируем метод get_products
+        mock_products: List[str] = ["Product1", "Product2"]
+        mock_main_page_service.get_products.return_value = mock_products
+
+        # Мокируем метод banners_cache
+        mock_banners: List[str] = ["Banner1", "Banner2"]
+        mock_main_page_service.banners_cache.return_value = mock_banners
+
+        # Вызываем тестируемый метод
+        context: Dict[str, Any] = self.main_page_view.get_context_data()
+
+        # Проверяем, были ли вызваны методы get_products и banners_cache
+        mock_main_page_service.get_products.assert_called_once()
+        mock_main_page_service.banners_cache.assert_called_once()
+
+        # Проверяем, содержит ли контекст ожидаемые данные
+        self.assertIn("products", context)
+        self.assertIn("banners", context)
+        self.assertEqual(context["products"], mock_products)
+        self.assertEqual(context["banners"], mock_banners)

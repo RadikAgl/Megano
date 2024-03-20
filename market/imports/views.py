@@ -1,7 +1,6 @@
 import logging
 import os
 
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
@@ -11,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import TemplateView
 
+from settings_app.models import SiteSettings
 from .common_utils import process_import_common
 from .models import ImportLog, ImportLogProduct
 from .tasks import async_import_task
@@ -135,7 +135,7 @@ class DownloadCSVTemplateView(LoginRequiredMixin, View):
         Returns:
             HttpResponse: HTTP-ответ с содержимым CSV-файла.
         """
-        docs_dir = settings.DOCS_DIR[0]  # Access the first element of the tuple
+        docs_dir = SiteSettings.load().docs_dir
         file_name = "Sheet1.csv"
         file_path = os.path.join(docs_dir, file_name)
 
