@@ -1,12 +1,12 @@
 """ Сервисы главной страницы """
 
-from django.conf import settings
 from django.core.cache import cache
 from django.db.models import QuerySet, Avg
 from django.db.models.functions import Round
 
 from products import constants
 from products.models import Product, Banner
+from settings_app.models import SiteSettings
 
 
 class MainPageService:
@@ -27,7 +27,8 @@ class MainPageService:
 
         cache_key = "banners_cache"
         data = cache.get(cache_key)
+        banners_expiration_time = SiteSettings.load().banners_expiration_time
         if not data:
             data = Banner.objects.filter(actual=True).order_by("?")[:3]
-            cache.set(cache_key, data, settings.BANNERS_EXPIRATION_TIME)
+            cache.set(cache_key, data, banners_expiration_time)
         return data
