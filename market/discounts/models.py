@@ -14,7 +14,7 @@ class DiscountBase(models.Model):
 
     title = models.CharField(max_length=100, verbose_name=_("название акции"))
     description = models.TextField(verbose_name=_("описание акции"))
-    start_date = models.DateField(default=timezone.now().date(), verbose_name=_("начало акции"))
+    start_date = models.DateField(verbose_name=_("начало акции"))
     end_date = models.DateField(verbose_name=_("окончание акции"))
     is_active = models.BooleanField(default=True, verbose_name=_("статус активности скидки"))
     weight = models.DecimalField(
