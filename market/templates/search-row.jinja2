@@ -26,9 +26,16 @@
                                         {{ loop(children) }}
                                     </div>
                                 {% endif %}
-                            </div>
-                        {% endfor %}
-
+                                </div>
+                            {% endfor %}
+                                <div class="CategoriesButton-link">
+                                    <a href="{{ url('discounts:discount-list') }}">
+                                        <div class="CategoriesButton-icon">
+                                            <img src="{{ static('img/icons/departments/6.svg') }}" alt="6.svg"/>
+                                        </div>
+                                        <span class="CategoriesButton-text">Скидки!</span>
+                                    </a>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -36,9 +43,9 @@
                 </div>
                 <div class="Header-search">
                     <div class="search">
-                        <form class="form form_search" action="#" method="post">
+                        <form class="form form_search" action="{{ url('products:catalog') }}" method="get">
                             {% csrf_token %}
-                            <input class="search-input" id="query" name="query" type="text" placeholder="{{ product_name().name }}" />
+                            <input class="search-input" id="query" name="name" type="text" placeholder="{{ product_name().name }}" />
                             <button class="search-button" type="submit" name="search" id="search"><img src="{{ static('img/icons/search.svg') }}" alt="search.svg" />Поиск
                             </button>
                         </form>

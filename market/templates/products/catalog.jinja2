@@ -109,8 +109,10 @@
                                               {% endwith %}
                                           </div>
                                           <div class="Card-hover">
-                                              <form method="post" action="{{ url('cart:cart-add', product.id) }}">
+                                              <form method="post">
                                                   {% csrf_token %}
+                                                  {{ cart_form }}
+                                                  <input type="hidden" class="product_id" id="product_id" name="product_id" value="{{ product.id }}">
                                                   <input class="Card-btn" type="image"
                                                          src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg">
                                               </form>
