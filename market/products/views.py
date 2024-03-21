@@ -3,7 +3,7 @@
 from typing import Any, Dict
 
 from django.core.handlers.wsgi import WSGIRequest
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 from django.db.models import Avg, Sum
 from django.db.models.functions import Round
 from django.shortcuts import redirect
@@ -14,6 +14,8 @@ from django.utils import timezone
 from accounts.models import ViewHistory
 from django_filters.views import FilterView
 
+from cart.cart import CartInstance
+from cart.forms import CartAddProductForm
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
@@ -47,6 +49,7 @@ class CatalogView(FilterView):
         context = super().get_context_data(**kwargs)
         context["ordering_fields"] = get_ordering_fields(ProductFilter())
         context["tags"] = get_popular_tags()
+        context["cart_form"] = CartAddProductForm()
 
         return context
 
@@ -56,6 +59,21 @@ class CatalogView(FilterView):
             .annotate(avg_price=Round(Avg("offer__price"), constants.DECIMAL_PRECISION))
             .annotate(remains=Sum("offer__remains"))
         ).exclude(avg_price=None)
+
+    def post(self, request: HttpRequest, **kwargs):
+        cart_form = CartAddProductForm(request.POST)
+        if cart_form.is_valid():
+            product_id = request.POST["product_id"]
+            product = Product.objects.get(pk=product_id)
+            quantity = cart_form.cleaned_data["quantity"]
+            cart = CartInstance(request)
+            offer = cart.get_offer(product)
+            cart.add(
+                offer=offer,
+                quantity=quantity,
+                update_quantity=True,
+            )
+        return redirect("products:catalog")
 
 
 def add_to_view_history(request, product: Product):

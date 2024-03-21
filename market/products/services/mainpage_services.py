@@ -6,7 +6,6 @@ from django.db.models.functions import Round
 
 from products import constants
 from products.models import Product, Banner
-from settings_app.models import SiteSettings
 
 
 class MainPageService:
@@ -27,7 +26,8 @@ class MainPageService:
 
         cache_key = "banners_cache"
         data = cache.get(cache_key)
-        banners_expiration_time = SiteSettings.load().banners_expiration_time
+        # banners_expiration_time = SiteSettings.load().banners_expiration_time
+        banners_expiration_time = 100
         if not data:
             data = Banner.objects.filter(actual=True).order_by("?")[:3]
             cache.set(cache_key, data, banners_expiration_time)
