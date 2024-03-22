@@ -1,4 +1,8 @@
+import os
+import uuid
+
 from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,6 +12,13 @@ from django.contrib import messages
 from cart.models import Cart, ProductInCart
 from .models import Order
 from accounts.models import User
+from dotenv import load_dotenv
+from yookassa import Configuration, Payment
+
+load_dotenv()
+
+Configuration.account_id = os.getenv('SHOP_ID')
+Configuration.secret_key = os.getenv('SECRET_KEY')
 
 
 class FirstOrderView(LoginRequiredMixin, FormView):
@@ -88,7 +99,7 @@ class FourStepView(LoginRequiredMixin, ListView):
                 'total_price': db_price
             },
         )
-        return HttpResponseRedirect(reverse('user:profile'))
+        return redirect(reverse_lazy('url:step5'))
 
     def get_context_data(self, *, object_list=None, **kwargs):
         from .service import translate
@@ -103,3 +114,12 @@ class FourStepView(LoginRequiredMixin, ListView):
         context['payment'] = pay_type
         context['product'] = ProductInCart.objects.filter(cart=cart)[:3]
         return context
+
+
+def pay(request):
+    total_price = Order.objects.get(user=request.user.id).total_price
+
+    context = {
+        'price': total_price
+    }
+    return render(request, 'order/pay.jinja2', context=context)
