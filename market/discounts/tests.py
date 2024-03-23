@@ -17,6 +17,9 @@ class DiscountProductModelTest(TestCase):
     def setUpTestData(cls) -> None:
         cls.fixture_dir: str = SiteSettings.load().fixture_dir
         cls.fixtures: List[str] = [
+            os.path.join(cls.fixture_dir, "05-categories.json"),
+            os.path.join(cls.fixture_dir, "06-tags.json"),
+            os.path.join(cls.fixture_dir, "07-products.json"),
             os.path.join(cls.fixture_dir, "09-discounts_product.json"),
         ]
         cls.load_fixtures()
@@ -48,6 +51,9 @@ class DiscountSetModelTest(TestCase):
     def setUpTestData(cls) -> None:
         cls.fixture_dir: str = SiteSettings.load().fixture_dir
         cls.fixtures: List[str] = [
+            os.path.join(cls.fixture_dir, "05-categories.json"),
+            os.path.join(cls.fixture_dir, "06-tags.json"),
+            os.path.join(cls.fixture_dir, "07-products.json"),
             os.path.join(cls.fixture_dir, "10-discounts_set.json"),
         ]
         cls.load_fixtures()
@@ -79,7 +85,7 @@ class DiscountCartModelTest(TestCase):
     def setUpTestData(cls) -> None:
         cls.fixture_dir: str = SiteSettings.load().fixture_dir
         cls.fixtures: List[str] = [
-            os.path.join(cls.fixture_dir, "09-discounts_product.json"),
+            os.path.join(cls.fixture_dir, "11-discounts_cart.json"),
         ]
         cls.load_fixtures()
 
@@ -92,7 +98,7 @@ class DiscountCartModelTest(TestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.discount: DiscountProduct = DiscountCart.objects.get(pk=1)
+        self.discount: DiscountCart = DiscountCart.objects.get(pk=1)
 
     def test_fixture_loading(self) -> None:
         discount_cart_count: int = DiscountCart.objects.count()
