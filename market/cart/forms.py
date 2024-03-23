@@ -2,11 +2,11 @@
 
 from django import forms
 
-from cart.models import ProductInCart
+PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, 21)]
 
 
 class CartAddProductForm(forms.Form):
-    """Форма для обновления товаров в корзине"""
+    """Форма для обновления количества товаров в корзине"""
 
     quantity = forms.IntegerField(
         min_value=1,
@@ -26,21 +26,8 @@ class CartAddProductForm(forms.Form):
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
 
 
-class CartAddProductModelForm(forms.ModelForm):
-    """Форма для добавления товаров в корзину из карточки товара"""
+class CartAddProductCatalogForm(forms.Form):
+    """Форма для добавления товаров в корзину"""
 
-    class Meta:
-        model = ProductInCart
-        fields = ("quantity",)
-        widgets = {
-            "quantity": forms.TextInput(
-                attrs={
-                    "class": "Amount-input form-input",
-                    "min": "1",
-                    "max": "21",
-                    "size": "2",
-                    "maxlength": "2",
-                    "readonly": True,
-                }
-            )
-        }
+    quantity = forms.IntegerField(required=False, initial=1, widget=forms.HiddenInput)
+    update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
