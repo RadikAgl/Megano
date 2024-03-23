@@ -1,3 +1,4 @@
+"""Настройки URL приложения discounts"""
 from django.urls import path
 
 from discounts.views import DiscountListView, DiscountProductDetailView, DiscountCartDetailView, DiscountSetDetailView

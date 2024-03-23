@@ -28,6 +28,7 @@ class DiscountBase(models.Model):
         abstract = True
 
     def is_relevant(self):
+        """Проверяет актуальность скидки"""
         now = timezone.now().date()
         return self.start_date <= now <= self.end_date
 
@@ -41,10 +42,9 @@ class DiscountPercentageBase(DiscountBase):
         abstract = True
 
     def save(self, *args, **kwargs):
-        if self.percentage > 99:
-            self.percentage = 99
-        if self.percentage < 1:
-            self.percentage = 1
+        self.percentage = min(self.percentage, 99)
+        self.percentage = max(self.percentage, 1)
+
         super(DiscountBase, self).save(*args, **kwargs)
 
     def __str__(self):

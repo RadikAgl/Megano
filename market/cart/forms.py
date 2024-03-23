@@ -5,7 +5,7 @@ from django import forms
 PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, 21)]
 
 
-class CartUpdateProductForm(forms.Form):
+class CartAddProductForm(forms.Form):
     """Форма для обновления количества товаров в корзине"""
 
     quantity = forms.IntegerField(
@@ -26,7 +26,7 @@ class CartUpdateProductForm(forms.Form):
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
 
 
-class CartAddProductForm(forms.Form):
+class CartAddProductCatalogForm(forms.Form):
     """Форма для добавления товаров в корзину"""
 
     quantity = forms.IntegerField(required=False, initial=1, widget=forms.HiddenInput)

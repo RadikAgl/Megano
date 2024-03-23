@@ -1,21 +1,21 @@
 """ Представления приложения products """
 
-from typing import Any, Dict
+from typing import Any, Dict, Type
 
+from django.db.models.signals import post_save, post_delete
 from django.core.handlers.wsgi import WSGIRequest
-from django.http import JsonResponse, HttpRequest
+from django.dispatch import receiver
+from django.http import JsonResponse, HttpRequest, HttpResponseNotFound
 from django.db.models import Avg, Sum
 from django.db.models.functions import Round
 from django.shortcuts import redirect
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, TemplateView
 from django.utils import timezone
 from accounts.models import ViewHistory
 from django_filters.views import FilterView
 
 from cart.cart import CartInstance
-from cart.forms import CartAddProductForm
+from cart.forms import CartAddProductCatalogForm, CartAddProductForm
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
@@ -24,6 +24,11 @@ from .filters import ProductFilter
 from .forms import ReviewsForm
 from .models import Product, ProductImage
 from .services.catalog_services import get_ordering_fields, get_popular_tags
+from .services.product_services import (
+    get_discount_for_product,
+    invalidate_product_details_cache,
+    get_from_cache_or_set,
+)
 
 
 class MainPageView(TemplateView):
@@ -49,7 +54,7 @@ class CatalogView(FilterView):
         context = super().get_context_data(**kwargs)
         context["ordering_fields"] = get_ordering_fields(ProductFilter())
         context["tags"] = get_popular_tags()
-        context["cart_form"] = CartAddProductForm()
+        context["cart_form"] = CartAddProductCatalogForm()
 
         return context
 
@@ -61,15 +66,15 @@ class CatalogView(FilterView):
         ).exclude(avg_price=None)
 
     def post(self, request: HttpRequest, **kwargs):
-        cart_form = CartAddProductForm(request.POST)
+        cart_form = CartAddProductCatalogForm(request.POST)
         if cart_form.is_valid():
             product_id = request.POST["product_id"]
             product = Product.objects.get(pk=product_id)
             quantity = cart_form.cleaned_data["quantity"]
             cart = CartInstance(request)
-            offer = cart.get_offer(product)
             cart.add(
-                offer=offer,
+                product=product,
+                offer=None,
                 quantity=quantity,
                 update_quantity=True,
             )
@@ -96,6 +101,12 @@ def add_to_view_history(request, product: Product):
     return JsonResponse({"status": "success"})
 
 
+@receiver([post_save, post_delete], sender=Product)
+def clear_product_detail_cache(sender: Type[Product], instance: Product, **kwargs) -> None:
+    """Очистка кэша с характеристиками продукта"""
+    invalidate_product_details_cache(instance.pk)
+
+
 class ProductDetailView(DetailView):
     """
     Представление для детальной страницы продукта.
@@ -115,20 +126,40 @@ class ProductDetailView(DetailView):
         review_service = ReviewService(self.request, self.request.user, self.get_object())
         product = self.object
 
-        # Fetch related data
-        context["offers"] = Offer.objects.filter(product=product)
+        context["product"] = get_from_cache_or_set(product.pk)
+        context["offers"] = Offer.objects.filter(product=product).order_by("price")
+        context["discount"] = get_discount_for_product(product)
         context["shops"] = Shop.objects.filter(products=product)
         context["images"] = ProductImage.objects.filter(product=product)
         context["reviews"] = review_service.get_reviews_for_product()
         context["paginator"], context["page_obj"] = review_service.paginate(context["reviews"])
         context["review_form"] = ReviewsForm()
+        context["cart_form"] = CartAddProductForm(initial={"quantity": 1})
         return context
 
-    @method_decorator(cache_page(86400))
     def dispatch(self, *args, **kwargs):
         product = self.get_object()
         add_to_view_history(self.request, product)
         return super().dispatch(*args, **kwargs)
+
+    def post(self, request: HttpRequest, **kwargs):
+        cart_form = CartAddProductForm(request.POST)
+        if cart_form.is_valid():
+            product_id = kwargs["pk"]
+            product = Product.objects.get(pk=product_id)
+            quantity = cart_form.cleaned_data["quantity"]
+            offer_id = request.POST["offer"]
+            offer = Offer.objects.get(pk=offer_id)
+            cart = CartInstance(request)
+            cart.add(
+                product=product,
+                offer=offer,
+                quantity=quantity,
+                update_quantity=True,
+            )
+            return redirect("products:product-details", pk=product.pk)
+
+        return HttpResponseNotFound("Ошибка!")
 
 
 def add_review(request: WSGIRequest):

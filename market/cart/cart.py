@@ -2,10 +2,12 @@
 
 from decimal import Decimal
 import random
+from typing import Any
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Sum, F
+from django.http import HttpResponseNotFound
 
 from accounts.models import User
 from cart.models import ProductInCart, Cart
@@ -15,6 +17,7 @@ from discounts.services import (
     calculate_set,
     calculate_products_discount_total_price,
 )
+from products.models import Product
 from shops.models import Offer
 
 
@@ -79,23 +82,28 @@ class CartInstance:
                     quantity=value["quantity"],
                 )
 
-    def add(self, offer: Offer, quantity: int = 1, update_quantity: bool = False) -> None:
+    def add(self, product: Product, offer: Offer = None, quantity: int = 1, update_quantity: bool = False) -> None:
         """
         Добавляет товар в корзину и обновляет его количество
+        :param product: товар
         :param offer: предложение товара
         :param quantity: количество
         :param update_quantity: флаг, указывающий, нужно ли обновить товар (True) либо добавить его (False)
         :return: None
         """
+        if not offer:
+            offer = self.get_offer(product, quantity)
         if self.use_db:
             if self.qs.filter(offer=offer).exists():
-                product_in_cart = self.qs.select_for_update().get(offer=offer)
+                product_in_cart = self.qs.get(offer=offer)
             else:
                 product_in_cart = ProductInCart(offer=offer, cart=self.cart, quantity=0)
             if update_quantity:
                 product_in_cart.quantity += quantity
             else:
                 product_in_cart.quantity = quantity
+            if product_in_cart.quantity > offer.remains:
+                product_in_cart.quantity = offer.remains
             product_in_cart.save()
         else:
             offer_id = str(offer.id)
@@ -105,6 +113,8 @@ class CartInstance:
                 self.cart[offer_id]["quantity"] += quantity
             else:
                 self.cart[offer_id]["quantity"] = quantity
+            if self.cart[offer_id]["quantity"] > offer.remains:
+                self.cart[offer_id]["quantity"] = offer.remains
             self.save()
 
     def save(self) -> None:
@@ -208,31 +218,33 @@ class CartInstance:
 
         if self.use_db:
             return [item.offer for item in self.qs]
-        else:
-            return [Offer.objects.get(pk=int(idx)) for idx in self.cart.keys()]
+
+        return [Offer.objects.get(pk=int(idx)) for idx in self.cart.keys()]
 
     def _get_offers_with_quantity(self):
         """Получение всех товаров с количеством из корзины"""
 
         if self.use_db:
             return [(item.offer, item.quantity) for item in self.qs]
-        else:
-            return [(Offer.objects.get(pk=int(idx)), item["quantity"]) for idx, item in self.cart.items()]
 
-    def get_offer(self, product):
+        return [(Offer.objects.get(pk=int(idx)), item["quantity"]) for idx, item in self.cart.items()]
+
+    def get_offer(self, product: Product, quantity: int = 1) -> HttpResponseNotFound | Any:
         """Подбор предложения для товара"""
         if self.use_db:
             products_in_cart = self.qs.filter(offer__product=product)
             if products_in_cart:
                 return products_in_cart[0].offer
-
         else:
             offers = Offer.objects.filter(product=product)
             for offer in offers:
                 if str(offer.id) in self.cart:
                     return offer
 
-        return random.choice(Offer.objects.filter(product=product))
+        offers = Offer.objects.filter(product=product).filter(remains__gte=quantity)
+        if offers:
+            return random.choice(offers)
+        return HttpResponseNotFound("Ошибка! Не хватает товаров на складе!")
 
     def get_total_price_without_discount(self) -> Decimal | int:
         """

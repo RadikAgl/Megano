@@ -1,7 +1,7 @@
 """Сервисы приложения discounts"""
 
-from _decimal import Decimal
 from typing import Tuple
+from _decimal import Decimal
 
 from django.utils import timezone
 
