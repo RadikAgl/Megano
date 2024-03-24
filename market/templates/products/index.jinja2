@@ -12,14 +12,14 @@
                         <div class="Card">
                             <a class="Card-picture" href="{{ url('products:product-details', product.id) }}">
                                 {% if product.images.first %}
-                                    <img src="{{ product.images.first.image.url }}" alt="Product Image">
+                                    <img src="{{ product.images.first().image.url }}" alt="Product Image">
                                 {% else %}
                                     <p>No image available</p>
                                 {% endif %}
                             </a>
                             <div class="Card-content">
                                 <strong class="Card-title">
-                                    <a href="{{ url('products:product-details', product.id) }}">{{ product.title }}</a>
+                                    <a href="{{ url('products:product-details', product.id) }}">{{ product.name }}</a>
                                 </strong>
                                 <div class="Card-description">
                                     <div class="Card-cost">

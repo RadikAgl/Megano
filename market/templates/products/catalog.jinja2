@@ -109,11 +109,29 @@
                                               {% endwith %}
                                           </div>
                                           <div class="Card-hover">
-                                              <form method="post" action="{{ url('cart:cart-add', product.id) }}">
+                                              <form method="post" action="#modal_open">
                                                   {% csrf_token %}
+                                                  {{ cart_form }}
+                                                  <input type="hidden" class="product_id" id="product_id" name="product_id" value="{{ product.id }}">
                                                   <input class="Card-btn" type="image"
                                                          src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg">
                                               </form>
+                                              <div id="modal_open" class="my_modal">
+                                                <div class="my_modal-dialog">
+                                                    <div class="my_modal-content">
+                                                        <div class="my_modal-header">
+                                                            <p class="my_modal-title">Поздравляем!</p>
+                                                            <a href="#" title="Закрыть модальное окно" class="close">×</a>
+                                                        </div>
+                                                        <div class="my_modal-body">
+                                                            <p>Товар успешно добавлен в корзину!</p>
+                                                            <a class="btn btn_primary"  href="{{ url('cart:cart') }}">
+                                                                <span class="btn-content">Перейти в корзину</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                           </div>
                                       </div>
                                   </div>

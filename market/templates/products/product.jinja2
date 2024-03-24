@@ -40,20 +40,36 @@
                                 {{ product.description }}
                             </div>
                             <div class="ProductCard-cart">
-                                <div class="ProductCard-cartElement ProductCard-cartElement_amount">
-                                    <div class="Amount Amount_product">
-                                        <button class="Amount-remove" type="button"></button>
-                                        <input class="Amount-input form-input" name="amount" type="text" value="1"/>
-                                        <button class="Amount-add" type="button"></button>
+                                {% if offers %}
+                                    <form class="ProductCard-cart" method="post" action="#modal_open">
+                                        {% csrf_token %}
+                                        <p><select size="3" name="offer">
+                                            <option disabled>Выберите магазин</option>
+                                            {% for offer in offers %}
+                                                {% if offer == offers[0] %}
+                                                    <option selected value="{{offer.id}}">{{offer.shop.name}}: ${{ (offer.price*discount)|round(2) }}</option>
+                                                {% else %}
+                                                    <option value="{{offer.id}}">{{offer.shop.name}}: ${{offer.price}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                       </select></p>
+                                       <p>
+                                    <div class="ProductCard-cartElement ProductCard-cartElement_amount">
+                                        <div class="Amount Amount_product">
+                                            <button class="Amount-remove" type="button"></button>
+                                            {{ cart_form.quantity }}
+                                            <button class="Amount-add" type="button"></button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="ProductCard-cartElement">
-                                    <a class="btn btn_primary" href="#modal_open">
-                                        <img class="btn-icon" src="assets/img/icons/card/cart_white.svg"
-                                             alt="cart_white.svg"/>
-                                        <span class="btn-content">Купить</span>
-                                    </a>
-                                </div>
+                                    <div class="ProductCard-cartElement">
+                                        <button class="btn btn_primary" type="submit">
+                                            <img class="btn-icon" src="{{ static('img/icons/card/cart_white.svg')}}"
+                                                 alt="cart_white.svg"/>
+                                            <span class="btn-content">Купить</span>
+                                        </button>
+                                    </div>
+                                    </form>
+                                {% endif %}
                                 <div id="modal_open" class="my_modal">
                                     <div class="my_modal-dialog">
                                         <div class="my_modal-content">
@@ -63,6 +79,9 @@
                                             </div>
                                             <div class="my_modal-body">
                                                 <p>Товар успешно добавлен в корзину!</p>
+                                                <a class="btn btn_primary"  href="{{ url('cart:cart') }}">
+                                                    <span class="btn-content">Перейти в корзину</span>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -256,9 +275,9 @@
                                     </div>
                                 {% else %}
                                     <h4>Для того чтобы оставить комментарий вы должны
-                                        <a href="{{ url('login') }}?next={{ url('product:product', product.id) }}">Войти</a>
+                                        <a href="{{ url('accounts:login') }}?next={{ url('product:product-details', product.id) }}">Войти</a>
                                         или
-                                        <a href="{{ url('register') }}?next={{ url('product:product', product.id ) }}">Зарегистрироваться</a>
+                                        <a href="{{ url('accounts:register') }}?next={{ url('product:product-details', product.id ) }}">Зарегистрироваться</a>
                                     </h4>
                                 {% endif %}
                             </div>
