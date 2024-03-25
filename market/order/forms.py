@@ -17,4 +17,4 @@ class SecondStepForm(forms.ModelForm):
 class ThirdStepForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ('payment_type', )
+        fields = ("payment_type",)
