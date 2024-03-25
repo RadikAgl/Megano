@@ -2,7 +2,9 @@
 from typing import Any, Dict, List
 from unittest.mock import patch
 
+from django.contrib.auth import get_user_model
 from django.core.serializers import deserialize
+from django.test import RequestFactory
 from django.test import TestCase
 
 from products.models import Product, Banner
@@ -48,7 +50,12 @@ class TestMainPageView(TestCase):
 
     def setUp(self) -> None:
         """Настройка теста."""
-        self.main_page_view: MainPageView = MainPageView()
+        self.factory = RequestFactory()
+        self.user_model = get_user_model()
+        self.user = self.user_model.objects.create_user(username="testuser", password="password")
+        self.request = self.factory.get("/")
+        self.request.user = self.user
+        self.main_page_view: MainPageView = MainPageView(request=self.request)
         self.main_page_view.template_name: str = "products/index.jinja2"
 
     @patch("products.views.MainPageService")

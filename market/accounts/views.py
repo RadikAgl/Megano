@@ -13,6 +13,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
+from comparison.services import get_comparison_list
 from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm
 from .models import ViewHistory
 
@@ -46,8 +47,11 @@ class AcountView(LoginRequiredMixin, TemplateView):
     template_name = "accounts/account.jinja2"
 
     def get_context_data(self, **kwargs):
+        comparison_list = get_comparison_list(self.request.user.id)
+        comparison_count = len(comparison_list)
         context = super().get_context_data(**kwargs)
         context["name"] = self.request.user
+        context["comparison_count"] = comparison_count
         return context
 
 
