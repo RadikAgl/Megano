@@ -93,6 +93,6 @@ class OfferModelTest(TestCase):
         shops_count: int = Shop.objects.count()
         offers_count: int = Offer.objects.count()
 
-        self.assertEqual(remains_products_in_offers, 2036)
+        self.assertEqual(remains_products_in_offers, 3778)
         self.assertEqual(shops_count, 8)
-        self.assertEqual(offers_count, 69)
+        self.assertEqual(offers_count, 139)
