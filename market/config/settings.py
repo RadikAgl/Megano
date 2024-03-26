@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "imports",
     "settings_app",
     "order",
+    "comparison",
     "django_celery_beat",
     "django_celery_results",
     "discounts",

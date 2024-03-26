@@ -2,20 +2,21 @@
 
 from typing import Any, Dict, Type
 
-from django.db.models.signals import post_save, post_delete
 from django.core.handlers.wsgi import WSGIRequest
-from django.dispatch import receiver
-from django.http import JsonResponse, HttpRequest, HttpResponseNotFound
 from django.db.models import Avg, Sum
 from django.db.models.functions import Round
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+from django.http import JsonResponse, HttpRequest, HttpResponseNotFound
 from django.shortcuts import redirect
-from django.views.generic import DetailView, TemplateView
 from django.utils import timezone
-from accounts.models import ViewHistory
+from django.views.generic import DetailView, TemplateView
 from django_filters.views import FilterView
 
+from accounts.models import ViewHistory
 from cart.cart import CartInstance
 from cart.forms import CartAddProductCatalogForm, CartAddProductForm
+from comparison.services import get_comparison_list
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
@@ -38,9 +39,16 @@ class MainPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request is not None:
+            comparison_list = get_comparison_list(self.request.user.id)
+            comparison_count = len(comparison_list)
+        else:
+            comparison_count = 0
+
         main_page_service = MainPageService()
         context["products"] = main_page_service.get_products()
         context["banners"] = main_page_service.banners_cache()
+        context["comparison_count"] = comparison_count
         return context
 
 
@@ -52,9 +60,13 @@ class CatalogView(FilterView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        comparison_list = get_comparison_list(self.request.user.id)
+        comparison_count = len(comparison_list)
+
         context["ordering_fields"] = get_ordering_fields(ProductFilter())
         context["tags"] = get_popular_tags()
         context["cart_form"] = CartAddProductCatalogForm()
+        context["comparison_count"] = comparison_count
 
         return context
 
@@ -125,7 +137,10 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         review_service = ReviewService(self.request, self.request.user, self.get_object())
         product = self.object
+        comparison_list = get_comparison_list(self.request.user.id)
+        comparison_count = len(comparison_list)
 
+        context["comparison_count"] = comparison_count
         context["product"] = get_from_cache_or_set(product.pk)
         context["offers"] = Offer.objects.filter(product=product).order_by("price")
         context["discount"] = get_discount_for_product(product)

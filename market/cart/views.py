@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 
 from cart.cart import CartInstance
 from cart.forms import CartAddProductForm
+from comparison.services import get_comparison_list
 from shops.models import Offer
 
 
@@ -17,9 +18,13 @@ class CartView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cart = CartInstance(self.request)
+        comparison_list = get_comparison_list(self.request.user.id)
+        comparison_count = len(comparison_list)
+
         for item in cart:
             item["form"] = CartAddProductForm(initial={"quantity": item["quantity"], "update": False})
         context["cart"] = cart
+        context["comparison_count"] = comparison_count
         return context
 
 
