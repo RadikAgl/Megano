@@ -22,6 +22,7 @@ django-celery-beat = "^2.6.0"
 django-celery-results = "^2.5.1"
 redis = "^5.0.2"
 django-filter = "^24.1"
+yookassa = "^3.0.1"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"

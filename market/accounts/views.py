@@ -12,7 +12,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, TemplateView
-
+from order.models import OrderStatus, Order
 from comparison.services import get_comparison_list
 from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm
 from .models import ViewHistory
@@ -52,7 +52,13 @@ class AcountView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["name"] = self.request.user
         context["comparison_count"] = comparison_count
-        return context
+        try:
+            if self.request.session[f'{self.request.user.id}']['id']:
+                Order.objects.filter(user=self.request.user.id).update(status=OrderStatus.PAID)
+                context['paid'] = 'оплачено'
+                return context
+        except KeyError:
+            return context
 
 
 class RegistrationView(FormView):

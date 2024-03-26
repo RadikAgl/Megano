@@ -9,8 +9,6 @@ class PaymentTypes(models.TextChoices):
 
 class OrderStatus(models.TextChoices):
     CREATED = "created", "Создан"
-    OK = "ok", "Выполнен"
-    DELIVERED = "delivered", "Доставляется"
     PAID = "paid", "Оплачен"
     NOT_PAID = "not_paid", "Не оплачен"
 
