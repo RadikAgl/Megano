@@ -145,6 +145,11 @@ celery -A config beat -l info
 ## Дополнительные замечания
 Убедитесь, что у вас установлен и запущен брокер сообщений Redis, так как Celery требует его для управления очередью задач.
 
+## Запуск оболочки django-extensions
+```bash
+python manage.py shell_plus  --print-sql
+```
+
 # Цели проекта
 
 Код написан в учебных целях — это курс по Джанго на сайте [Skillbox](https://go.skillbox.ru/education/course/django-framework).
