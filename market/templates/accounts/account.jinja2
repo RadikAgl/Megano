@@ -30,7 +30,9 @@
             <div class="Section-content">
                 <div class="Account">
                     <div class="Account-group">
-
+                    {% if paid %}
+                       <p>{{ paid }} </p>
+                       {% endif %}
                         </div>
                         <div class="Account-column">
                             <div class="Account-name">{{ name }}
