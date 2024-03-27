@@ -11,7 +11,7 @@ celery_app.autodiscover_tasks()
 
 celery_app.conf.beat_schedule = {
     "every": {
-        "task": "products.tasks.set_product_of_the_day",
+        "task": "Установить товар дня",
         "schedule": crontab(hour="0", minute="0"),
     },
 }
