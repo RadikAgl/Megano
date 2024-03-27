@@ -84,6 +84,7 @@ TEMPLATES = [
             "context_processors": [
                 "context_processors.cart_context.get_cart_cost",
                 "django.contrib.messages.context_processors.messages",
+                "context_processors.comparison_context.comparison_count",
             ],
         },
     },
