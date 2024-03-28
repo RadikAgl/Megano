@@ -51,15 +51,14 @@
                             <div class="ProductCard-info">
                                 <div class="ProductCard-cost">
                                     <div class="ProductCard-price">
-                                        {% if product.shops.all %}
-                                            {% for shop in product.shops.all() %}
-                                                {% for offer in shop.offer_set.all() %}
-                                                    {{ offer.price }} ,
-                                                {% endfor %}
-                                            {% endfor %}
+
+
+                                        {% if prices|length > 0 %}
+                                            <p>{{ prices[product.id] }}</p>
                                         {% else %}
-                                            N/A
+                                            <p>Price: N/A</p>
                                         {% endif %}
+
                                     </div>
                                 </div>
                             </div>
