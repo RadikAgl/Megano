@@ -66,7 +66,7 @@ class TestMainPageView(TestCase):
 
         # Мокируем метод get_products
         mock_products: List[str] = ["Product1", "Product2"]
-        mock_main_page_service.get_products.return_value = mock_products
+        mock_main_page_service.get_top_products.return_value = mock_products
 
         # Мокируем метод banners_cache
         mock_banners: List[str] = ["Banner1", "Banner2"]
@@ -76,11 +76,11 @@ class TestMainPageView(TestCase):
         context: Dict[str, Any] = self.main_page_view.get_context_data()
 
         # Проверяем, были ли вызваны методы get_products и banners_cache
-        mock_main_page_service.get_products.assert_called_once()
+        mock_main_page_service.get_top_products.assert_called_once()
         mock_main_page_service.banners_cache.assert_called_once()
 
         # Проверяем, содержит ли контекст ожидаемые данные
-        self.assertIn("products", context)
+        self.assertIn("top_products", context)
         self.assertIn("banners", context)
-        self.assertEqual(context["products"], mock_products)
+        self.assertEqual(context["top_products"], mock_products)
         self.assertEqual(context["banners"], mock_banners)
