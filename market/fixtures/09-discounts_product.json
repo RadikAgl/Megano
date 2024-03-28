@@ -35,7 +35,7 @@
         "end_date": "2024-06-14",
         "is_active": true,
         "weight": "0.16",
-        "products": [6, 34, 5, 37, 41, 42, 25, 28, 29]
+        "products": [6, 34, 5, 37, 41, 25, 28, 29]
     }
 }, {
     "model": "discounts.discountproduct",

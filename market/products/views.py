@@ -17,7 +17,15 @@ from accounts.models import ViewHistory
 from cart.cart import CartInstance
 from cart.forms import CartAddProductCatalogForm, CartAddProductForm
 from comparison.services import get_comparison_list
-from products.services.mainpage_services import MainPageService
+from products.services.mainpage_services import (
+    get_top_products,
+    get_top_categories,
+    banners_cache,
+    get_hot_offers,
+    get_limited_products,
+    get_product_of_day,
+    get_midnight_tomorrow,
+)
 from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
 from . import constants
@@ -30,6 +38,20 @@ from .services.product_services import (
     invalidate_product_details_cache,
     get_from_cache_or_set,
 )
+
+
+def add_product_to_cart(request: HttpRequest, cart_form: CartAddProductCatalogForm) -> None:
+    """Добавляет товар в корзину на главной странице и каталога"""
+    product_id = request.POST["product_id"]
+    product = Product.objects.get(pk=product_id)
+    quantity = cart_form.cleaned_data["quantity"]
+    cart = CartInstance(request)
+    cart.add(
+        product=product,
+        offer=None,
+        quantity=quantity,
+        update_quantity=True,
+    )
 
 
 class MainPageView(TemplateView):
@@ -45,11 +67,22 @@ class MainPageView(TemplateView):
         else:
             comparison_count = 0
 
-        main_page_service = MainPageService()
-        context["products"] = main_page_service.get_products()
-        context["banners"] = main_page_service.banners_cache()
+        context["banners"] = banners_cache()
+        context["top_products"] = get_top_products()
+        context["top_categories"] = get_top_categories()
+        context["hot_offers"] = get_hot_offers()
+        context["limited_products"] = get_limited_products()
+        context["product_of_day"] = get_product_of_day()
         context["comparison_count"] = comparison_count
+        context["cart_form"] = CartAddProductCatalogForm()
+        context["time_to_midnight"] = get_midnight_tomorrow()
         return context
+
+    def post(self, request: HttpRequest, **kwargs):
+        cart_form = CartAddProductCatalogForm(request.POST)
+        if cart_form.is_valid():
+            add_product_to_cart(request, cart_form)
+        return redirect("products:index")
 
 
 class CatalogView(FilterView):
@@ -80,16 +113,7 @@ class CatalogView(FilterView):
     def post(self, request: HttpRequest, **kwargs):
         cart_form = CartAddProductCatalogForm(request.POST)
         if cart_form.is_valid():
-            product_id = request.POST["product_id"]
-            product = Product.objects.get(pk=product_id)
-            quantity = cart_form.cleaned_data["quantity"]
-            cart = CartInstance(request)
-            cart.add(
-                product=product,
-                offer=None,
-                quantity=quantity,
-                update_quantity=True,
-            )
+            add_product_to_cart(request, cart_form)
         return redirect("products:catalog")
 
 
