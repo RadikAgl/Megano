@@ -17,15 +17,7 @@ from accounts.models import ViewHistory
 from cart.cart import CartInstance
 from cart.forms import CartAddProductCatalogForm, CartAddProductForm
 from comparison.services import get_comparison_list
-from products.services.mainpage_services import (
-    get_top_products,
-    get_top_categories,
-    banners_cache,
-    get_hot_offers,
-    get_limited_products,
-    get_product_of_day,
-    get_midnight_tomorrow,
-)
+from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
 from . import constants
@@ -67,15 +59,16 @@ class MainPageView(TemplateView):
         else:
             comparison_count = 0
 
-        context["banners"] = banners_cache()
-        context["top_products"] = get_top_products()
-        context["top_categories"] = get_top_categories()
-        context["hot_offers"] = get_hot_offers()
-        context["limited_products"] = get_limited_products()
-        context["product_of_day"] = get_product_of_day()
+        main_page_service = MainPageService()
+        context["banners"] = main_page_service.banners_cache()
+        context["top_products"] = main_page_service.get_top_products()
+        context["top_categories"] = main_page_service.get_top_categories()
+        context["hot_offers"] = main_page_service.get_hot_offers()
+        context["limited_products"] = main_page_service.get_limited_products()
+        context["product_of_day"] = main_page_service.get_product_of_day()
         context["comparison_count"] = comparison_count
         context["cart_form"] = CartAddProductCatalogForm()
-        context["time_to_midnight"] = get_midnight_tomorrow()
+        context["time_to_midnight"] = main_page_service.get_midnight_tomorrow()
         return context
 
     def post(self, request: HttpRequest, **kwargs):

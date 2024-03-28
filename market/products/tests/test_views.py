@@ -80,7 +80,7 @@ class TestMainPageView(TestCase):
         mock_main_page_service.banners_cache.assert_called_once()
 
         # Проверяем, содержит ли контекст ожидаемые данные
-        self.assertIn("products", context)
+        self.assertIn("top_products", context)
         self.assertIn("banners", context)
-        self.assertEqual(context["products"], mock_products)
+        self.assertEqual(context["top_products"], mock_products)
         self.assertEqual(context["banners"], mock_banners)
