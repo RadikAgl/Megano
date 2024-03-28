@@ -9,6 +9,7 @@ from django.views import View
 from django.views.decorators.http import require_POST
 
 from products.models import Product
+from shops.models import Offer
 from .services import (
     remove_from_comparison,
     add_to_comparison_service,
@@ -23,7 +24,7 @@ class ComparisonView(View):
     def get(self, request) -> render:
         """Обработчик GET-запроса для страницы сравнения товаров."""
         comparison_list = get_comparison_list(request.user.id)
-        comparison_count: int = len(comparison_list)
+        comparison_count = len(comparison_list)
         products = get_products_for_comparison(comparison_list)
         common_details = check_common_details(products)
 
@@ -46,9 +47,28 @@ class ComparisonView(View):
                 " это как своего рода экземпляр чуда, подобно тому, как каждый кот —"
                 " это своя собственная тайна вселенной!",
             )
-            return render(request, "comparison/comparison.jinja2", context)
+
+        # Get prices for products
+        prices = {}
+        for product in products:
+            try:
+                offer = Offer.objects.filter(product=product).order_by("price").first()
+                prices[product.pk] = offer.price if offer else None
+            except Offer.DoesNotExist:
+                prices[product.pk] = None
+
+        context["prices"] = prices
 
         return render(request, "comparison/comparison.jinja2", context)
+
+    @staticmethod
+    def comparison_count(request):
+        """Calculate comparison count."""
+        if request.user.is_authenticated:
+            comparison_list = get_comparison_list(request.user.id)
+            return len(comparison_list)
+        else:
+            return 0
 
     @require_POST
     @login_required
@@ -89,12 +109,12 @@ class ComparisonView(View):
 
         return redirect("comparison:comparison")
 
+    @staticmethod
     def get_product_details(product_id: str) -> Union[str, None]:
         """Получает детали продукта по его идентификатору."""
         try:
             product: Product = Product.objects.get(pk=product_id)
-            details: str = product.details  # Доступ к полю деталей
-            return details
+            return product.details
         except Product.DoesNotExist:
             return None
 

@@ -137,10 +137,7 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         review_service = ReviewService(self.request, self.request.user, self.get_object())
         product = self.object
-        comparison_list = get_comparison_list(self.request.user.id)
-        comparison_count = len(comparison_list)
 
-        context["comparison_count"] = comparison_count
         context["product"] = get_from_cache_or_set(product.pk)
         context["offers"] = Offer.objects.filter(product=product).order_by("price")
         context["discount"] = get_discount_for_product(product)

@@ -28,10 +28,10 @@
                                     <div class="ProductCard-info">
                                         <div class="ProductCard-cost">
                                             <div class="ProductCard-price">
-                                                {% for shop in product.shops.all() %}
-                                                    {% for offer in shop.offer_set.all() %}
+                                                {% for offer in offers.all() %}
+
                                                         {{ offer.price }} ,
-                                                    {% endfor %}
+
                                                 {% endfor %}
                                             </div>
                                         </div>

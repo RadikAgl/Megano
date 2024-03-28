@@ -2,7 +2,6 @@
 
 from django.views.generic import ListView, DetailView
 
-from comparison.services import get_comparison_list
 from discounts.models import DiscountProduct, DiscountCart, DiscountSet
 
 
@@ -23,12 +22,9 @@ class DiscountListView(ListView):
             .filter(is_active=True)
         )
         discount_carts = DiscountCart.objects.all().order_by("end_date").filter(is_active=True)
-        comparison_list = get_comparison_list(self.request.user.id)
-        comparison_count = len(comparison_list)
 
         context["discount_sets"] = discount_set
         context["discount_carts"] = discount_carts
-        context["comparison_count"] = comparison_count
         return context
 
     def get_queryset(self):
