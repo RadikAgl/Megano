@@ -130,7 +130,7 @@ Celery используется для асинхронной обработки
 **Запуск Celery Worker:**
 
 ```bash
-celery -A config worker -l info
+celery -A config worker --loglevel=INFO -P eventlet
 
 ```
 **Запуск Celery Beat откройте новое окно терминала:**
