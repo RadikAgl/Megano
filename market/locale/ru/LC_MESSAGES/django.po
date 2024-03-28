@@ -1,0 +1,276 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-28 16:14+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+#: .\accounts\models.py:30
+msgid "покупатель"
+msgstr ""
+
+#: .\accounts\models.py:31
+msgid "товар"
+msgstr ""
+
+#: .\accounts\models.py:32
+msgid "дата просмотра"
+msgstr ""
+
+#: .\accounts\models.py:33
+msgid "количество просмотров"
+msgstr ""
+
+#: .\cart\models.py:17
+msgid "корзина"
+msgstr ""
+
+#: .\cart\models.py:18
+msgid "корзины"
+msgstr ""
+
+#: .\cart\models.py:33
+msgid "товар в корзине"
+msgstr ""
+
+#: .\cart\models.py:34
+msgid "товары в корзине"
+msgstr ""
+
+#: .\comparison\models.py:15
+msgid "пользователь"
+msgstr ""
+
+#: .\comparison\models.py:17
+msgid "товары"
+msgstr ""
+
+#: .\comparison\models.py:18 .\products\models.py:63
+msgid "дата создания"
+msgstr ""
+
+#: .\comparison\models.py:21
+msgid "сравнение"
+msgstr ""
+
+#: .\config\settings.py:139
+msgid "Russian"
+msgstr ""
+
+#: .\config\settings.py:140
+msgid "English"
+msgstr ""
+
+#: .\discounts\models.py:15
+msgid "название акции"
+msgstr ""
+
+#: .\discounts\models.py:16
+msgid "описание акции"
+msgstr ""
+
+#: .\discounts\models.py:17
+msgid "начало акции"
+msgstr ""
+
+#: .\discounts\models.py:18
+msgid "окончание акции"
+msgstr ""
+
+#: .\discounts\models.py:19
+msgid "статус активности скидки"
+msgstr ""
+
+#: .\discounts\models.py:23
+msgid "вес скидки"
+msgstr ""
+
+#: .\discounts\models.py:39
+msgid "процент скидки"
+msgstr ""
+
+#: .\discounts\models.py:60
+msgid "скидка на товар"
+msgstr ""
+
+#: .\discounts\models.py:61
+msgid "скидки на товары"
+msgstr ""
+
+#: .\discounts\models.py:72
+msgid "размер скидки"
+msgstr ""
+
+#: .\discounts\models.py:77
+msgid "скидка на набор товаров"
+msgstr ""
+
+#: .\discounts\models.py:78
+msgid "скидки на наборы товаров"
+msgstr ""
+
+#: .\discounts\models.py:87
+msgid "диапазон цены от"
+msgstr ""
+
+#: .\discounts\models.py:89
+msgid "диапазон цены до"
+msgstr ""
+
+#: .\discounts\models.py:93
+msgid "скидка на стоимость корзины"
+msgstr ""
+
+#: .\discounts\models.py:94
+msgid "скидки на стоимость корзины"
+msgstr ""
+
+#: .\imports\models.py:9
+msgid "В процессе выполнения"
+msgstr ""
+
+#: .\imports\models.py:10
+msgid "Выполнен"
+msgstr ""
+
+#: .\imports\models.py:11
+msgid "Завершён с ошибкой"
+msgstr ""
+
+#: .\imports\models.py:30 .\shops\models.py:33
+msgid "Пользователь"
+msgstr ""
+
+#: .\imports\models.py:32
+msgid "Имя файла импорта"
+msgstr ""
+
+#: .\imports\models.py:33
+msgid "Статус"
+msgstr ""
+
+#: .\imports\models.py:34
+msgid "Время начала импорта"
+msgstr ""
+
+#: .\imports\models.py:38
+msgid "лог импорта"
+msgstr ""
+
+#: .\imports\models.py:39
+msgid "логи импорта"
+msgstr ""
+
+#: .\imports\models.py:64
+msgid "продукт в логе импорта"
+msgstr ""
+
+#: .\imports\models.py:65
+msgid "продукты в логах импорта"
+msgstr ""
+
+#: .\products\models.py:12 .\shops\models.py:24
+msgid "название"
+msgstr ""
+
+#: .\products\models.py:13
+msgid "актуальность"
+msgstr ""
+
+#: .\products\models.py:14
+msgid "превью"
+msgstr ""
+
+#: .\products\models.py:15
+msgid "ссылка"
+msgstr ""
+
+#: .\products\models.py:18
+msgid "Баннер"
+msgstr ""
+
+#: .\products\models.py:19
+msgid "Баннеры"
+msgstr ""
+
+#: .\products\models.py:29 .\products\models.py:60
+msgid "наименование"
+msgstr ""
+
+#: .\products\models.py:30 .\products\models.py:62 .\shops\models.py:26
+msgid "описание"
+msgstr ""
+
+#: .\products\models.py:32
+msgid "индекс сортировки"
+msgstr ""
+
+#: .\products\models.py:39 .\products\models.py:61
+msgid "категория"
+msgstr ""
+
+#: .\products\models.py:48 .\products\models.py:51
+msgid "тег"
+msgstr ""
+
+#: .\products\models.py:64
+msgid "детали"
+msgstr ""
+
+#: .\products\models.py:66
+msgid "ограниченный тираж"
+msgstr ""
+
+#: .\products\models.py:67
+msgid "товар дня"
+msgstr ""
+
+#: .\products\models.py:70 .\products\models.py:104
+msgid "продукт"
+msgstr ""
+
+#: .\products\models.py:103 .\products\models.py:107
+msgid "изображение"
+msgstr ""
+
+#: .\products\models.py:108
+msgid "изображения"
+msgstr ""
+
+#: .\shops\models.py:25
+msgid "контактная информация"
+msgstr ""
+
+#: .\shops\models.py:31
+msgid "товары в магазине"
+msgstr ""
+
+#: .\shops\models.py:37
+msgid "Логотип компании"
+msgstr ""
+
+#: .\shops\models.py:43
+msgid "Продавцы"
+msgstr ""
+
+#: .\shops\models.py:54
+msgid "цена"
+msgstr ""
+
+#: .\shops\models.py:59
+msgid "предложение"
+msgstr ""
