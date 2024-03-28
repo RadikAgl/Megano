@@ -63,6 +63,8 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
     details = models.JSONField(default=dict, blank=True, verbose_name=_("детали"))
     tags = models.ManyToManyField(Tag, related_name="product")
+    is_limited = models.BooleanField(default=False, verbose_name=_("ограниченный тираж"))
+    is_product_of_the_day = models.BooleanField(default=False, verbose_name=_("товар дня"))
 
     class Meta:
         verbose_name_plural = _("продукт")

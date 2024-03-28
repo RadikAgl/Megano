@@ -205,6 +205,7 @@
       "category": 17,
       "description": "Легкий и прочный рюкзак для путешествий",
       "created_at": "2024-02-12T12:00:00Z",
+      "is_limited": true,
       "details": {
         "capacity": "65 л",
         "rain cover": true,
@@ -228,6 +229,7 @@
       "category": 19,
       "description": "Набор косметики высокого качества от Chanel",
       "created_at": "2024-02-13T12:00:00Z",
+      "is_limited": true,
       "details": {
         "products": [
           "помада",
@@ -267,6 +269,7 @@
       "category": 11,
       "description": "Стильная мужская футболка от Nike",
       "created_at": "2024-02-21T12:00:00Z",
+      "is_limited": true,
       "details": {
         "size": "L",
         "color": "серый",
@@ -287,6 +290,7 @@
       "category": 12,
       "description": "Легкое и яркое платье от Mango",
       "created_at": "2024-02-22T12:00:00Z",
+      "is_limited": true,
       "details": {
         "size": "M",
         "color": "желтый",
@@ -306,6 +310,7 @@
       "category": 13,
       "description": "Теплый и стильный комбинезон для детей от Gap",
       "created_at": "2024-02-23T12:00:00Z",
+      "is_limited": true,
       "details": {
         "size": "6",
         "color": "голубой",
@@ -326,6 +331,7 @@
       "category": 15,
       "description": "Тренажер для эффективных занятий фитнесом",
       "created_at": "2024-02-24T12:00:00Z",
+      "is_limited": true,
       "details": {
         "programs": [
           "кросс-тренировка",
@@ -347,6 +353,7 @@
       "category": 7,
       "description": "Телевизор с высоким разрешением и технологией OLED",
       "created_at": "2024-02-25T12:00:00Z",
+      "is_limited": true,
       "details": {
         "smart_tv": true,
         "resolution": "4K UHD",
@@ -368,6 +375,7 @@
       "category": 1,
       "description": "Профессиональная геймерская мышь с поддержкой RGB-подсветки",
       "created_at": "2024-02-26T12:00:00Z",
+      "is_limited": true,
       "details": {
         "dpi": 16000,
         "buttons": 6,
@@ -388,6 +396,7 @@
       "category": 1,
       "description": "Беспроводные наушники с технологией шумоподавления",
       "created_at": "2024-02-27T12:00:00Z",
+      "is_limited": true,
       "details": {
         "wireless": true,
         "battery_life": "5 часов",
@@ -408,6 +417,7 @@
       "category": 7,
       "description": "Газовая плита с функцией конвекции и духовкой",
       "created_at": "2024-02-28T12:00:00Z",
+      "is_limited": true,
       "details": {
         "burners": 4,
         "ignition_type": "автоматический",
@@ -427,6 +437,7 @@
       "category": 7,
       "description": "Автоматическая кофемашина с функцией приготовления капучино",
       "created_at": "2024-02-29T12:00:00Z",
+      "is_limited": true,
       "details": {
         "display": true,
         "coffee_type": "зерновой",
@@ -446,6 +457,7 @@
       "category": 4,
       "description": "Игровой монитор с высокой частотой обновления и технологией G-Sync",
       "created_at": "2024-03-01T12:00:00Z",
+      "is_limited": true,
       "details": {
         "resolution": "QHD",
         "screen_size": "27 дюймов",
@@ -468,6 +480,7 @@
       "category": 1,
       "description": "Профессиональный беззеркальный фотоаппарат с высоким разрешением",
       "created_at": "2024-03-02T12:00:00Z",
+      "is_limited": true,
       "details": {
         "iso_range": "100-51200",
         "resolution": "45 МП",
@@ -490,6 +503,7 @@
       "category": 14,
       "description": "Легкий и компактный электрический самокат для городской езды",
       "created_at": "2024-03-03T12:00:00Z",
+      "is_limited": true,
       "details": {
         "max_range": "30 км",
         "max_speed": "25 км/ч",
@@ -510,6 +524,7 @@
       "category": 16,
       "description": "Классическая электрогитара с ярким звучанием",
       "created_at": "2024-03-04T12:00:00Z",
+      "is_limited": true,
       "details": {
         "neck_profile": "C-образный",
         "body_material": "клен",
@@ -529,6 +544,7 @@
       "category": 7,
       "description": "Самостоятельный робот-пылесос с технологией видеокарты",
       "created_at": "2024-03-05T12:00:00Z",
+      "is_limited": true,
       "details": {
         "battery_life": "120 мин",
         "smart_mapping": true,
@@ -549,6 +565,7 @@
       "category": 4,
       "description": "Механическая клавиатура с подсветкой и программируемыми кнопками",
       "created_at": "2024-03-06T12:00:00Z",
+      "is_limited": true,
       "details": {
         "macro_keys": 6,
         "switch_type": "Cherry MX Speed",
@@ -569,6 +586,8 @@
       "category": 1,
       "description": "Умные часы с крупным дисплеем и множеством функций",
       "created_at": "2024-03-07T12:00:00Z",
+      "is_limited": true,
+      "is_product_of_the_day": true,
       "details": {
         "display_size": "45 мм",
         "water_resistance": "50 м",
