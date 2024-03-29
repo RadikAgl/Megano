@@ -43,7 +43,7 @@
                           </strong>
                           <div class="Card-description">
                             <div class="Card-cost">
-                                {% if product_of_day.discount_products.exists %}
+                                {% if product_of_day.discount_products.exists() %}
                                     {% set discount=(1-product_of_day.discount_products.first().percentage/100) %}
                                     <span class="Card-priceOld">{{ '%0.2f' % product_of_day.avg_price }}</span>
                                     <span class="Card-price">{{ '%0.2f' % (product_of_day.avg_price|float*discount) }}</span>
