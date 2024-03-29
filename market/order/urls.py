@@ -8,7 +8,7 @@ from .views import (
     OrderDetailView,
 )
 
-app_name = "url"
+app_name = "order"
 
 urlpatterns = [
     path("step/", FirstOrderView.as_view(), name="step1"),
