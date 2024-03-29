@@ -3,6 +3,7 @@ from typing import Dict, Any
 
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 
 from .singleton_model import (
     SingletonModel,
@@ -94,5 +95,5 @@ class SiteSettings(SingletonModel):
             return reverse("settings_app:sitesettings_add")
 
     class Meta:
-        verbose_name = "настройки сайта"
-        verbose_name_plural = "настройки сайта"
+        verbose_name = _("настройки сайта")
+        verbose_name_plural = _("настройки сайта")
