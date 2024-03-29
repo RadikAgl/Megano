@@ -10,6 +10,7 @@ class Banner(models.Model):
     """Баннер"""
 
     name = models.CharField(max_length=512, verbose_name=_("название"))
+    description = models.TextField(verbose_name=_("описание"), null=True)
     actual = models.BooleanField(default=True, verbose_name=_("актуальность"))
     preview = models.ImageField(verbose_name=_("превью"), upload_to="banners")
     link = models.URLField(verbose_name=_("ссылка"), unique=True, db_index=True)

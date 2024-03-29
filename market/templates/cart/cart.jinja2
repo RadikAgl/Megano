@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                                 <div class="Cart-block Cart-block_price">
-                                    <div class="Cart-price" id="product-price">${{ item["price"] }}
+                                    <div class="Cart-price" id="product-price">{{ item["price"] }}
                                     </div>
                                 </div>
                             </div>
@@ -80,15 +80,15 @@
                 {% if total_price > 0 %}
                 <div class="Cart-block Cart-block_total">
                     <strong class="Cart-title">Итого без скидки:
-                    </strong><span class="Cart-price">${{ cart.get_total_price_without_discount() }}</span>
+                    </strong><span class="Cart-price">{{ cart.get_total_price_without_discount() }}</span>
                 </div>
                 <div class="Cart-block Cart-block_total">
                     <strong class="Cart-title">Итого со скидкой:
-                    </strong><span class="Cart-price">${{ total_price }}</span>
+                    </strong><span class="Cart-price">{{ total_price }}</span>
                 </div>
                 <div class="Cart-block">
                     {% if request.user.is_authenticated %}
-                        <a class="btn btn_success btn_lg" href="{{ url('urls:step1') }}">Оформить заказ</a>
+                        <a class="btn btn_success btn_lg" href="{{ url('url:step1') }}">Оформить заказ</a>
                     {% else %}
                         <a class="btn btn_success btn_lg" href="{{ url('accounts:login') }}">Оформить заказ</a>
                     {% endif %}
