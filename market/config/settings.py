@@ -5,7 +5,7 @@ from pathlib import Path
 
 from django.urls import reverse_lazy
 from dotenv import load_dotenv
-
+from django.utils.translation import gettext_lazy as _
 import dj_database_url
 
 load_dotenv(os.path.join("..", ".env"))
@@ -61,6 +61,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -135,6 +136,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = "ru-RU"
+LANGUAGES = [
+    ("ru", _("Русский")),
+    ("en", _("Английский")),
+]
 
 TIME_ZONE = "Europe/Moscow"
 
@@ -142,6 +147,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+USE_L10N = True
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 AUTH_USER_MODEL = "accounts.User"
@@ -158,7 +166,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 CELERY_BROKER_URL = REDIS_URL
 CELERY_TASK_TRACK_STARTED = True

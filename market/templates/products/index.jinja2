@@ -95,8 +95,8 @@
                         {% set product=offer.product %}
                         <div class="Card">
                             <a class="Card-picture" href="{{ url('products:product-details', product.id) }}">
-                                {% if product.images.first %}
-                                    <img src="{{ product.images.first().image.url }}" alt="Product Image">
+                                {% if product.images.first() %}
+                                    <img src="{{ product.images.first().image.url }}" alt="{{ product.name }}">
                                 {% else %}
                                     <p>Изображение недоступно</p>
                                 {% endif %}

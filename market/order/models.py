@@ -1,6 +1,8 @@
 from django.db import models
-from cart.models import Cart
+from django.utils.translation import gettext_lazy as _
+
 from accounts.models import User
+from cart.models import Cart
 
 
 class PaymentTypes(models.TextChoices):
@@ -49,3 +51,5 @@ class Order(models.Model):
 
     class Meta:
         db_table = "order"
+        verbose_name = _("заказ")
+        verbose_name_plural = _("заказы")
