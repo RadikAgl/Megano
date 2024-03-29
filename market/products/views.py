@@ -32,6 +32,20 @@ from .services.product_services import (
 )
 
 
+def add_product_to_cart(request: HttpRequest, cart_form: CartAddProductCatalogForm) -> None:
+    """Добавляет товар в корзину на главной странице и каталога"""
+    product_id = request.POST["product_id"]
+    product = Product.objects.get(pk=product_id)
+    quantity = cart_form.cleaned_data["quantity"]
+    cart = CartInstance(request)
+    cart.add(
+        product=product,
+        offer=None,
+        quantity=quantity,
+        update_quantity=True,
+    )
+
+
 class MainPageView(TemplateView):
     """Класс представление главной страницы"""
 
@@ -46,10 +60,22 @@ class MainPageView(TemplateView):
             comparison_count = 0
 
         main_page_service = MainPageService()
-        context["products"] = main_page_service.get_products()
         context["banners"] = main_page_service.banners_cache()
+        context["top_products"] = main_page_service.get_top_products()
+        context["top_categories"] = main_page_service.get_top_categories()
+        context["hot_offers"] = main_page_service.get_hot_offers()
+        context["limited_products"] = main_page_service.get_limited_products()
+        context["product_of_day"] = main_page_service.get_product_of_day()
         context["comparison_count"] = comparison_count
+        context["cart_form"] = CartAddProductCatalogForm()
+        context["time_to_midnight"] = main_page_service.get_midnight_tomorrow()
         return context
+
+    def post(self, request: HttpRequest, **kwargs):
+        cart_form = CartAddProductCatalogForm(request.POST)
+        if cart_form.is_valid():
+            add_product_to_cart(request, cart_form)
+        return redirect("products:index")
 
 
 class CatalogView(FilterView):
@@ -80,16 +106,7 @@ class CatalogView(FilterView):
     def post(self, request: HttpRequest, **kwargs):
         cart_form = CartAddProductCatalogForm(request.POST)
         if cart_form.is_valid():
-            product_id = request.POST["product_id"]
-            product = Product.objects.get(pk=product_id)
-            quantity = cart_form.cleaned_data["quantity"]
-            cart = CartInstance(request)
-            cart.add(
-                product=product,
-                offer=None,
-                quantity=quantity,
-                update_quantity=True,
-            )
+            add_product_to_cart(request, cart_form)
         return redirect("products:catalog")
 
 
