@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-28 16:18+0300\n"
+"POT-Creation-Date: 2024-03-29 16:23+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,39 +17,40 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: .\accounts\models.py:14
 msgid "Имя пользователя"
 msgstr "Username"
 
-#: .\accounts\models.py:17
+#: .\accounts\models.py:16
 msgid "Email"
 msgstr "Email"
 
-#: .\accounts\models.py:22 .\accounts\models.py:27 .\comparison\models.py:15
+#: .\accounts\models.py:21 .\accounts\models.py:28 .\comparison\models.py:15
 msgid "пользователь"
 msgstr "User"
 
-#: .\accounts\models.py:23
+#: .\accounts\models.py:22
 msgid "пользователи"
 msgstr "Users"
 
-#: .\accounts\models.py:28
+#: .\accounts\models.py:29
 msgid "товар"
 msgstr "Product"
 
-#: .\accounts\models.py:29
+#: .\accounts\models.py:30
 msgid "дата просмотра"
 msgstr "Viewing date"
 
-#: .\accounts\models.py:30
+#: .\accounts\models.py:31
 msgid "количество просмотров"
 msgstr "View count"
 
-#: .\accounts\models.py:33
+#: .\accounts\models.py:34
 msgid "история просмотров"
 msgstr "View history"
 
-#: .\accounts\models.py:34
+#: .\accounts\models.py:35
 msgid "истории просмотров"
 msgstr "View histories"
 
@@ -73,20 +74,24 @@ msgstr "Products are in the cart"
 msgid "товары"
 msgstr "Products"
 
-#: .\comparison\models.py:18 .\products\models.py:63
+#: .\comparison\models.py:18 .\products\models.py:66
 msgid "дата создания"
 msgstr "Creating date"
 
 #: .\comparison\models.py:21
-msgid "сравнение"
+msgid "сравнения"
 msgstr "Comparison"
 
-#: .\config\settings.py:139
+#: .\comparison\models.py:22
+msgid "сравнение"
+msgstr "Comparisons"
+
+#: .\config\settings.py:140
 msgid "Русский"
 msgstr "Russian"
 
-#: .\config\settings.py:140
-msgid "Английский "
+#: .\config\settings.py:141
+msgid "Английский"
 msgstr "English"
 
 #: .\discounts\models.py:15
@@ -197,73 +202,106 @@ msgstr "Product in import log"
 msgid "продукты в логах импорта"
 msgstr "Products in import logs"
 
+#: .\order\models.py:54
+msgid "заказ"
+msgstr "Order"
+
+#: .\order\models.py:55
+msgid "заказы"
+msgstr "Orders"
+
 #: .\products\models.py:12 .\shops\models.py:24
 msgid "название"
 msgstr "Name"
 
-#: .\products\models.py:13
-msgid "актуальность"
-msgstr "Relevance"
-
-#: .\products\models.py:14
-msgid "превью"
-msgstr "Preview"
-
-#: .\products\models.py:15
-msgid "ссылка"
-msgstr "Link"
-
-#: .\products\models.py:18
-msgid "Баннер"
-msgstr "Banner"
-
-#: .\products\models.py:19
-msgid "Баннеры"
-msgstr "Banners"
-
-#: .\products\models.py:29 .\products\models.py:60
-msgid "наименование"
-msgstr "Name"
-
-#: .\products\models.py:30 .\products\models.py:62 .\shops\models.py:26
+#: .\products\models.py:13 .\products\models.py:31 .\products\models.py:65
+#: .\shops\models.py:26
 msgid "описание"
 msgstr "Description"
 
-#: .\products\models.py:32
+#: .\products\models.py:14
+msgid "актуальность"
+msgstr "Relevance"
+
+#: .\products\models.py:15
+msgid "превью"
+msgstr "Preview"
+
+#: .\products\models.py:16
+msgid "ссылка"
+msgstr "Link"
+
+#: .\products\models.py:19
+msgid "Баннер"
+msgstr "Banner"
+
+#: .\products\models.py:20
+msgid "Баннеры"
+msgstr "Banners"
+
+#: .\products\models.py:30 .\products\models.py:63
+msgid "наименование"
+msgstr "Name"
+
+#: .\products\models.py:33
 msgid "индекс сортировки"
 msgstr "Sorting index"
 
-#: .\products\models.py:39 .\products\models.py:61
+#: .\products\models.py:40 .\products\models.py:64
 msgid "категория"
 msgstr "Category"
 
-#: .\products\models.py:48 .\products\models.py:51
+#: .\products\models.py:41
+msgid "категорий"
+msgstr "Categories"
+
+#: .\products\models.py:50 .\products\models.py:53
 msgid "тег"
 msgstr "Tag"
 
-#: .\products\models.py:64
+#: .\products\models.py:54
+msgid "теги"
+msgstr "Tags"
+
+#: .\products\models.py:67
 msgid "детали"
 msgstr "Details"
 
-#: .\products\models.py:66
+#: .\products\models.py:69
 msgid "ограниченный тираж"
 msgstr "Limited edition"
 
-#: .\products\models.py:67
+#: .\products\models.py:70
 msgid "товар дня"
 msgstr "Product of the day"
 
-#: .\products\models.py:70 .\products\models.py:104
+#: .\products\models.py:73 .\products\models.py:109
 msgid "продукт"
 msgstr "Product"
 
-#: .\products\models.py:103 .\products\models.py:107
+#: .\products\models.py:74
+msgid "продукты"
+msgstr "Products"
+
+#: .\products\models.py:97
+msgid "отзыв"
+msgstr "Comment"
+
+#: .\products\models.py:98
+msgid "отзывы"
+msgstr "Comments"
+
+#: .\products\models.py:108 .\products\models.py:112
+msgid "изображения"
+msgstr "Images"
+
+#: .\products\models.py:113
 msgid "изображение"
 msgstr "Image"
 
-#: .\products\models.py:108
-msgid "изображения"
-msgstr "Images"
+#: .\settings_app\models.py:98 .\settings_app\models.py:99
+msgid "настройки сайта"
+msgstr "Site settings"
 
 #: .\shops\models.py:25
 msgid "контактная информация"

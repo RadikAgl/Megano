@@ -37,7 +37,8 @@ class Category(models.Model):
         return self.product_set.exists()
 
     class Meta:
-        verbose_name_plural = _("категория")
+        verbose_name = _("категория")
+        verbose_name_plural = _("категорий")
 
     def __str__(self):
         return f"{self.name}"
@@ -49,7 +50,8 @@ class Tag(models.Model):
     name = models.CharField(max_length=100, verbose_name=_("тег"), unique=True)
 
     class Meta:
-        verbose_name_plural = _("тег")
+        verbose_name = _("тег")
+        verbose_name_plural = _("теги")
 
     def __str__(self):
         return f"{self.name}"
@@ -63,12 +65,13 @@ class Product(models.Model):
     description = models.CharField(max_length=1000, verbose_name=_("описание"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
     details = models.JSONField(default=dict, blank=True, verbose_name=_("детали"))
-    tags = models.ManyToManyField(Tag, related_name="product")
+    tags = models.ManyToManyField(Tag, related_name="product", verbose_name="тег")
     is_limited = models.BooleanField(default=False, verbose_name=_("ограниченный тираж"))
     is_product_of_the_day = models.BooleanField(default=False, verbose_name=_("товар дня"))
 
     class Meta:
-        verbose_name_plural = _("продукт")
+        verbose_name = _("продукт")
+        verbose_name_plural = _("продукты")
 
     def __str__(self):
         return f"{self.name}"
@@ -77,8 +80,10 @@ class Product(models.Model):
 class Review(models.Model):
     """Модель отзыва на товар"""
 
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="reviews", verbose_name="user")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews", verbose_name="product")
+    user = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="reviews", verbose_name="пользователь"
+    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews", verbose_name="продукт")
     text = models.TextField(
         verbose_name="text",
         validators=[
@@ -86,12 +91,12 @@ class Review(models.Model):
             validators.MaxLengthValidator(1000),
         ],
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="дата создания")
     rating = models.IntegerField()
 
     class Meta:
-        verbose_name = "отзыв"
-        verbose_name_plural = "отзывы"
+        verbose_name = _("отзыв")
+        verbose_name_plural = _("отзывы")
         unique_together = ("user", "product")
 
     def __str__(self):
@@ -101,12 +106,12 @@ class Review(models.Model):
 class ProductImage(models.Model):
     """Модель фотографии товара"""
 
-    image = models.ImageField(upload_to="products/%Y/%m/%d/", verbose_name=_("изображение"))
+    image = models.ImageField(upload_to="products/%Y/%m/%d/", verbose_name=_("изображения"))
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name=_("продукт"))
 
     class Meta:
-        verbose_name = _("изображение")
-        verbose_name_plural = _("изображения")
+        verbose_name = _("изображения")
+        verbose_name_plural = _("изображение")
 
     def __str__(self):
         return f"{self.product.name}"

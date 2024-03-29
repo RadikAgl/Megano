@@ -18,6 +18,7 @@ class Comparison(models.Model):
     created_at = models.DateTimeField(verbose_name=_("дата создания"), editable=False)
 
     class Meta:
+        verbose_name = _("сравнения")
         verbose_name_plural = _("сравнение")
 
     def __str__(self):
