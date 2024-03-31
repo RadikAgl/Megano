@@ -66,7 +66,7 @@ class RegistrationView(FormView):
 
     template_name = "accounts/registr.jinja2"
     form_class = RegistrationForm
-    success_url = reverse_lazy("user:main_page")
+    success_url = reverse_lazy("user:main")
 
     def form_valid(self, form):
         user = form.save()

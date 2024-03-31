@@ -25,18 +25,23 @@
                 </div>
                 <div class="Section-content">
                     <div class="Profile">
-                        <form class="form Profile-form" action="#" method="post">
+                       <form class="form Profile-form"  method="post">
                         {% csrf_token %}
                             <div class="row">
                                     <div class="form-group">
-                                        <label class="form-label" for="mail">E-mail
+                                        <label class="form-label" for="old_pass">your password
                                         </label>
-                                        <input class="form-input" id="mail" name="email" type="email"  data-validate="require" />
+                                        <input class="form-input" id="old_pass" name="old_password" type="password"  data-validate="require" />
                                     </div>
                                     <div class="form-groups">
-                                        <label class="form-label" for="password">Пароль
+                                        <label class="form-label" for="password1">Пароль
                                         </label>
-                                        <input class="form-input" id="password" name="new_password1" type="password" placeholder="Тут можно изменить пароль" />
+                                        <input class="form-input" id="password1" name="new_password1" type="password" data-validate="require" placeholder="Тут можно изменить пароль" />
+                                    </div>
+                                    <div class="form-groups">
+                                        <label class="form-label" for="password2">Пароль
+                                        </label>
+                                        <input class="form-input" id="password2" name="new_password2" type="password" data-validate="require" placeholder="повторите пароль" />
                                     </div>
 
                                     <div class="form-group">
