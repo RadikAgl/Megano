@@ -154,7 +154,7 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 AUTH_USER_MODEL = "accounts.User"
 
-STATIC_ROOT = os.path.join(BASE_DIR, "/static")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 LOGIN_REDIRECT_URL = reverse_lazy("user:main")
 STATIC_URL = "static/"
 

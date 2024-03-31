@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-29 16:23+0300\n"
+"POT-Creation-Date: 2024-03-31 12:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,6 +27,7 @@ msgid "Email"
 msgstr "Email"
 
 #: .\accounts\models.py:21 .\accounts\models.py:28 .\comparison\models.py:15
+#: .\shops\models.py:33
 msgid "пользователь"
 msgstr "User"
 
@@ -53,6 +54,30 @@ msgstr "View history"
 #: .\accounts\models.py:35
 msgid "истории просмотров"
 msgstr "View histories"
+
+#: .\accounts\views.py:32
+msgid "успешно"
+msgstr "Successful"
+
+#: .\accounts\views.py:36
+msgid "не верный ввод полей"
+msgstr "incorrect field input"
+
+#: .\accounts\views.py:56
+msgid "оплачено"
+msgstr "paid"
+
+#: .\accounts\views.py:75
+msgid "не валидная форма или такой пользователь уже есть"
+msgstr "invalid form or user already exists"
+
+#: .\accounts\views.py:92
+msgid "нет пользователя с таким Email или неверный пароль"
+msgstr "no user with such email or incorrect password"
+
+#: .\accounts\views.py:131
+msgid "нет пользователя с таким Email"
+msgstr "no user with such email"
 
 #: .\cart\models.py:17
 msgid "корзина"
@@ -85,6 +110,49 @@ msgstr "Comparison"
 #: .\comparison\models.py:22
 msgid "сравнение"
 msgstr "Comparisons"
+
+#: .\comparison\views.py:38
+msgid "Недостаточно данных для сравнения"
+msgstr "Insufficient data for comparison"
+
+#: .\comparison\views.py:42
+msgid ""
+"Попытка сравнить товары без общих характеристик — как пытаться сравнить кота "
+"с карамельным поп-корном: нелепо и, в конечном итоге, только заставляет "
+"задуматься о бесполезности сравнения вещей, которые просто нельзя сравнить. "
+"Ведь каждый товар — это как своего рода экземпляр чуда, подобно тому, как "
+"каждый кот — это своя собственная тайна вселенной!"
+msgstr ""
+"Attempting to compare items without common characteristics is like trying to "
+"compare a cat with caramel popcorn:absurd and ultimately only makes one "
+"ponder the futility of comparing things that simply cannot be compared.After "
+"all, each item is like its own kind of miracle, much like how each cat is "
+"its own universe's mystery!"
+
+#: .\comparison\views.py:83 .\comparison\views.py:133
+msgid "Товар успешно добавлен в сравнение"
+msgstr "Product successfully added to comparison"
+
+#: .\comparison\views.py:85 .\comparison\views.py:135
+msgid "Товар уже присутствует в сравнении"
+msgstr "Product is already present in the comparison"
+
+#: .\comparison\views.py:87 .\comparison\views.py:137
+msgid "Не удалось добавить товар в сравнение. Максимум 4 товара разрешены."
+msgstr "Failed to add the item to the comparison. Maximum of 4 items allowed."
+
+#: .\comparison\views.py:99
+msgid "Товар успешно удален из сравнения"
+msgstr "Product successfully removed from comparison"
+
+#: .\comparison\views.py:102 .\comparison\views.py:104
+#: .\comparison\views.py:151
+msgid "Не удалось удалить товар из сравнения"
+msgstr "Failed to remove product from comparison"
+
+#: .\comparison\views.py:107 .\comparison\views.py:109
+msgid "Неверный запрос. Отсутствует product_id."
+msgstr "Invalid request. product_id is missing."
 
 #: .\config\settings.py:140
 msgid "Русский"
@@ -170,7 +238,7 @@ msgstr "Completed"
 msgid "Завершён с ошибкой"
 msgstr "Completed with errors"
 
-#: .\imports\models.py:30 .\shops\models.py:33
+#: .\imports\models.py:30
 msgid "Пользователь"
 msgstr "User"
 
@@ -202,6 +270,14 @@ msgstr "Product in import log"
 msgid "продукты в логах импорта"
 msgstr "Products in import logs"
 
+#: .\imports\views.py:143
+msgid "Файл не найден!"
+msgstr "File not found!"
+
+#: .\imports\views.py:152
+msgid "Ошибка при открытии файла."
+msgstr "Error opening file."
+
 #: .\order\models.py:54
 msgid "заказ"
 msgstr "Order"
@@ -210,13 +286,12 @@ msgstr "Order"
 msgid "заказы"
 msgstr "Orders"
 
-#: .\products\models.py:12 .\shops\models.py:24
-msgid "название"
+#: .\products\models.py:12
+msgid "названия"
 msgstr "Name"
 
 #: .\products\models.py:13 .\products\models.py:31 .\products\models.py:65
-#: .\shops\models.py:26
-msgid "описание"
+msgid "описания"
 msgstr "Description"
 
 #: .\products\models.py:14
@@ -240,7 +315,9 @@ msgid "Баннеры"
 msgstr "Banners"
 
 #: .\products\models.py:30 .\products\models.py:63
-msgid "наименование"
+#, fuzzy
+#| msgid "наименование"
+msgid "наименования"
 msgstr "Name"
 
 #: .\products\models.py:33
@@ -275,7 +352,7 @@ msgstr "Limited edition"
 msgid "товар дня"
 msgstr "Product of the day"
 
-#: .\products\models.py:73 .\products\models.py:109
+#: .\products\models.py:73 .\products\models.py:110
 msgid "продукт"
 msgstr "Product"
 
@@ -283,46 +360,70 @@ msgstr "Product"
 msgid "продукты"
 msgstr "Products"
 
-#: .\products\models.py:97
+#: .\products\models.py:98
 msgid "отзыв"
 msgstr "Comment"
 
-#: .\products\models.py:98
+#: .\products\models.py:99
 msgid "отзывы"
 msgstr "Comments"
 
-#: .\products\models.py:108 .\products\models.py:112
+#: .\products\models.py:109 .\products\models.py:113
 msgid "изображения"
-msgstr "Images"
-
-#: .\products\models.py:113
-msgid "изображение"
 msgstr "Image"
+
+#: .\products\models.py:114
+msgid "изображение"
+msgstr "Images"
 
 #: .\settings_app\models.py:98 .\settings_app\models.py:99
 msgid "настройки сайта"
 msgstr "Site settings"
 
+#: .\settings_app\views.py:49
+msgid "Ошибка при обновлении настроек. Пожалуйста, исправьте ошибки."
+msgstr "Error updating settings. Please correct the errors."
+
+#: .\settings_app\views.py:66
+msgid "Весь кэш успешно очищен"
+msgstr "All cache successfully cleared"
+
+#: .\shops\models.py:24
+msgid "название"
+msgstr "Name"
+
 #: .\shops\models.py:25
 msgid "контактная информация"
 msgstr "Contact information"
+
+#: .\shops\models.py:26
+msgid "описание"
+msgstr "Description"
 
 #: .\shops\models.py:31
 msgid "товары в магазине"
 msgstr "Products in the shop"
 
 #: .\shops\models.py:37
-msgid "Логотип компании"
+msgid "логотип компании"
 msgstr "Company logo"
 
 #: .\shops\models.py:43
-msgid "Продавцы"
+msgid "продавец"
+msgstr "Seller"
+
+#: .\shops\models.py:44
+msgid "продавцы"
 msgstr "Sellers"
 
-#: .\shops\models.py:54
+#: .\shops\models.py:55
 msgid "цена"
 msgstr "Price"
 
-#: .\shops\models.py:59
-msgid "предложение"
+#: .\shops\models.py:60
+msgid "предложения"
 msgstr "Offer"
+
+#: .\shops\models.py:61
+msgid "предложение"
+msgstr "Offers"

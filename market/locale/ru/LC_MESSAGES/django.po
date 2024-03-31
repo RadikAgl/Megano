@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-29 16:23+0300\n"
+"POT-Creation-Date: 2024-03-31 12:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,7 @@ msgid "Email"
 msgstr ""
 
 #: .\accounts\models.py:21 .\accounts\models.py:28 .\comparison\models.py:15
+#: .\shops\models.py:33
 msgid "пользователь"
 msgstr ""
 
@@ -54,6 +55,30 @@ msgstr ""
 
 #: .\accounts\models.py:35
 msgid "истории просмотров"
+msgstr ""
+
+#: .\accounts\views.py:32
+msgid "успешно"
+msgstr ""
+
+#: .\accounts\views.py:36
+msgid "не верный ввод полей"
+msgstr ""
+
+#: .\accounts\views.py:56
+msgid "оплачено"
+msgstr ""
+
+#: .\accounts\views.py:75
+msgid "не валидная форма или такой пользователь уже есть"
+msgstr ""
+
+#: .\accounts\views.py:92
+msgid "нет пользователя с таким Email или неверный пароль"
+msgstr ""
+
+#: .\accounts\views.py:131
+msgid "нет пользователя с таким Email"
 msgstr ""
 
 #: .\cart\models.py:17
@@ -86,6 +111,44 @@ msgstr ""
 
 #: .\comparison\models.py:22
 msgid "сравнение"
+msgstr ""
+
+#: .\comparison\views.py:38
+msgid "Недостаточно данных для сравнения"
+msgstr ""
+
+#: .\comparison\views.py:42
+msgid ""
+"Попытка сравнить товары без общих характеристик — как пытаться сравнить кота "
+"с карамельным поп-корном: нелепо и, в конечном итоге, только заставляет "
+"задуматься о бесполезности сравнения вещей, которые просто нельзя сравнить. "
+"Ведь каждый товар — это как своего рода экземпляр чуда, подобно тому, как "
+"каждый кот — это своя собственная тайна вселенной!"
+msgstr ""
+
+#: .\comparison\views.py:83 .\comparison\views.py:133
+msgid "Товар успешно добавлен в сравнение"
+msgstr ""
+
+#: .\comparison\views.py:85 .\comparison\views.py:135
+msgid "Товар уже присутствует в сравнении"
+msgstr ""
+
+#: .\comparison\views.py:87 .\comparison\views.py:137
+msgid "Не удалось добавить товар в сравнение. Максимум 4 товара разрешены."
+msgstr ""
+
+#: .\comparison\views.py:99
+msgid "Товар успешно удален из сравнения"
+msgstr ""
+
+#: .\comparison\views.py:102 .\comparison\views.py:104
+#: .\comparison\views.py:151
+msgid "Не удалось удалить товар из сравнения"
+msgstr ""
+
+#: .\comparison\views.py:107 .\comparison\views.py:109
+msgid "Неверный запрос. Отсутствует product_id."
 msgstr ""
 
 #: .\config\settings.py:140
@@ -172,7 +235,7 @@ msgstr ""
 msgid "Завершён с ошибкой"
 msgstr ""
 
-#: .\imports\models.py:30 .\shops\models.py:33
+#: .\imports\models.py:30
 msgid "Пользователь"
 msgstr ""
 
@@ -204,6 +267,14 @@ msgstr ""
 msgid "продукты в логах импорта"
 msgstr ""
 
+#: .\imports\views.py:143
+msgid "Файл не найден!"
+msgstr ""
+
+#: .\imports\views.py:152
+msgid "Ошибка при открытии файла."
+msgstr ""
+
 #: .\order\models.py:54
 msgid "заказ"
 msgstr ""
@@ -212,13 +283,12 @@ msgstr ""
 msgid "заказы"
 msgstr ""
 
-#: .\products\models.py:12 .\shops\models.py:24
-msgid "название"
+#: .\products\models.py:12
+msgid "названия"
 msgstr ""
 
 #: .\products\models.py:13 .\products\models.py:31 .\products\models.py:65
-#: .\shops\models.py:26
-msgid "описание"
+msgid "описания"
 msgstr ""
 
 #: .\products\models.py:14
@@ -242,7 +312,7 @@ msgid "Баннеры"
 msgstr ""
 
 #: .\products\models.py:30 .\products\models.py:63
-msgid "наименование"
+msgid "наименования"
 msgstr ""
 
 #: .\products\models.py:33
@@ -277,7 +347,7 @@ msgstr ""
 msgid "товар дня"
 msgstr ""
 
-#: .\products\models.py:73 .\products\models.py:109
+#: .\products\models.py:73 .\products\models.py:110
 msgid "продукт"
 msgstr ""
 
@@ -285,19 +355,19 @@ msgstr ""
 msgid "продукты"
 msgstr ""
 
-#: .\products\models.py:97
+#: .\products\models.py:98
 msgid "отзыв"
 msgstr ""
 
-#: .\products\models.py:98
+#: .\products\models.py:99
 msgid "отзывы"
 msgstr ""
 
-#: .\products\models.py:108 .\products\models.py:112
+#: .\products\models.py:109 .\products\models.py:113
 msgid "изображения"
 msgstr ""
 
-#: .\products\models.py:113
+#: .\products\models.py:114
 msgid "изображение"
 msgstr ""
 
@@ -305,8 +375,24 @@ msgstr ""
 msgid "настройки сайта"
 msgstr ""
 
+#: .\settings_app\views.py:49
+msgid "Ошибка при обновлении настроек. Пожалуйста, исправьте ошибки."
+msgstr ""
+
+#: .\settings_app\views.py:66
+msgid "Весь кэш успешно очищен"
+msgstr ""
+
+#: .\shops\models.py:24
+msgid "название"
+msgstr ""
+
 #: .\shops\models.py:25
 msgid "контактная информация"
+msgstr ""
+
+#: .\shops\models.py:26
+msgid "описание"
 msgstr ""
 
 #: .\shops\models.py:31
@@ -314,17 +400,25 @@ msgid "товары в магазине"
 msgstr ""
 
 #: .\shops\models.py:37
-msgid "Логотип компании"
+msgid "логотип компании"
 msgstr ""
 
 #: .\shops\models.py:43
-msgid "Продавцы"
+msgid "продавец"
 msgstr ""
 
-#: .\shops\models.py:54
+#: .\shops\models.py:44
+msgid "продавцы"
+msgstr ""
+
+#: .\shops\models.py:55
 msgid "цена"
 msgstr ""
 
-#: .\shops\models.py:59
+#: .\shops\models.py:60
+msgid "предложения"
+msgstr ""
+
+#: .\shops\models.py:61
 msgid "предложение"
 msgstr ""

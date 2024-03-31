@@ -9,8 +9,8 @@ from django.utils.translation import gettext_lazy as _
 class Banner(models.Model):
     """Баннер"""
 
-    name = models.CharField(max_length=512, verbose_name=_("название"))
-    description = models.TextField(verbose_name=_("описание"), null=True)
+    name = models.CharField(max_length=512, verbose_name=_("названия"))
+    description = models.TextField(verbose_name=_("описания"), null=True)
     actual = models.BooleanField(default=True, verbose_name=_("актуальность"))
     preview = models.ImageField(verbose_name=_("превью"), upload_to="banners")
     link = models.URLField(verbose_name=_("ссылка"), unique=True, db_index=True)
@@ -27,8 +27,8 @@ class Banner(models.Model):
 class Category(models.Model):
     """Модель django orm категорий товара"""
 
-    name = models.CharField(max_length=512, verbose_name=_("наименование"), unique=True)
-    description = models.TextField(verbose_name=_("описание"), blank=True, null=True)
+    name = models.CharField(max_length=512, verbose_name=_("наименования"), unique=True)
+    description = models.TextField(verbose_name=_("описания"), blank=True, null=True)
     parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
     sort_index = models.PositiveIntegerField(verbose_name=_("индекс сортировки"), null=True, unique=True)
 
@@ -60,9 +60,9 @@ class Tag(models.Model):
 class Product(models.Model):
     """Модель django orm товаров"""
 
-    name = models.CharField(max_length=100, db_index=True, verbose_name=_("наименование"))
+    name = models.CharField(max_length=100, db_index=True, verbose_name=_("наименования"))
     category = models.ForeignKey(Category, on_delete=models.CASCADE, max_length=100, verbose_name=_("категория"))
-    description = models.CharField(max_length=1000, verbose_name=_("описание"))
+    description = models.CharField(max_length=1000, verbose_name=_("описания"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
     details = models.JSONField(default=dict, blank=True, verbose_name=_("детали"))
     tags = models.ManyToManyField(Tag, related_name="product", verbose_name="тег")
