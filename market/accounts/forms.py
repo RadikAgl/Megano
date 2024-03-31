@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordChangeForm
 from django import forms
 
 
@@ -57,17 +57,19 @@ class CustomPasswordForm(SetPasswordForm):
         self.fields.pop("new_password2", None)
 
 
-class ProfilePasswordForm(SetPasswordForm):
-    email = forms.EmailField(required=True)
-    """форма для изменения пароля и email"""
+class ProfilePasswordForm(PasswordChangeForm):
+    """Форма для изменения пароля"""
 
-    class Meta:
-        model = get_user_model()
-        fields = ["email", "new_password1"]
+    def clean_new_password2(self):
+        new_password1 = self.cleaned_data.get("new_password1")
+        new_password2 = self.cleaned_data.get("new_password2")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Делаем поле для повторного ввода нового пароля не обязательным
-        self.fields["new_password2"].required = False
-        # Убираем поле для повторного ввода нового пароля
-        self.fields.pop("new_password2", None)
+        if new_password1 and not new_password2:
+            # Поле new_password2 не заполнено, но мы не хотим, чтобы это вызывало ошибку валидации
+            return new_password2
+
+        # Продолжаем с обычной валидацией
+        if new_password1 != new_password2:
+            raise forms.ValidationError("Пароли не совпадают")
+
+        return new_password2
