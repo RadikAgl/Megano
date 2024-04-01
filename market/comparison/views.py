@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.http import require_POST
-
+from django.utils.translation import gettext_lazy as _
 from products.models import Product
 from shops.models import Offer
 from .services import (
@@ -35,20 +35,23 @@ class ComparisonView(View):
         }
 
         if comparison_count < 2:
-            messages.error(request, "Недостаточно данных для сравнения")
+            no_enough_products = _("Недостаточно данных для сравнения")
+            messages.error(request, no_enough_products)
 
         if not common_details:
-            messages.warning(
-                request,
+            no_common_details = _(
                 "Попытка сравнить товары без общих характеристик — "
                 "как пытаться сравнить кота с карамельным поп-корном: "
                 "нелепо и, в конечном итоге, только заставляет задуматься о бесполезности "
                 "сравнения вещей, которые просто нельзя сравнить. Ведь каждый товар —"
                 " это как своего рода экземпляр чуда, подобно тому, как каждый кот —"
-                " это своя собственная тайна вселенной!",
+                " это своя собственная тайна вселенной!"
+            )
+            messages.warning(
+                request,
+                no_common_details,
             )
 
-        # Get prices for products
         prices = {}
         for product in products:
             try:
@@ -79,11 +82,12 @@ class ComparisonView(View):
         added, created = add_to_comparison_service(request.user, product_id)
         if added:
             if created:
-                messages.success(request, "Товар успешно добавлен в сравнение")
+                messages.success(request, _("Товар успешно добавлен в сравнение"))
             else:
-                messages.info(request, "Товар уже присутствует в сравнении")
+                messages.info(request, _("Товар уже присутствует в сравнении"))
         else:
-            messages.error(request, "Не удалось добавить товар в сравнение. Максимум 4 товара разрешены.")
+            max_products = _("Не удалось добавить товар в сравнение. Максимум 4 товара разрешены.")
+            messages.error(request, max_products)
 
         return redirect("products:product-details", pk=product_id)
 
@@ -94,17 +98,21 @@ class ComparisonView(View):
             product_id: str = request.POST["product_id"]
             success: bool = remove_from_comparison(request.user, product_id)
             if success:
-                messages.success(request, "Товар успешно удален из сравнения")
+                messages.success(request, _("Товар успешно удален из сравнения"))
                 return redirect("comparison:comparison")
             else:
-                messages.error(request, "Не удалось удалить товар из сравнения")
+                messages.error(request, _("Не удалось удалить товар из сравнения"))
                 return render(
-                    request, "comparison/comparison.jinja2", {"error_message": "Не удалось удалить товар из сравнения"}
+                    request,
+                    "comparison/comparison.jinja2",
+                    {"error_message": _("Не удалось удалить товар из сравнения")},
                 )
         else:
-            messages.error(request, "Неверный запрос. Отсутствует product_id.")
+            messages.error(request, _("Неверный запрос. Отсутствует product_id."))
             return render(
-                request, "comparison/comparison.jinja2", {"error_message": "Неверный запрос. Отсутствует product_id."}
+                request,
+                "comparison/comparison.jinja2",
+                {"error_message": _("Неверный запрос. Отсутствует product_id.")},
             )
 
         return redirect("comparison:comparison")
@@ -128,11 +136,11 @@ def add_to_comparison(request, product_id: str) -> HttpResponseRedirect:
     added, created = add_to_comparison_service(request.user, product_id)
     if added:
         if created:
-            messages.success(request, "Товар успешно добавлен в сравнение")
+            messages.success(request, _("Товар успешно добавлен в сравнение"))
         else:
-            messages.success(request, "Товар уже присутствует в сравнении")
+            messages.success(request, _("Товар уже присутствует в сравнении"))
     else:
-        messages.error(request, "Не удалось добавить товар в сравнение. Максимум 4 товара разрешены.")
+        messages.error(request, _("Не удалось добавить товар в сравнение. Максимум 4 товара разрешены."))
 
     return redirect("products:product-details", pk=product_id)
 
@@ -146,6 +154,6 @@ def remove_from_comparison_view(request) -> Union[HttpResponseRedirect, HttpResp
     if success:
         return redirect("comparison:comparison")
     else:
-        messages.success(request, "Не удалось удалить товар из сравнения")
+        messages.success(request, _("Не удалось удалить товар из сравнения"))
 
     return redirect("comparison:comparison")

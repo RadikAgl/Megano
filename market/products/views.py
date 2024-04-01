@@ -86,13 +86,9 @@ class CatalogView(FilterView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        comparison_list = get_comparison_list(self.request.user.id)
-        comparison_count = len(comparison_list)
-
         context["ordering_fields"] = get_ordering_fields(ProductFilter())
         context["tags"] = get_popular_tags()
         context["cart_form"] = CartAddProductCatalogForm()
-        context["comparison_count"] = comparison_count
 
         return context
 

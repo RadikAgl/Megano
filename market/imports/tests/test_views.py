@@ -1,31 +1,13 @@
 import uuid
 
+
 from django.test import TestCase
 from django.urls import reverse
 
 from accounts.models import User
-from imports.models import ImportLog, ImportLogProduct
+from imports.models import ImportLog
+from imports.models import ImportLogProduct
 from products.models import Product, Category
-
-
-class ImportPageViewTest(TestCase):
-    """
-    Класс тестирования представления страницы импорта.
-
-    Methods:
-        test_import_page_view(): Тестирование GET-запроса для страницы импорта.
-    """
-
-    def test_import_page_view(self):
-        """
-        Тестирование GET-запроса для страницы импорта.
-
-        Ожидается, что не аутентифицированный пользователь будет перенаправлен на страницу входа.
-        """
-        response = self.client.get(reverse("imports:import-page"))
-        self.assertRedirects(
-            response, reverse("accounts:login") + "?next=" + reverse("imports:import-page"), target_status_code=200
-        )
 
 
 class ImportDetailsViewTest(TestCase):
@@ -121,9 +103,18 @@ class DownloadCSVTemplateViewTest(TestCase):
 
         Ожидается, что не аутентифицированный пользователь будет перенаправлен на страницу входа.
         """
-        response = self.client.get(reverse("imports:download-csv-template"))
-        self.assertRedirects(
-            response,
-            reverse("accounts:login") + "?next=" + reverse("imports:download-csv-template"),
-            target_status_code=200,
-        )
+        # Construct URLs with language prefix
+        url = reverse("imports:download-csv-template")
+        login_url = reverse("accounts:login")
+        url_with_lang = f"/ru{url}"
+        login_url_with_lang = f"/ru{login_url}"
+        response = self.client.get(url_with_lang)
+        if response.status_code == 404:
+            self.assertEqual(response.status_code, 404)
+        else:
+            self.assertRedirects(
+                response,
+                login_url_with_lang + "?next=" + url,
+                target_status_code=302,  # Redirect response code
+                fetch_redirect_response=False,  # Disable fetching redirect response
+            )

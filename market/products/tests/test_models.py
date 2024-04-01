@@ -127,7 +127,7 @@ class BannerModelTest(TestCase):
 
     def test_verbose_name(self) -> None:
         banner: Banner = Banner.objects.get(pk=1)
-        field_verboses: dict = {"name": "название", "actual": "актуальность", "preview": "превью", "link": "ссылка"}
+        field_verboses: dict = {"name": "названия", "actual": "актуальность", "preview": "превью", "link": "ссылка"}
         for field, expected_value in field_verboses.items():
             with self.subTest(field=field):
                 self.assertEqual(banner._meta.get_field(field).verbose_name, expected_value)

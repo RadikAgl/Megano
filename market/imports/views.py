@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import TemplateView
 
@@ -140,7 +141,7 @@ class DownloadCSVTemplateView(LoginRequiredMixin, View):
         file_path = os.path.join(docs_dir, file_name)
 
         if not os.path.isfile(file_path):
-            return HttpResponse("File not found!")
+            return HttpResponse(_("Файл не найден!"))
 
         try:
             with open(file_path, "rb") as file:
@@ -149,4 +150,4 @@ class DownloadCSVTemplateView(LoginRequiredMixin, View):
             return response
         except Exception as e:
             logging.error(f"Error opening file: {str(e)}")
-            return HttpResponse("Error opening file.")
+            return HttpResponse(_("Ошибка при открытии файла."))

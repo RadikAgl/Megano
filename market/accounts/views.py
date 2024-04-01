@@ -10,6 +10,7 @@ from django.contrib.auth.views import (
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
@@ -28,11 +29,11 @@ class ProfileView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        messages.error(self.request, "успешно")
+        messages.error(self.request, _("успешно"))
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "не верный ввод полей")
+        messages.error(self.request, _("не верный ввод полей"))
         return super().form_invalid(form)
 
     def get_form_kwargs(self):
@@ -52,7 +53,7 @@ class AcountView(LoginRequiredMixin, TemplateView):
         try:
             if self.request.session[f"{self.request.user.id}"]["id"]:
                 Order.objects.filter(user=self.request.user.id).update(status=OrderStatus.PAID)
-                context["paid"] = "оплачено"
+                context["paid"] = _("оплачено")
                 return context
         except KeyError:
             return context
@@ -71,7 +72,7 @@ class RegistrationView(FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "не валидная форма или такой пользователь уже есть")
+        messages.error(self.request, _("не валидная форма или такой пользователь уже есть"))
         return super().form_invalid(form)
 
 
@@ -88,7 +89,7 @@ class MyLoginView(LoginView):
             login(self.request, user)
             return super().form_valid(form)
         else:
-            messages.error(self.request, "нет пользователя с таким Email или неверный пароль")
+            messages.error(self.request, _("нет пользователя с таким Email или неверный пароль"))
             return super().form_invalid(form)
 
 
@@ -127,7 +128,7 @@ class PasswordReset(LoginRequiredMixin, PasswordResetView):
         try:
             get_user_model().objects.get(email=email)
         except ObjectDoesNotExist:
-            messages.error(self.request, "нет пользователя с таким Email")
+            messages.error(self.request, _("нет пользователя с таким Email"))
             return self.form_invalid(form)
         return super().form_valid(form)
 

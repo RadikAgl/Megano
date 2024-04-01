@@ -30,17 +30,18 @@ class Shop(models.Model):
         related_name="shops",
         verbose_name=_("товары в магазине"),
     )
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, verbose_name=_("Пользователь"))
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, verbose_name=_("пользователь"))
     logo = models.ImageField(
         upload_to=shop_logo_directory_path,
         validators=[FileExtensionValidator(allowed_extensions=["jpg", "jpeg", "png"])],
-        verbose_name=_("Логотип компании"),
+        verbose_name=_("логотип компании"),
         blank=True,
         null=True,
     )
 
     class Meta:
-        verbose_name_plural = _("Продавцы")
+        verbose_name = _("продавец")
+        verbose_name_plural = _("продавцы")
 
     def __str__(self):
         return f"{self.name}"
@@ -56,4 +57,5 @@ class Offer(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint("shop", "product", name="unique_product_in_shop")]
+        verbose_name = _("предложения")
         verbose_name_plural = _("предложение")
