@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import TemplateView
-
+from django.utils.translation import gettext_lazy as _
 from .forms import SiteSettingsForm
 from .models import SiteSettings
 
@@ -46,7 +46,7 @@ class SettingsView(TemplateView):
             messages.success(request, "Настройки успешно обновлены")
             return redirect(reverse("admin:index"))
         else:
-            messages.error(request, "Ошибка при обновлении настроек. Пожалуйста, исправьте ошибки.")
+            messages.error(request, _("Ошибка при обновлении настроек. Пожалуйста, исправьте ошибки."))
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -63,6 +63,6 @@ class ResetCacheView(View):
     def post(self, request: HttpRequest) -> HttpResponse:
         """Обрабатывает POST-запрос для сброса кэша."""
         cache.clear()
-        messages.success(request, "Весь кэш успешно очищен")
+        messages.success(request, _("Весь кэш успешно очищен"))
 
         return redirect(reverse("admin:index"))
