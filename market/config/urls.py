@@ -24,6 +24,7 @@ from market.config import settings
 urlpatterns = []
 
 urlpatterns += i18n_patterns(
+    path("i18n/", include("django.conf.urls.i18n")),
     path("admin/settings_app/", include("settings_app.urls")),
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls", namespace="user")),

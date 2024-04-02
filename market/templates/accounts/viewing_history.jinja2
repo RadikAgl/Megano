@@ -1,10 +1,10 @@
 {% extends 'base.jinja2' %}
 
 {% block content %}
-    История просмотров товаров
+    {{ _('История просмотров товаров') }}
 
     {% for product in viewed_products %}
-    {{ product.name }}
+        {{ product.name }}
     {% endfor %}
 
 {% endblock %}
