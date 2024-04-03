@@ -15,12 +15,17 @@ from django.views import View
 from django.views.generic import FormView, TemplateView
 
 from order.models import OrderStatus, Order
-from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm
+from .forms import (
+    RegistrationForm,
+    LoginForm,
+    CustomPasswordForm,
+    ProfilePasswordForm,
+)
 from .models import ViewHistory
 
 
 class ProfileView(LoginRequiredMixin, FormView):
-    """вью для изменения пароля и email"""
+    """Представление для изменения пароля и email"""
 
     template_name = "accounts/profile.jinja2"
     form_class = ProfilePasswordForm
@@ -43,7 +48,7 @@ class ProfileView(LoginRequiredMixin, FormView):
 
 
 class AcountView(LoginRequiredMixin, TemplateView):
-    """вюь для страницы пользователя"""
+    """Представление для страницы пользователя"""
 
     template_name = "accounts/account.jinja2"
 

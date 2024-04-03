@@ -26,6 +26,7 @@ class Order(models.Model):
     name = models.TextField(max_length=20, blank=False, null=False)
     phone = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # todo здесь и далее исправить verbose_name на русский
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
     delivery_type = models.CharField(
         max_length=50,

@@ -11,12 +11,15 @@ class ComparisonViewTestCase(TestCase):
     Класс тестирования представления сравнения.
     """
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """
         Настройка тестов.
         """
+        cls.user = User.objects.create_user(username="testuser", password="12345")
+
+    def setUp(self) -> None:
         self.factory = RequestFactory()
-        self.user = User.objects.create_user(username="testuser", password="12345")
 
     def test_get_comparison_view(self):
         """

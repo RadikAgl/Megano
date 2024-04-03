@@ -8,11 +8,13 @@ from settings_app.models import SiteSettings
 
 
 class SiteSettingsTestCase(TestCase):
-    def setUp(self) -> None:
+
+    @classmethod
+    def setUpTestData(cls) -> None:
         """
         Устанавливает начальные условия для тестов SiteSettings.
         """
-        self.site_settings: SiteSettings = SiteSettings.objects.create()
+        cls.site_settings: SiteSettings = SiteSettings.objects.create()
 
     def test_get_instance_existing(self) -> None:
         """

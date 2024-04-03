@@ -8,9 +8,12 @@ from settings_app.models import SiteSettings
 class SettingsViewTestCase(TestCase):
     """Тесты представления для просмотра и изменения настроек."""
 
+    @classmethod
+    def setUpTestData(cls) -> None:
+        cls.user: User = User.objects.create_superuser(username="admin", email="admin@example.com", password="admin")
+
     def setUp(self) -> None:
         """Настройка перед запуском тестов."""
-        self.user: User = User.objects.create_superuser(username="admin", email="admin@example.com", password="admin")
         self.client: Client = Client()
 
     def test_settings_view(self) -> None:
@@ -37,12 +40,15 @@ class SettingsViewTestCase(TestCase):
 class ResetCacheViewTestCase(TestCase):
     """Тесты представления для сброса кэша."""
 
+    @classmethod
+    def setUpTestData(cls) -> None:
+        cls.user: User = User.objects.create_superuser(
+            username="test_user", email="test@example.com", password="password"
+        )
+
     def setUp(self) -> None:
         """Настройка перед запуском тестов."""
         self.client: Client = Client()
-        self.user: User = User.objects.create_superuser(
-            username="test_user", email="test@example.com", password="password"
-        )
         self.client.force_login(self.user)  # Используйте force_login для аутентификации пользователя
 
     def test_reset_cache_view(self) -> None:

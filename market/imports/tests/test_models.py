@@ -11,13 +11,23 @@ class ImportLogModelTest(TestCase):
     Тестовый класс для модели ImportLog.
     """
 
-    def setUp(self):
+    # setUpClass, tearDownClass - классовые методы, которые запускаются один раз перед и после выполнения
+    # всех тестовых методов. Определены в TestCase.
+
+    # setUp, tearDown - методы класса, которые выполняются перед и после каждого(!) тестового метода
+
+    # setUpTesData - специальный классовый метод для создания тестовых данных в моделях.
+    # Выполняется один раз перед всеми тестовыми методами класса.
+    # Созданные данные удалются методом TestCase.tearDownClass
+
+    @classmethod
+    def setUpTesData(cls):
         """
         Подготовка данных перед запуском тестов.
         """
-        self.user = get_user_model().objects.create_user(username="testuser", password="testpassword")
-        self.import_log = ImportLog.objects.create(
-            user=self.user, file_name="test_file.txt", status=ImportStatus.COMPLETED, timestamp=timezone.now()
+        cls.user = get_user_model().objects.create_user(username="testuser", password="testpassword")
+        cls.import_log = ImportLog.objects.create(
+            user=cls.user, file_name="test_file.txt", status=ImportStatus.COMPLETED, timestamp=timezone.now()
         )
 
     def test_import_log_str(self):
@@ -44,18 +54,19 @@ class ImportLogProductModelTest(TestCase):
     Тестовый класс для модели ImportLogProduct.
     """
 
-    def setUp(self):
+    @classmethod
+    def setUpTesData(cls):
         """
         Подготовка данных перед запуском тестов.
         """
-        self.user = get_user_model().objects.create_user(username="testuser", password="testpassword")
-        self.import_log = ImportLog.objects.create(
-            user=self.user, file_name="test_file.txt", status=ImportStatus.COMPLETED, timestamp=timezone.now()
+        cls.user = get_user_model().objects.create_user(username="testuser", password="testpassword")
+        cls.import_log = ImportLog.objects.create(
+            user=cls.user, file_name="test_file.txt", status=ImportStatus.COMPLETED, timestamp=timezone.now()
         )
-        self.category = Category.objects.create(name="Test Category")
-        self.product = Product.objects.create(name="Test Product", category=self.category)
+        cls.category = Category.objects.create(name="Test Category")
+        cls.product = Product.objects.create(name="Test Product", category=cls.category)
 
-        self.import_log_product = ImportLogProduct.objects.create(import_log=self.import_log, product=self.product)
+        cls.import_log_product = ImportLogProduct.objects.create(import_log=cls.import_log, product=cls.product)
 
     def test_import_log_product_relationships(self):
         """

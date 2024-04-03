@@ -11,26 +11,28 @@ class ComparisonModelTestCase(TestCase):
     Тест модели сравнения.
     """
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         """
         Настройка теста.
         """
+        super().setUpClass()
         # Создание пользователя
-        self.user = User.objects.create_user(username="testuser", password="12345")
+        cls.user = User.objects.create_user(username="testuser", password="12345")
 
         # Создание некоторых категорий
-        self.category = Category.objects.create(name="Тестовая категория")
+        cls.category = Category.objects.create(name="Тестовая категория")
 
         # Создание некоторых тегов
-        self.tag1 = Tag.objects.create(name="Тег1")
-        self.tag2 = Tag.objects.create(name="Тег2")
+        cls.tag1 = Tag.objects.create(name="Тег1")
+        cls.tag2 = Tag.objects.create(name="Тег2")
 
         # Создание некоторых продуктов
-        self.product1 = Product.objects.create(name="Продукт 1", category=self.category, description="Описание 1")
-        self.product1.tags.add(self.tag1)
+        cls.product1 = Product.objects.create(name="Продукт 1", category=cls.category, description="Описание 1")
+        cls.product1.tags.add(cls.tag1)
 
-        self.product2 = Product.objects.create(name="Продукт 2", category=self.category, description="Описание 2")
-        self.product2.tags.add(self.tag2)
+        cls.product2 = Product.objects.create(name="Продукт 2", category=cls.category, description="Описание 2")
+        cls.product2.tags.add(cls.tag2)
 
     def test_comparison_creation(self):
         """

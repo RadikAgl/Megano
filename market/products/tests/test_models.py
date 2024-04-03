@@ -10,26 +10,27 @@ from settings_app.models import SiteSettings
 
 class ProductModelTest(TestCase):
     """Класс для тестирования модели продукта"""
+    fixtures = ["05-categories.json", "06-tags.json", "07-products.json"]
 
-    @classmethod
-    def setUpTestData(cls) -> None:
-        cls.fixture_dir: str = SiteSettings.load().fixture_dir
-        cls.fixtures: List[str] = [
-            os.path.join(cls.fixture_dir, "05-categories.json"),
-            os.path.join(cls.fixture_dir, "06-tags.json"),
-            os.path.join(cls.fixture_dir, "07-products.json"),
-        ]
-        cls.load_fixtures()
-
-    @classmethod
-    def load_fixtures(cls) -> None:
-        for fixture_file in cls.fixtures:
-            with open(fixture_file, "rb") as f:
-                for obj in deserialize("json", f):
-                    obj.save()
+    # @classmethod
+    # def setUpTestData(cls) -> None:
+    #     cls.fixture_dir: str = SiteSettings.load().fixture_dir
+    #     cls.fixtures: List[str] = [
+    #         os.path.join(cls.fixture_dir, "05-categories.json"),
+    #         os.path.join(cls.fixture_dir, "06-tags.json"),
+    #         os.path.join(cls.fixture_dir, "07-products.json"),
+    #     ]
+    #     cls.load_fixtures()
+    #
+    # @classmethod
+    # def load_fixtures(cls) -> None:
+    #     for fixture_file in cls.fixtures:
+    #         with open(fixture_file, "rb") as f:
+    #             for obj in deserialize("json", f):
+    #                 obj.save()
 
     def setUp(self) -> None:
-        super().setUp()
+        # super().setUp() todo точно надо?
         self.product: Product = Product.objects.get(pk=1)
         self.category: Category = Category.objects.get(pk=1)
         self.tag: Tag = Tag.objects.get(pk=1)
@@ -46,21 +47,23 @@ class ProductModelTest(TestCase):
 class CategoryModelTest(TestCase):
     """Класс для тестирования модели категории"""
 
-    @classmethod
-    def setUpTestData(cls) -> None:
-        cls.fixture_dir: str = SiteSettings.load().fixture_dir
-        cls.fixtures: List[str] = [os.path.join(cls.fixture_dir, "05-categories.json")]
-        cls.load_fixtures()
+    fixtures = ["05-categories.json"]
 
-    @classmethod
-    def load_fixtures(cls) -> None:
-        for fixture_file in cls.fixtures:
-            with open(fixture_file, "rb") as f:
-                for obj in deserialize("json", f):
-                    obj.save()
+    # @classmethod
+    # def setUpTestData(cls) -> None:
+    #     cls.fixture_dir: str = SiteSettings.load().fixture_dir
+    #     cls.fixtures: List[str] = [os.path.join(cls.fixture_dir, "05-categories.json")]
+    #     cls.load_fixtures()
+    #
+    # @classmethod
+    # def load_fixtures(cls) -> None:
+    #     for fixture_file in cls.fixtures:
+    #         with open(fixture_file, "rb") as f:
+    #             for obj in deserialize("json", f):
+    #                 obj.save()
 
     def setUp(self) -> None:
-        super().setUp()
+        # super().setUp() todo точно надо?
         self.category: Category = Category.objects.get(pk=1)
 
     def test_fixture_loading(self) -> None:
@@ -75,21 +78,23 @@ class CategoryModelTest(TestCase):
 class TagModelTest(TestCase):
     """Класс для тестирования модели тега"""
 
-    @classmethod
-    def setUpTestData(cls) -> None:
-        cls.fixture_dir: str = SiteSettings.load().fixture_dir
-        cls.fixtures: List[str] = [os.path.join(cls.fixture_dir, "06-tags.json")]
-        cls.load_fixtures()
+    fixtures = ["06-tags.json"]
 
-    @classmethod
-    def load_fixtures(cls) -> None:
-        for fixture_file in cls.fixtures:
-            with open(fixture_file, "rb") as f:
-                for obj in deserialize("json", f):
-                    obj.save()
+    # @classmethod
+    # def setUpTestData(cls) -> None:
+    #     cls.fixture_dir: str = SiteSettings.load().fixture_dir
+    #     cls.fixtures: List[str] = [os.path.join(cls.fixture_dir, "06-tags.json")]
+    #     cls.load_fixtures()
+    #
+    # @classmethod
+    # def load_fixtures(cls) -> None:
+    #     for fixture_file in cls.fixtures:
+    #         with open(fixture_file, "rb") as f:
+    #             for obj in deserialize("json", f):
+    #                 obj.save()
 
     def setUp(self) -> None:
-        super().setUp()
+        # super().setUp() todo точно надо?
         self.tag: Tag = Tag.objects.get(pk=1)
 
     def test_fixture_loading(self) -> None:
@@ -104,21 +109,23 @@ class TagModelTest(TestCase):
 class BannerModelTest(TestCase):
     """Класс для тестирования модели баннера"""
 
-    @classmethod
-    def setUpTestData(cls) -> None:
-        cls.fixture_dir: str = SiteSettings.load().fixture_dir
-        cls.fixtures: List[str] = [os.path.join(cls.fixture_dir, "15-banners.json")]
-        cls.load_fixtures()
+    fixtures = ["15-banners.json"]
 
-    @classmethod
-    def load_fixtures(cls) -> None:
-        for fixture_file in cls.fixtures:
-            with open(fixture_file, "rb") as f:
-                for obj in deserialize("json", f):
-                    obj.save()
+    # @classmethod
+    # def setUpTestData(cls) -> None:
+    #     cls.fixture_dir: str = SiteSettings.load().fixture_dir
+    #     cls.fixtures: List[str] = [os.path.join(cls.fixture_dir, "15-banners.json")]
+    #     cls.load_fixtures()
+    #
+    # @classmethod
+    # def load_fixtures(cls) -> None:
+    #     for fixture_file in cls.fixtures:
+    #         with open(fixture_file, "rb") as f:
+    #             for obj in deserialize("json", f):
+    #                 obj.save()
 
     def setUp(self) -> None:
-        super().setUp()
+        # super().setUp() todo точно надо?
         self.banner: Banner = Banner.objects.get(pk=1)
 
     def test_fixture_loading(self) -> None:

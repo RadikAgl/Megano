@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 MAX_PRODUCTS_FOR_COMPARISON = 4
 
 
-def add_to_comparison_service(user, product_id):
+def add_to_comparison_service(user, product_id):   # todo добавить тайпинг
     """
      Добавляет продукт в сравнение для пользователя.
 

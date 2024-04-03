@@ -13,26 +13,29 @@ from settings_app.models import SiteSettings
 class DiscountProductModelTest(TestCase):
     """Класс для тестирования модели скидок на продукты"""
 
-    @classmethod
-    def setUpTestData(cls) -> None:
-        cls.fixture_dir: str = SiteSettings.load().fixture_dir
-        cls.fixtures: List[str] = [
-            os.path.join(cls.fixture_dir, "05-categories.json"),
-            os.path.join(cls.fixture_dir, "06-tags.json"),
-            os.path.join(cls.fixture_dir, "07-products.json"),
-            os.path.join(cls.fixture_dir, "09-discounts_product.json"),
-        ]
-        cls.load_fixtures()
+    # todo попробовать так
+    fixtures = ["05-categories.json", "06-tags.json", "07-products.json", "09-discounts_product.json"]
 
-    @classmethod
-    def load_fixtures(cls) -> None:
-        for fixture_file in cls.fixtures:
-            with open(fixture_file, "rb") as f:
-                for obj in deserialize("json", f):
-                    obj.save()
+    # @classmethod
+    # def setUpTestData(cls) -> None:
+    #     cls.fixture_dir: str = SiteSettings.load().fixture_dir
+    #     cls.fixtures: List[str] = [
+    #         os.path.join(cls.fixture_dir, "05-categories.json"),
+    #         os.path.join(cls.fixture_dir, "06-tags.json"),
+    #         os.path.join(cls.fixture_dir, "07-products.json"),
+    #         os.path.join(cls.fixture_dir, "09-discounts_product.json"),
+    #     ]
+    #     cls.load_fixtures()
+    #
+    # @classmethod
+    # def load_fixtures(cls) -> None:
+    #     for fixture_file in cls.fixtures:
+    #         with open(fixture_file, "rb") as f:
+    #             for obj in deserialize("json", f):
+    #                 obj.save()
 
     def setUp(self) -> None:
-        super().setUp()
+        # super().setUp()  todo - эта инструкция нужна?
         self.discount: DiscountProduct = DiscountProduct.objects.get(pk=1)
 
     def test_fixture_loading(self) -> None:
@@ -47,26 +50,29 @@ class DiscountProductModelTest(TestCase):
 class DiscountSetModelTest(TestCase):
     """Класс для тестирования модели скидок на продукты"""
 
-    @classmethod
-    def setUpTestData(cls) -> None:
-        cls.fixture_dir: str = SiteSettings.load().fixture_dir
-        cls.fixtures: List[str] = [
-            os.path.join(cls.fixture_dir, "05-categories.json"),
-            os.path.join(cls.fixture_dir, "06-tags.json"),
-            os.path.join(cls.fixture_dir, "07-products.json"),
-            os.path.join(cls.fixture_dir, "10-discounts_set.json"),
-        ]
-        cls.load_fixtures()
+    # todo попробовать так
+    fixtures = ["05-categories.json", "06-tags.json", "07-products.json", "0-discounts_set.json"]
 
-    @classmethod
-    def load_fixtures(cls) -> None:
-        for fixture_file in cls.fixtures:
-            with open(fixture_file, "rb") as f:
-                for obj in deserialize("json", f):
-                    obj.save()
+    # @classmethod
+    # def setUpTestData(cls) -> None:
+    #     cls.fixture_dir: str = SiteSettings.load().fixture_dir
+    #     cls.fixtures: List[str] = [
+    #         os.path.join(cls.fixture_dir, "05-categories.json"),
+    #         os.path.join(cls.fixture_dir, "06-tags.json"),
+    #         os.path.join(cls.fixture_dir, "07-products.json"),
+    #         os.path.join(cls.fixture_dir, "10-discounts_set.json"),
+    #     ]
+    #     cls.load_fixtures()
+    #
+    # @classmethod
+    # def load_fixtures(cls) -> None:
+    #     for fixture_file in cls.fixtures:
+    #         with open(fixture_file, "rb") as f:
+    #             for obj in deserialize("json", f):
+    #                 obj.save()
 
     def setUp(self) -> None:
-        super().setUp()
+        # super().setUp()  todo - эта инструкция нужна?
         self.discount: DiscountSet = DiscountSet.objects.get(pk=1)
 
     def test_fixture_loading(self) -> None:
@@ -80,24 +86,26 @@ class DiscountSetModelTest(TestCase):
 
 class DiscountCartModelTest(TestCase):
     """Класс для тестирования модели скидок на стоимость корзины"""
+    # todo попробовать так
+    fixtures = ["11-discounts_cart.json"]
 
-    @classmethod
-    def setUpTestData(cls) -> None:
-        cls.fixture_dir: str = SiteSettings.load().fixture_dir
-        cls.fixtures: List[str] = [
-            os.path.join(cls.fixture_dir, "11-discounts_cart.json"),
-        ]
-        cls.load_fixtures()
-
-    @classmethod
-    def load_fixtures(cls) -> None:
-        for fixture_file in cls.fixtures:
-            with open(fixture_file, "rb") as f:
-                for obj in deserialize("json", f):
-                    obj.save()
+    # @classmethod
+    # def setUpTestData(cls) -> None:
+    #     cls.fixture_dir: str = SiteSettings.load().fixture_dir
+    #     cls.fixtures: List[str] = [
+    #         os.path.join(cls.fixture_dir, "11-discounts_cart.json"),
+    #     ]
+    #     cls.load_fixtures()
+    #
+    # @classmethod
+    # def load_fixtures(cls) -> None:
+    #     for fixture_file in cls.fixtures:
+    #         with open(fixture_file, "rb") as f:
+    #             for obj in deserialize("json", f):
+    #                 obj.save()
 
     def setUp(self) -> None:
-        super().setUp()
+        # super().setUp()  todo - эта инструкция нужна?
         self.discount: DiscountCart = DiscountCart.objects.get(pk=1)
 
     def test_fixture_loading(self) -> None:

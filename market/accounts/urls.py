@@ -1,3 +1,4 @@
+"""url пути"""
 from django.urls import path
 from django.contrib.auth.views import (
     PasswordResetDoneView,
@@ -14,7 +15,7 @@ from .views import (
 )
 
 app_name = "accounts"
-"""url пути"""
+
 urlpatterns = [
     path("profile/", ProfileView.as_view(), name="profile"),
     path("register/", RegistrationView.as_view(), name="register"),

@@ -46,28 +46,32 @@ class ShopModelTest(TestCase):
 class OfferModelTest(TestCase):
     """Класс для тестирования модели предложения"""
 
-    @classmethod
-    def setUpTestData(cls) -> None:
-        cls.load_fixtures()
+    fixtures = [
+        "02-users.json", "04-shops.json", "05-categories.json", "06-tags.json", "07-products.json", "08-offers.json"
+    ]
 
-    @classmethod
-    def load_fixtures(cls) -> None:
-        fixture_dir: str = SiteSettings.load().fixture_dir
-        fixtures: List[str] = [
-            os.path.join(fixture_dir, "02-users.json"),
-            os.path.join(fixture_dir, "04-shops.json"),
-            os.path.join(fixture_dir, "05-categories.json"),
-            os.path.join(fixture_dir, "06-tags.json"),
-            os.path.join(fixture_dir, "07-products.json"),
-            os.path.join(fixture_dir, "08-offers.json"),
-        ]
-        for fixture_file in fixtures:
-            with open(fixture_file, "rb") as f:
-                for obj in deserialize("json", f):
-                    obj.save()
+    # @classmethod
+    # def setUpTestData(cls) -> None:
+    #     cls.load_fixtures()
+    #
+    # @classmethod
+    # def load_fixtures(cls) -> None:
+    #     fixture_dir: str = SiteSettings.load().fixture_dir
+    #     fixtures: List[str] = [
+    #         os.path.join(fixture_dir, "02-users.json"),
+    #         os.path.join(fixture_dir, "04-shops.json"),
+    #         os.path.join(fixture_dir, "05-categories.json"),
+    #         os.path.join(fixture_dir, "06-tags.json"),
+    #         os.path.join(fixture_dir, "07-products.json"),
+    #         os.path.join(fixture_dir, "08-offers.json"),
+    #     ]
+    #     for fixture_file in fixtures:
+    #         with open(fixture_file, "rb") as f:
+    #             for obj in deserialize("json", f):
+    #                 obj.save()
 
     def setUp(self) -> None:
-        super().setUp()
+        # super().setUp() todo точно надо?
         self.offer: Offer = Offer.objects.get(pk=1)
 
     def test_verbose_name(self) -> None:

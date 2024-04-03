@@ -11,7 +11,8 @@ class DiscountListView(ListView):
     template_name = "discounts/discounts_list.jinja2"
     model = DiscountProduct
     context_object_name = "discounts"
-    paginate_by = 5  # settings.PAGINATE_PRODUCTS_BY
+    paginate_by = 5  # todo взять из settings.PAGINATE_PRODUCTS_BY,
+                     # todo а лучше использовать settings_app для хранения этой настройки
     ordering = "end_date"
 
     def get_context_data(self, **kwargs):

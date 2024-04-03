@@ -10,7 +10,7 @@ from shops.models import Offer
 class Cart(models.Model):
     """Модель корзины"""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="carts")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="carts", verbose_name="Пользователь")
     is_active = models.BooleanField(default=True)
 
     class Meta:
