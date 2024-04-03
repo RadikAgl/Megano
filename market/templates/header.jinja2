@@ -33,8 +33,13 @@
                         {% endfor %}
                         <input class="header__btn btn-reset" type="submit" value="{{ LANGUAGE_CODE.upper() }}">
                     </form>
-                    <div class="row-block"><a class="ControlPanel-title" href="{{ url('user:login') }}">{{ _('Вход') }}</a>
-                        <a class="ControlPanel-title" href="{{ url('user:register') }}">{{ _('Регистрация') }}</a>
+                    <div class="row-block">
+                        {% if request.user.is_authenticated %}
+                            <a class="ControlPanel-title" href="{{ url('user:profile') }}">{{ _('Личный кабинет') }}</a>
+                        {% else %}
+                            <a class="ControlPanel-title" href="{{ url('user:login') }}">{{ _('Вход') }}</a>
+                            <a class="ControlPanel-title" href="{{ url('user:register') }}">{{ _('Регистрация') }}</a>
+                        {% endif %}
                     </div>
                 </div>
             </nav>

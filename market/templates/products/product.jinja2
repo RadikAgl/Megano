@@ -41,43 +41,49 @@
                                     {{ product.description }}
                                 </div>
                                 <div class="ProductCard-cart">
+
+                                    <form class="ProductCard-cart" method="post" action="#modal_open">
+                                        {% csrf_token %}
                                     <div class="ProductCard-cartElement ProductCard-cartElement_amount">
                                         <div class="Amount Amount_product">
                                             <button class="Amount-remove" type="button"></button>
-                                            <input class="Amount-input form-input" name="amount" type="text" value="1"/>
+                                            {{ cart_form.quantity }}
                                             <button class="Amount-add" type="button"></button>
                                         </div>
                                     </div>
+                                        <input type="hidden" class="offer" id="offer" name="offer">
                                     <div class="ProductCard-cartElement">
-                                        <a class="btn btn_primary" href="#modal_open">
-                                            <img class="btn-icon" src="assets/img/icons/card/cart_white.svg"
+                                        <button class="btn btn_primary" type="submit">
+                                            <img class="btn-icon" src="{{ static('img/icons/card/cart_white.svg') }}"
                                                  alt="cart_white.svg"/>
-                                            <span class="btn-content">{{ _('Купить') }}</span>
-                                        </a>
+                                            <span class="btn-content">{{ _("Купить") }}</span>
+                                        </button>
                                     </div>
+                                    </form>
 
-                                    <div id="modal_open" class="my_modal">
-                                        <div class="my_modal-dialog">
-                                            <div class="my_modal-content">
-                                                <div class="my_modal-header">
-                                                    <p class="my_modal-title">{{ _('Поздравляем') }}!</p>
-                                                    <a href="#" title="Закрыть модальное окно" class="close">×</a>
-                                                </div>
-                                                <div class="my_modal-body">
-                                                    <p>{{ _('Товар успешно добавлен в корзину!') }}</p>
-                                                </div>
+                                <div id="modal_open" class="my_modal">
+                                    <div class="my_modal-dialog">
+                                        <div class="my_modal-content">
+                                            <div class="my_modal-header">
+                                                <p class="my_modal-title">{{ _("Поздравляем!") }}</p>
+                                                <a href="#" title="Закрыть модальное окно" class="close">×</a>
+                                            </div>
+                                            <div class="my_modal-body">
+                                                <p>{{ _("Товар успешно добавлен в корзину!") }}</p>
+                                                <a class="btn btn_primary"  href="{{ url('cart:cart') }}">
+                                                    <span class="btn-content">{{ _("Перейти в корзину") }}</span>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-
-
                                 </div>
+                            </div>
                                 <div class="ProductCard-footer">
                                     <div class="ProductCard-tags">
-                                        <strong class="ProductCard-tagsTitle">Тэги:</strong>
+                                        <strong class="ProductCard-tagsTitle">{{ _("Теги") }}:</strong>
                                         {% for tag in product.tags.all() %}
 
-                                            <a href="#">{{ tag.name }}</a>{% if not loop.last %},{% endif %}
+                                            <a href="{{ url('products:catalog') }}?tag={{ tag.name }}">{{ tag.name }}</a>{% if not loop.last %},{% endif %}
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -132,44 +138,53 @@
                                 </div>
 
                                 <div class="Tabs-block" id="sellers">
-                                    {% for shop in product.shops.all() %}
-                                        {% for offer in shop.offer_set.all() %}
-                                            <div class="Order Order_anons">
-                                                <div class="Order-personal">
-                                                    <div class="row">
-                                                        <div class="row-block">
-                                                            <a class="Order-title" href="#">{{ shop.name }}</a>
-                                                            <div class="ProductCard-cartElement"
-                                                                 style="margin-top: 10px;">
-                                                                <a class="btn btn_primary" href="#modal_open">
-                                                                    <img class="btn-icon"
-                                                                         src="assets/img/icons/card/cart_white.svg"
-                                                                         alt="cart_white.svg"/>
-                                                                    <span class="btn-content">{{ _('Купить') }}</span>
-                                                                </a>
+                                    {% if offers %}
+                                        {% for offer in offers %}
+                                                <div class="Order Order_anons">
+                                                    <div class="Order-personal">
+                                                        <div class="row">
+                                                            <div class="row-block">
+                                                                <a class="Order-title" href="#">{{ offer.shop.name }}</a>
+                                                                <div class="ProductCard-cartElement"
+                                                                     style="margin-top: 10px;">
+                                                                    <form class="ProductCard-cart" method="post">
+                                                                        {% csrf_token %}
+                                                                        <div class="ProductCard-cartElement ProductCard-cartElement_amount">
+                                                                            <div class="Amount Amount_product">
+                                                                                <button class="Amount-remove" type="button"></button>
+                                                                                {{ cart_form.quantity }}
+                                                                                <button class="Amount-add" type="button"></button>
+                                                                                <input type="hidden" class="offer" id="offer" name="offer" value="{{ offer.id }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="ProductCard-cartElement">
+                                                                            <button class="btn btn_primary" type="submit" name="btnform1" href="#modal_open">
+                                                                                <img class="btn-icon" src="{{ static('img/icons/card/cart_white.svg')}}" alt="cart_white.svg"/>
+                                                                                <span class="btn-content">{{ _('Купить') }}</span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row-block">
-                                                            <div class="Order-info Order-info_delivery">
-                                                                <div class="Order-infoType">{{ _('Тип доставки: ') }}</div>
-                                                                <div class="Order-infoContent">{{ offer.delivery_type }}</div>
-                                                            </div>
-                                                            <div class="Order-info Order-info_pay">
-                                                                <div class="Order-infoType">{{ _('Оплата: ') }}</div>
-                                                                <div class="Order-infoContent">{{ offer.payment_method }}</div>
-                                                            </div>
-                                                            <div class="Order-info">
-                                                                <div class="Order-infoType">{{ _('Стоимость: ') }}</div>
-                                                                <div class="Order-infoContent">
-                                                                    <span class="Order-price">{{ offer.price }}</span>
+                                                            <div class="row-block">
+                                                                <div class="Order-info Order-info_pay">
+                                                                    <div class="Order-infoType">{{ _('Оплата: ') }}</div>
+                                                                    <div class="Order-infoContent">{{ _("Онлайн картой") }}</div>
+                                                                </div>
+                                                                <div class="Order-info">
+                                                                    <div class="Order-infoType">{{ _('Стоимость: ') }}</div>
+                                                                    <div class="Order-infoContent">
+                                                                        <span class="Order-price">{{ offer.price }}</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                         {% endfor %}
-                                    {% endfor %}
+                                {% else %}
+                                        <p>{{ _("Товара нет в продаже") }}</p>
+                                {% endif %}
                                 </div>
 
                                 <div class="Tabs-block table" id="addit">

@@ -26,10 +26,3 @@ def get_first_product_name() -> Product:
     """Получение названия первого товара из каталога"""
 
     return Product.objects.first()
-
-
-@library.global_function
-def get_cart_cost() -> float:
-    """Получение стоимости товаров в корзине"""
-
-    return 0.0
