@@ -1,6 +1,7 @@
+from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordChangeForm
-from django import forms
+from django.utils.translation import gettext_lazy as _
 
 
 class RegistrationForm(UserCreationForm):
@@ -70,6 +71,6 @@ class ProfilePasswordForm(PasswordChangeForm):
 
         # Продолжаем с обычной валидацией
         if new_password1 != new_password2:
-            raise forms.ValidationError("Пароли не совпадают")
+            raise forms.ValidationError(_("Пароли не совпадают"))
 
         return new_password2

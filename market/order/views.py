@@ -1,13 +1,15 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import FirstStepForm, SecondStepForm, ThirdStepForm
-from django.urls import reverse, reverse_lazy
-from django.contrib import messages
-from cart.models import Cart, ProductInCart
-from .models import Order
+
 from accounts.models import User
+from cart.models import Cart, ProductInCart
+from .forms import FirstStepForm, SecondStepForm, ThirdStepForm
+from .models import Order
 from .service import OrderService
 
 
@@ -27,7 +29,7 @@ class FirstOrderView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "не верный ввод полей")
+        messages.error(self.request, _("не верный ввод полей"))
         return super().form_invalid(form)
 
 
@@ -45,7 +47,7 @@ class SecondOrderView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "не верный ввод полей")
+        messages.error(self.request, _("не верный ввод полей"))
         return super().form_invalid(form)
 
 
@@ -62,7 +64,7 @@ class ThirdOrderView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "не верный ввод полей")
+        messages.error(self.request, _("не верный ввод полей"))
         return super().form_invalid(form)
 
 

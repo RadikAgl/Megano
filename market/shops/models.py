@@ -1,10 +1,11 @@
 """Django-модели приложения shops"""
 import os
+
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings
 
 
 def shop_logo_directory_path(instance: "Shop", filename: str) -> str:
@@ -50,10 +51,10 @@ class Shop(models.Model):
 class Offer(models.Model):
     """Предложение магазина"""
 
-    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
-    product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, verbose_name=_("магазин"))
+    product = models.ForeignKey("products.Product", on_delete=models.CASCADE, verbose_name=_("продукт"))
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("цена"))
-    remains = models.IntegerField(default=0)
+    remains = models.IntegerField(default=0, verbose_name=_("осталось"))
 
     class Meta:
         constraints = [models.UniqueConstraint("shop", "product", name="unique_product_in_shop")]

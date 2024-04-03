@@ -81,17 +81,17 @@ class Review(models.Model):
     """Модель отзыва на товар"""
 
     user = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name="reviews", verbose_name="пользователь"
+        get_user_model(), on_delete=models.CASCADE, related_name="reviews", verbose_name=_("пользователь")
     )
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews", verbose_name="продукт")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews", verbose_name=_("продукт"))
     text = models.TextField(
-        verbose_name="text",
+        verbose_name=_("текст"),
         validators=[
             validators.MinLengthValidator(10),
             validators.MaxLengthValidator(1000),
         ],
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="дата создания")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
     rating = models.IntegerField()
 
     class Meta:
