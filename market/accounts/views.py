@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import (
@@ -8,8 +8,9 @@ from django.contrib.auth.views import (
     LoginView,
 )
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import FormView, TemplateView
@@ -188,3 +189,9 @@ class UserHistoryView(LoginRequiredMixin, View):
         viewed_products = [history.product for history in user_history]
 
         return render(request, self.template_name, {"viewed_products": viewed_products})
+
+
+def logout_view(request):
+    """Представление для выхода из учетной записи"""
+    logout(request)
+    return HttpResponseRedirect(reverse("products:index"))
