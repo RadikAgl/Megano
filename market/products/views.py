@@ -174,7 +174,9 @@ class ProductDetailView(DetailView):
             product = Product.objects.get(pk=product_id)
             quantity = cart_form.cleaned_data["quantity"]
             offer_id = request.POST["offer"]
-            offer = Offer.objects.get(pk=offer_id)
+            offer = None
+            if offer_id:
+                offer = Offer.objects.get(pk=offer_id)
             cart = CartInstance(request)
             cart.add(
                 product=product,

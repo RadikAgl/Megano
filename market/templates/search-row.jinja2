@@ -11,22 +11,24 @@
                         <div class="CategoriesButton-content">
                             {% set categories = all_categories()["main_categories"]%}
                             {% for category in categories recursive %}
-                                {% set pk = category.pk %}
-                                {% set children = all_categories()["children"][pk] %}
-                                <div class="CategoriesButton-link">
-                                    <a href="{{ url('product:catalog') }}?category={{ category.name }}">
-                                        <div class="CategoriesButton-icon">
-                                            <img src="{{ static('img/icons/departments/6.svg') }}" alt="6.svg"/>
+                                {% if category.is_active() %}
+                                    {% set pk = category.pk %}
+                                    {% set children = all_categories()["children"][pk] %}
+                                    <div class="CategoriesButton-link">
+                                        <a href="{{ url('product:catalog') }}?category={{ category.name }}">
+                                            <div class="CategoriesButton-icon">
+                                                <img src="{{ static('img/icons/departments/6.svg') }}" alt="6.svg"/>
+                                            </div>
+                                            <span class="CategoriesButton-text">{{ category.name }}</span>
+                                        </a>
+                                    {% if children %}
+                                        <a class="CategoriesButton-arrow" href="#"></a>
+                                        <div class="CategoriesButton-submenu">
+                                            {{ loop(children) }}
                                         </div>
-                                        <span class="CategoriesButton-text">{{ category.name }}</span>
-                                    </a>
-                                {% if children %}
-                                    <a class="CategoriesButton-arrow" href="#"></a>
-                                    <div class="CategoriesButton-submenu">
-                                        {{ loop(children) }}
+                                    {% endif %}
                                     </div>
                                 {% endif %}
-                                </div>
                             {% endfor %}
                                 <div class="CategoriesButton-link">
                                     <a href="{{ url('discounts:discount-list') }}">

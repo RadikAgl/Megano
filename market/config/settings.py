@@ -115,7 +115,6 @@ TEMPLATES = [
             "globals": {
                 "all_categories": "templatetags.globals.get_categories",
                 "product_name": "templatetags.globals.get_first_product_name",
-                "cart_cost": "templatetags.globals.get_cart_cost",
             },
             "context_processors": [
                 "context_processors.cart_context.get_cart_cost",
