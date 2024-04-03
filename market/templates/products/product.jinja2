@@ -80,7 +80,7 @@
                             </div>
                                 <div class="ProductCard-footer">
                                     <div class="ProductCard-tags">
-                                        <strong class="ProductCard-tagsTitle">Тэги:</strong>
+                                        <strong class="ProductCard-tagsTitle">{{ _("Теги") }}:</strong>
                                         {% for tag in product.tags.all() %}
 
                                             <a href="{{ url('products:catalog') }}?tag={{ tag.name }}">{{ tag.name }}</a>{% if not loop.last %},{% endif %}
@@ -167,13 +167,12 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row-block">
+                                                                <div class="Order-info Order-info_pay">
+                                                                    <div class="Order-infoType">{{ _('Оплата: ') }}</div>
+                                                                    <div class="Order-infoContent">{{ _("Онлайн картой") }}</div>
+                                                                </div>
                                                                 <div class="Order-info">
-                                                                    <div class="Order-info Order-info_pay">
-                                                                        <div class="Order-infoType">{{ _('Оплата: ') }}</div>
-                                                                        <div class="Order-infoContent">{{ _("Онлайн картой") }}</div>
-                                                                    </div>
-
-                                                                        <div class="Order-infoType">{{ _('Стоимость: ') }}</div>
+                                                                    <div class="Order-infoType">{{ _('Стоимость: ') }}</div>
                                                                     <div class="Order-infoContent">
                                                                         <span class="Order-price">{{ offer.price }}</span>
                                                                     </div>
