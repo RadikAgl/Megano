@@ -1,34 +1,32 @@
 """Модуль настроек проекта."""
 
+import gettext
 import os
+import pathlib
 from pathlib import Path
 
-from django.urls import reverse_lazy
-from dotenv import load_dotenv
-from django.utils.translation import gettext_lazy as _
 import dj_database_url
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from dotenv import load_dotenv
+from jinja2 import Environment, FileSystemLoader
+from jinja2.ext import Extension
+from jinja2.ext import i18n
 
 load_dotenv(os.path.join("..", ".env"))
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 MEDIA_URL = "/uploads/"
 
 CART_SESSION_ID = "cart"
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-=e-i4dlx_qq&ra7un4)u8bdr#08q)gc_*yyy4@7--kt(0(p#!("
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -62,9 +60,45 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
+
+LOCALE_PATHS = [
+    pathlib.Path(__file__).resolve().parents[1] / "locale",
+]
+
+LANGUAGE_CODE = "ru-RU"
+LANGUAGES = [
+    ("ru", _("Русский")),
+    ("en", _("Английский")),
+]
+
+TIME_ZONE = "Europe/Moscow"
+
+USE_I18N = True
+
+USE_TZ = True
+
+USE_L10N = True
+
+jinja_env = Environment(
+    loader=FileSystemLoader("templates"),
+    autoescape=True,
+    extensions=[i18n],
+)
+
+jinja_env.add_extension("jinja2.ext.debug")
+
+
+class DjangoTranslationExtension(Extension):
+    def __init__(self, environment):
+        super(DjangoTranslationExtension, self).__init__(environment)
+
+        # Add the '_' alias for gettext function
+        environment.globals["_"] = gettext
+
 
 TEMPLATES = [
     {
@@ -77,6 +111,7 @@ TEMPLATES = [
             "match_regex": None,
             "app_dirname": "templates",
             "constants": {},
+            "environment": "jinja2.Environment",
             "globals": {
                 "all_categories": "templatetags.globals.get_categories",
                 "product_name": "templatetags.globals.get_first_product_name",
@@ -86,6 +121,7 @@ TEMPLATES = [
                 "context_processors.cart_context.get_cart_cost",
                 "django.contrib.messages.context_processors.messages",
                 "context_processors.comparison_context.comparison_count",
+                "django.template.context_processors.i18n",
             ],
         },
     },
@@ -103,19 +139,12 @@ TEMPLATES = [
         },
     },
 ]
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 WSGI_APPLICATION = "config.wsgi.application"
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {"default": dj_database_url.parse(os.getenv("DATABASE_URL"))}
 
 REDIS_URL = os.getenv("REDIS_URL")
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -132,26 +161,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
-LANGUAGE_CODE = "ru-RU"
-LANGUAGES = [
-    ("ru", _("Русский")),
-    ("en", _("Английский")),
-]
-
-TIME_ZONE = "Europe/Moscow"
-
-USE_I18N = True
-
-USE_TZ = True
-
-USE_L10N = True
-
-LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
 AUTH_USER_MODEL = "accounts.User"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -161,9 +170,6 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
