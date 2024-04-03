@@ -23,6 +23,6 @@ def get_categories() -> dict:
 
 @library.global_function
 def get_first_product_name() -> Product:
-    """Получение названия первого товара из каталога"""
+    """Получение первого товара из каталога"""
 
     return Product.objects.first()

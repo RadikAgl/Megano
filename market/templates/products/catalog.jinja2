@@ -43,12 +43,6 @@
                                     </label>
                                 </div>
                                 <div class="form-group">
-                                    <label class="toggle">
-                                        <input type="checkbox" id="free_delivery" name="free_delivery"/><span class="toggle-box"></span><span
-                                            class="toggle-text">{% trans %}С бесплатной доставкой{% endtrans %}</span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
                                     <div class="buttons"><input type="submit" class="btn btn_square btn_dark btn_narrow" value="{% trans %}Фильтр{% endtrans %}">
                                     </div>
                                 </div>
@@ -57,7 +51,7 @@
                     </div>
                     <div class="Section-columnSection">
                         <header class="Section-header">
-                            <strong class="Section-title">{% trans %}Популярные тэги{% endtrans %}
+                            <strong class="Section-title">{% trans %}Популярные теги{% endtrans %}
                             </strong>
                         </header>
                         <div class="Section-columnContent">
@@ -92,17 +86,24 @@
                         </div>
                       </div>
                       <div class="Cards">
-                          {% for product in filter.qs %}
+                          {% for product in page_obj %}
                               <div class="Card">
                                   <a class="Card-picture" href="{{ url('products:product-details', product.id) }}">
                                   <img src="{{ product.images.first().image.url }}" alt="card.jpg"/></a>
+                                    <form method="post" action="{{ url('comparison:add_to_comparison', product_id=product.id) }}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                                        <input type="hidden" name="action" value="add_in_catalog">
+                                        <input class="Card-btn" type="image"
+                                                         src="{{ static('img/icons/comparison/comparison.png') }}" alt="comparison.png">
+                                    </form>
                                   <div class="Card-content">
                                       <strong class="Card-title">
                                           <a href="{{ url('products:product-details', product.id) }}">
                                               {{ product.name }}</a>
                                       </strong>
                                       <div class="Card-description">
-                                          <div class="Card-cost"><span class="Card-price">${{ product.avg_price }}</span>
+                                          <div class="Card-cost"><span class="Card-price">{{ product.avg_price }}</span>
                                           </div>
                                           <div class="Card-category">
                                               {% with parent = product.category.parent %}
@@ -139,6 +140,23 @@
                               </div>
                           {% endfor %}
                       </div>
+                      <div class="Pagination">
+                        <div class="Pagination-ins">
+                            {% set cur_url=relative_url[0] %}
+                            {% set is_params=relative_url[1] %}
+                            {% for p in paginator.page_range %}
+                               {% if page_obj.number == p %}
+                                    <a class="Pagination-element Pagination-element_current" href="#"><span class="Pagination-text">{{ p }}</span></a>
+                               {% else %}
+                                   {% if is_params %}
+                                        <a class="Pagination-element" href="{{ cur_url }}&page={{ p }}"><span class="Pagination-text">{{ p }}</span></a>
+                                   {% else %}
+                                        <a class="Pagination-element" href="?page={{ p }}"><span class="Pagination-text">{{ p }}</span></a>
+                                   {% endif %}
+                               {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 """ Модуль с фильтрами приложения products """
 
 import django_filters
-from django.db.models import QuerySet, Count
+from django.db.models import QuerySet, Count, Sum
 from django_filters import CharFilter
 from django_filters.filters import ModelMultipleChoiceFilter, ModelChoiceFilter
 
@@ -23,8 +23,10 @@ class CustomOrderingFilter(django_filters.OrderingFilter):
 
     def filter(self, qs, value):
         if value and any(v in ["popularity", "-popularity"] for v in value):
-            # сортировка по популярности
-            return qs.order_by("name")
+            qs = qs.annotate(cnt=Sum("offer__remains"))
+            if "popularity" in value:
+                return qs.order_by("-cnt")
+            return qs.order_by("cnt")
 
         if value and any(v in ["reviews", "-reviews"] for v in value):
             qs = qs.annotate(cnt=Count("reviews__id"))
@@ -53,7 +55,6 @@ class ProductFilter(django_filters.FilterSet):
     )
 
     is_exist = CharFilter(method="filter_exist")
-    free_delivery = CharFilter(method="filter_free_delivery")
 
     o = CustomOrderingFilter(
         # tuple-mapping retains order
@@ -74,12 +75,7 @@ class ProductFilter(django_filters.FilterSet):
         return queryset.filter(avg_price__gte=price_min).filter(avg_price__lte=price_max)
 
     def filter_exist(self, queryset, name, value):
-        # construct the full lookup expression.
+        """Фильтрация товаров по наличию"""
         if value:
             return queryset.filter(remains__gt=0)
-        return queryset
-
-    def filter_free_delivery(self, queryset, name, value):
-        if value:
-            return queryset  # Доделать
         return queryset
