@@ -7,13 +7,13 @@
         <nav class="row-block row-block_right Header-menu">
             <div class="menuModal" id="navigate">
                 <ul class="menu menu_main">
-                    <li class="menu-item"><a class="menu-link" href="{{ url('product:index') }}">Главная</a>
+                    <li class="menu-item"><a class="menu-link" href="{{ url('product:index') }}">{{ _('Главная') }}</a>
                     </li>
-                    <li class="menu-item"><span class="menu-label menu-label_success">Скидки</span><a class="menu-link"
-                                                                                                      href="{{ url('product:catalog') }}">Каталог</a>
+                    <li class="menu-item"><span class="menu-label menu-label_success">{{ _('Скидки') }}</span><a class="menu-link"
+                                                                                                      href="{{ url('product:catalog') }}">{{ _('Каталог') }}</a>
                     </li>
                     <li class="menu-item">
-                        <a class="menu-link" href="{{ url('comparison:comparison') }}">Сравнение</a>
+                        <a class="menu-link" href="{{ url('comparison:comparison') }}">{{ _('Сравнение') }}</a>
                         <span id="comparisonCount">{{ comparison_count }}</span>
                     </li>
 
@@ -27,9 +27,9 @@
                     <button class="dropbtn"><img class="CartBlock-img" src="{{ static('img/icons/loon-icon.svg') }}"
                                                  alt="loon-icon.svg"/></button>
                     <div class="dropdown-content">
-                        <a class="dropdown-content-a" href="{{ url('accounts:profile') }}">Личный кабинет</a>
-                        <a class="dropdown-content-a" href="#">Административный раздел</a>
-                        <a class="dropdown-content-a" href="#">Выход</a>
+                        <a class="dropdown-content-a" href="{{ url('accounts:profile') }}">{{ _('Личный кабинет') }}</a>
+                        <a class="dropdown-content-a" href="#">{{ _('Административный раздел') }}</a>
+                        <a class="dropdown-content-a" href="#">{{ _('Выход') }}</a>
                     </div>
                 </div>
                 <a class="CartBlock-block" href="{{ url('cart:cart') }}">
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="row-block Header-trigger"><a class="menuTrigger" href="#navigate">
-            <div class="menuTrigger-content">Показать навигацию
+            <div class="menuTrigger-content">{{ _('Показать навигацию') }}
             </div>
             <span></span><span></span><span></span>
         </a>

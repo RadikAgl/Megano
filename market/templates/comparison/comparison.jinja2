@@ -33,8 +33,8 @@
                                             <div class="table">
                                                 <table>
                                                     <tr>
-                                                        <th class="hed">Характеристика</th>
-                                                        <th class="hed">Значение</th>
+                                                        <th class="hed">{{ _('Характеристика') }}</th>
+                                                        <th class="hed">{{ _('Значение') }}</th>
                                                     </tr>
                                                     {% for key, value in product.details.items() %}
                                                         <tr>
@@ -56,7 +56,7 @@
                                         {% if prices|length > 0 %}
                                             <p>{{ prices[product.id] }}</p>
                                         {% else %}
-                                            <p>Price: N/A</p>
+                                            <p>{{ _('Цена: ') }}N/A</p>
                                         {% endif %}
 
                                     </div>
@@ -67,7 +67,8 @@
                                     <form method="post" action="{{ url('comparison:remove_from_comparison') }}">
                                         {% csrf_token %}
                                         <input type="hidden" name="product_id" value="{{ product.id }}">
-                                        <button type="submit" class="btn btn_secondary">Remove from Comparison</button>
+                                        <button type="submit"
+                                                class="btn btn_secondary">{{ _('Убрать из сравнения') }}</button>
                                     </form>
                                 </div>
                             </div>
