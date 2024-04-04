@@ -12,6 +12,7 @@ from .singleton_model import (
     SUCCESSFUL_IMPORTS_DIR,
     DOCS_DIR,
     FIXTURE_DIR,
+    PAGINATE_PRODUCTS_BY,
 )
 
 
@@ -77,6 +78,10 @@ class SiteSettings(SingletonModel):
         verbose_name=_("настройки e-mail"),
         help_text="Email access settings from .env",
     )
+    paginate_products_by = models.PositiveIntegerField(
+        default=PAGINATE_PRODUCTS_BY, verbose_name=_("количество товаров на странице")
+    )  # Количество товаров на странице при отображении списка
+
     objects = ProjectSettingsManager()
 
     def save(self, *args: Any, **kwargs: Any) -> None:

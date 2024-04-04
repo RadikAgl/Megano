@@ -20,6 +20,7 @@ from cart.forms import CartAddProductCatalogForm, CartAddProductForm
 from comparison.services import get_comparison_list
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
+from settings_app.models import SiteSettings
 from shops.models import Offer, Shop
 from . import constants
 from .filters import ProductFilter
@@ -84,7 +85,7 @@ class CatalogView(FilterView):
 
     template_name = "products/catalog.jinja2"
     filterset_class = ProductFilter
-    paginate_by = 8
+    paginate_by = SiteSettings.load().paginate_products_by
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
