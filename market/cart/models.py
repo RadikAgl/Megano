@@ -10,8 +10,8 @@ from shops.models import Offer
 class Cart(models.Model):
     """Модель корзины"""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="carts")
-    is_active = models.BooleanField(default=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="carts", verbose_name=_("пользователь"))
+    is_active = models.BooleanField(default=True, verbose_name=_("активный"))
 
     class Meta:
         verbose_name = _("корзина")
@@ -24,10 +24,10 @@ class Cart(models.Model):
 class ProductInCart(models.Model):
     """Модель товара в корзине"""
 
-    offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="offers")
-    quantity = models.PositiveIntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    offer = models.ForeignKey(Offer, on_delete=models.CASCADE, verbose_name=_("предложения"))
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="offers", verbose_name=_("корзина"))
+    quantity = models.PositiveIntegerField(verbose_name=_("количества"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
 
     class Meta:
         verbose_name = _("товар в корзине")

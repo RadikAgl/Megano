@@ -1,19 +1,19 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
-from django.contrib.auth.mixins import LoginRequiredMixin
 
-from accounts.group_mixins import BuyersRequiredMixin
-from .forms import FirstStepForm, SecondStepForm, ThirdStepForm
-from django.urls import reverse, reverse_lazy
-from django.contrib import messages
-from cart.models import Cart, ProductInCart
-from .models import Order
 from accounts.models import User
+from cart.models import Cart, ProductInCart
+from .forms import FirstStepForm, SecondStepForm, ThirdStepForm
+from .models import Order
 from .service import OrderService
 
 
-class FirstOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
+class FirstOrderView(LoginRequiredMixin, FormView):
     form_class = FirstStepForm
 
     template_name = "order/order.jinja2"
@@ -29,11 +29,11 @@ class FirstOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "не верный ввод полей")
+        messages.error(self.request, _("не верный ввод полей"))
         return super().form_invalid(form)
 
 
-class SecondOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
+class SecondOrderView(LoginRequiredMixin, FormView):
     template_name = "order/order_2.jinja2"
     success_url = reverse_lazy("url:step3")
     form_class = SecondStepForm
@@ -47,11 +47,11 @@ class SecondOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "не верный ввод полей")
+        messages.error(self.request, _("не верный ввод полей"))
         return super().form_invalid(form)
 
 
-class ThirdOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
+class ThirdOrderView(LoginRequiredMixin, FormView):
     template_name = "order/order_3.jinja2"
     form_class = ThirdStepForm
     success_url = reverse_lazy("url:step4")
@@ -64,11 +64,11 @@ class ThirdOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "не верный ввод полей")
+        messages.error(self.request, _("не верный ввод полей"))
         return super().form_invalid(form)
 
 
-class FourStepView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
+class FourStepView(LoginRequiredMixin, ListView):
     template_name = "order/order_4.jinja2"
     model = ProductInCart
 
@@ -110,7 +110,7 @@ class FourStepView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
         return context
 
 
-class OrderListView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
+class OrderListView(LoginRequiredMixin, ListView):
     """
     Класс представления для отображения истории заказов.
 
@@ -132,7 +132,7 @@ class OrderListView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
         return context
 
 
-class OrderDetailView(LoginRequiredMixin, BuyersRequiredMixin, DetailView):
+class OrderDetailView(LoginRequiredMixin, DetailView):
     """
     Класс представления для отображения детальной информации о заказе.
 

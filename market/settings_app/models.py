@@ -60,21 +60,21 @@ class SiteSettings(SingletonModel):
     """
 
     docs_dir = models.CharField(
-        max_length=255, default=DOCS_DIR, verbose_name="Директория документов"
+        max_length=255, default=DOCS_DIR, verbose_name=_("Директория документов")
     )  # Директория для хранения документов
     successful_imports_dir = models.CharField(
-        max_length=255, default=SUCCESSFUL_IMPORTS_DIR, verbose_name="Директория успешных импортов"
+        max_length=255, default=SUCCESSFUL_IMPORTS_DIR, verbose_name=_("Директория успешных импортов")
     )  # Директория для успешных импортов
     failed_imports_dir = models.CharField(
-        max_length=255, default=FAILED_IMPORTS_DIR, verbose_name="Директория неудачных импортов"
+        max_length=255, default=FAILED_IMPORTS_DIR, verbose_name=_("Директория неудачных импортов")
     )  # Директория для неудачных импортов
-    fixture_dir = models.CharField(max_length=255, default=FIXTURE_DIR, verbose_name="Директория фикстур")
+    fixture_dir = models.CharField(max_length=255, default=FIXTURE_DIR, verbose_name=_("Директория фикстур"))
     banners_expiration_time = models.PositiveIntegerField(
-        default=BANNERS_EXPIRATION_TIME, verbose_name="Время истечения баннеров"
+        default=BANNERS_EXPIRATION_TIME, verbose_name=_("Время истечения баннеров")
     )  # Время истечения баннеров (в секундах)
     email_access_settings = models.JSONField(
         default=get_default_email_settings,
-        verbose_name="Email Settings",
+        verbose_name=_("настройки e-mail"),
         help_text="Email access settings from .env",
     )
     objects = ProjectSettingsManager()

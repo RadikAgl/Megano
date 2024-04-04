@@ -1,13 +1,14 @@
 """Сервисы приложения cart"""
 
-from decimal import Decimal
 import random
+from decimal import Decimal
 from typing import Any
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Sum, F
 from django.http import HttpResponseNotFound
+from django.utils.translation import gettext_lazy as _
 
 from accounts.models import User
 from cart.models import ProductInCart, Cart
@@ -244,7 +245,7 @@ class CartInstance:
         offers = Offer.objects.filter(product=product).filter(remains__gte=quantity)
         if offers:
             return random.choice(offers)
-        return HttpResponseNotFound("Ошибка! Не хватает товаров на складе!")
+        return HttpResponseNotFound(_("Ошибка! Не хватает товаров на складе!"))
 
     def get_total_price_without_discount(self) -> Decimal | int:
         """
