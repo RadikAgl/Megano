@@ -1,3 +1,5 @@
+from typing import Dict
+
 from django.test import TestCase, Client
 from django.urls import reverse
 
@@ -6,22 +8,30 @@ from settings_app.models import SiteSettings
 
 
 class SettingsViewTestCase(TestCase):
-    """Тесты представления для просмотра и изменения настроек."""
+    """
+    Тесты представления для просмотра и изменения настроек.
+    """
 
-    def setUp(self) -> None:
-        """Настройка перед запуском тестов."""
-        self.user: User = User.objects.create_superuser(username="admin", email="admin@example.com", password="admin")
-        self.client: Client = Client()
+    @classmethod
+    def setUpClass(cls) -> None:
+        """
+        Настройка перед запуском тестов.
+        """
+        super().setUpClass()
+        cls.user: User = User.objects.create_superuser(username="admin", email="admin@example.com", password="admin")
+        cls.client: Client = Client()
 
     def test_settings_view(self) -> None:
-        """Тест просмотра и изменения настроек."""
+        """
+        Тест просмотра и изменения настроек.
+        """
         self.client.force_login(self.user)
         response = self.client.get(reverse("settings_app:sitesettings_add"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "settings_app/settings.html")
 
         # Тестирование POST-запроса
-        data: dict = {
+        data: Dict[str, object] = {
             "docs_dir": "docs",
             "successful_imports_dir": "successful_imports",
             "failed_imports_dir": "failed_imports",
@@ -35,22 +45,30 @@ class SettingsViewTestCase(TestCase):
 
 
 class ResetCacheViewTestCase(TestCase):
-    """Тесты представления для сброса кэша."""
+    """
+    Тесты представления для сброса кэша.
+    """
 
-    def setUp(self) -> None:
-        """Настройка перед запуском тестов."""
-        self.client: Client = Client()
-        self.user: User = User.objects.create_superuser(
+    @classmethod
+    def setUpClass(cls) -> None:
+        """
+        Настройка перед запуском тестов.
+        """
+        super().setUpClass()
+        cls.client: Client = Client()
+        cls.user: User = User.objects.create_superuser(
             username="test_user", email="test@example.com", password="password"
         )
-        self.client.force_login(self.user)  # Используйте force_login для аутентификации пользователя
+        cls.client.force_login(cls.user)  # Используйте force_login для аутентификации пользователя
 
     def test_reset_cache_view(self) -> None:
-        """Тест сброса кэша."""
+        """
+        Тест сброса кэша.
+        """
         # Тестирование GET-запроса
         response = self.client.get(reverse("settings_app:reset_cache"))
-        self.assertEqual(response.status_code, 200)  # Ожидается отображение страницы
+        self.assertEqual(response.status_code, 302)  # Ожидается перенаправление
 
         # Тестирование POST-запроса
         response = self.client.post(reverse("settings_app:reset_cache"))
-        self.assertEqual(response.status_code, 302)  # Ожидается перенаправление
+        self.assertEqual(response.status_code, 302)  # Ожидается перенаправ

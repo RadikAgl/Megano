@@ -69,7 +69,7 @@ LOCALE_PATHS = [
     pathlib.Path(__file__).resolve().parents[1] / "locale",
 ]
 
-LANGUAGE_CODE = "ru-RU"
+LANGUAGE_CODE = "ru"
 LANGUAGES = [
     ("ru", _("Русский")),
     ("en", _("Английский")),
