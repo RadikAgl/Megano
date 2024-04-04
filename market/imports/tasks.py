@@ -3,6 +3,7 @@ from typing import Optional
 from celery import shared_task
 from django.core.cache import cache
 from django.db import IntegrityError, transaction
+from django.utils.translation import gettext as _
 
 from .common_utils import process_import_common, create_import_log
 
@@ -55,14 +56,22 @@ def async_import_task(file_name: Optional[str] = None, user_id: Optional[int] = 
     lock_acquired = cache.add(lock_key, "locked", timeout=60)
 
     if not lock_acquired:
-        print(f"Задача уже в очереди для файла: {file_name}, пользователя: {user_id}")
+        print(
+            _("Задача уже в очереди для файла: {file_name}, пользователя: {user_id}").format(
+                file_name=file_name, user_id=user_id
+            )
+        )
         return
 
-    print(f"Постановка задачи async_import_task для файла: {file_name}, пользователя: {user_id}")
+    print(
+        _("Постановка задачи async_import_task для файла: {file_name}, пользователя: {user_id}").format(
+            file_name=file_name, user_id=user_id
+        )
+    )
 
     try:
         process_import(file_name, user_id)
     except Exception as e:
-        print(f"Ошибка в async_import_task: {e}")
+        print(_("Ошибка в async_import_task: {error}").format(error=e))
     finally:
         cache.delete(lock_key)

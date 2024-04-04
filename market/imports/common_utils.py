@@ -9,6 +9,7 @@ from typing import List, Optional, Tuple
 from django.core.cache import cache
 from django.db import IntegrityError, transaction
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from filelock import FileLock
 
 from accounts.models import User
@@ -373,14 +374,14 @@ def log_and_notify_error(
         site_settings = SiteSettings.load()
         sender_email = user.email
         recipient_email = site_settings.email_access_settings.get("EMAIL_HOST_USER", os.getenv("EMAIL_HOST_USER"))
-        subject = f"Import from {user.email} status"
+        subject = _("Статус импорта от {email}").format(email=user.email)
 
         body = (
-            f"Импорт файла {file_name} Завершён с ошибкой.\n"
-            f"Загружено пользователем: {user.username} ({user.email}).\n"
-            f"Всего товаров: {total_products}\n"
-            f"Успешных импортов: {successful_imports}\n"
-            f"Неудачных импортов: {failed_imports}"
+            _("Импорт файла {file_name} завершён с ошибкой.\n")
+            + _("Загружено пользователем: {username} ({email}).\n").format(username=user.username, email=user.email)
+            + _("Всего товаров: {total_products}\n").format(total_products=total_products)
+            + _("Успешных импортов: {successful_imports}\n").format(successful_imports=successful_imports)
+            + _("Неудачных импортов: {failed_imports}").format(failed_imports=failed_imports)
         )
 
         send_email(sender_email, recipient_email, subject, body, site_settings)
@@ -409,14 +410,14 @@ def notify_admin_about_import_success(
 
         sender_email = user.email
         recipient_email = site_settings.email_access_settings.get("EMAIL_HOST_USER", os.getenv("EMAIL_HOST_USER"))
-        subject = f"Import from {user.email} status"
+        subject = _("Статус импорта от {email}").format(email=user.email)
 
         body = (
-            f"Импорт файла {file_name} успешно завершен.\n"
-            f"Загружено пользователем: {user.username} ({user.email}).\n"
-            f"Всего товаров: {total_products}\n"
-            f"Успешных импортов: {successful_imports}\n"
-            f"Неудачных импортов: {failed_imports}"
+            _("Импорт файла {file_name} успешно завершен.\n")
+            + _("Загружено пользователем: {username} ({email}).\n").format(username=user.username, email=user.email)
+            + _("Всего товаров: {total_products}\n").format(total_products=total_products)
+            + _("Успешных импортов: {successful_imports}\n").format(successful_imports=successful_imports)
+            + _("Неудачных импортов: {failed_imports}").format(failed_imports=failed_imports)
         )
 
         send_email(sender_email, recipient_email, subject, body, site_settings)
@@ -450,7 +451,7 @@ def handle_empty_file(file_name, user_id):
     Returns:
         str: Сообщение об ошибке.
     """
-    error_message = "Uploaded file is empty"
+    error_message = _("Загруженный файл пуст")
     return log_and_notify_error(error_message, user_id, file_name, 0, 0, 1)
 
 
@@ -523,10 +524,6 @@ def handle_import_log_status(import_log, successful_imports, failed_imports):
         successful_imports (int): Количество успешных импортов.
         failed_imports (int): Количество неудачных импортов.
     """
-    print(
-        f"Handling import log status for log: {import_log}, successful imports: {successful_imports}, "
-        f"failed imports: {failed_imports}"
-    )
     if failed_imports > 0:
         import_log.status = "Завершён с ошибкой"
     else:
@@ -613,7 +610,6 @@ def process_import_common(uploaded_file, user_id: int) -> str:  # noqa: C901
         str: Сообщение об ошибке, если есть, в противном случае пустая строка.
     """
     try:
-        print("Starting import process for user:", user_id, "file:", uploaded_file.name)
         acquire_lock()
         file_name = uploaded_file.name
         content = uploaded_file.read().decode("utf-8")
@@ -685,7 +681,7 @@ def process_import_common(uploaded_file, user_id: int) -> str:  # noqa: C901
             )
 
     except (IntegrityError, ImportError, Exception) as e:
-        error_message = f"Error occurred: {str(e)}"
+        error_message = _("Произошла ошибка: {e}").format(error=str(e))
         handle_failed_import(e, file_name, user_id, total_products, successful_imports, failed_imports)
         return error_message
     finally:

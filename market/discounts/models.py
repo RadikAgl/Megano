@@ -54,7 +54,7 @@ class DiscountPercentageBase(DiscountBase):
 class DiscountProduct(DiscountPercentageBase):
     """Модель для хранения скидок на товары"""
 
-    products = models.ManyToManyField(Product, related_name="discount_products")
+    products = models.ManyToManyField(Product, related_name="discount_products", verbose_name=_("продукты"))
 
     class Meta:
         verbose_name = _("скидка на товар")
@@ -64,8 +64,8 @@ class DiscountProduct(DiscountPercentageBase):
 class DiscountSet(DiscountBase):
     """Модель для хранения скидок на наборы товаров"""
 
-    first_group = models.ManyToManyField(Product, related_name="first_group")
-    second_group = models.ManyToManyField(Product, related_name="second_group")
+    first_group = models.ManyToManyField(Product, related_name="first_group", verbose_name=_("первая группа"))
+    second_group = models.ManyToManyField(Product, related_name="second_group", verbose_name=_("вторая группа"))
     discount_amount = models.DecimalField(
         max_digits=6,
         decimal_places=2,

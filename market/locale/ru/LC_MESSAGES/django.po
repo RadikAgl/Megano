@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-02 19:08+0300\n"
+"POT-Creation-Date: 2024-04-03 18:10+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,10 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
+#: .\accounts\forms.py:74
+msgid "Пароли не совпадают"
+msgstr ""
+
 #: .\accounts\models.py:14
 msgid "Имя пользователя"
 msgstr ""
@@ -28,8 +32,9 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: .\accounts\models.py:21 .\accounts\models.py:28 .\comparison\models.py:15
-#: .\shops\models.py:33
+#: .\accounts\models.py:21 .\accounts\models.py:28 .\cart\models.py:13
+#: .\comparison\models.py:15 .\order\models.py:28 .\products\models.py:84
+#: .\shops\models.py:34
 msgid "пользователь"
 msgstr ""
 
@@ -57,36 +62,58 @@ msgstr ""
 msgid "истории просмотров"
 msgstr ""
 
-#: .\accounts\views.py:32
+#: .\accounts\views.py:33
 msgid "успешно"
 msgstr ""
 
-#: .\accounts\views.py:36
+#: .\accounts\views.py:37 .\order\views.py:32 .\order\views.py:50
+#: .\order\views.py:67
 msgid "не верный ввод полей"
 msgstr ""
 
-#: .\accounts\views.py:56
+#: .\accounts\views.py:57
 msgid "оплачено"
 msgstr ""
 
-#: .\accounts\views.py:75
+#: .\accounts\views.py:76
 msgid "не валидная форма или такой пользователь уже есть"
 msgstr ""
 
-#: .\accounts\views.py:92
+#: .\accounts\views.py:93
 msgid "нет пользователя с таким Email или неверный пароль"
 msgstr ""
 
-#: .\accounts\views.py:131
+#: .\accounts\views.py:132
 msgid "нет пользователя с таким Email"
 msgstr ""
 
-#: .\cart\models.py:17
+#: .\cart\cart.py:248
+msgid "Ошибка! Не хватает товаров на складе!"
+msgstr ""
+
+#: .\cart\models.py:14
+msgid "активный"
+msgstr ""
+
+#: .\cart\models.py:17 .\cart\models.py:28 .\order\models.py:49
 msgid "корзина"
 msgstr ""
 
 #: .\cart\models.py:18
 msgid "корзины"
+msgstr ""
+
+#: .\cart\models.py:27 .\shops\models.py:61
+msgid "предложения"
+msgstr ""
+
+#: .\cart\models.py:29
+msgid "количества"
+msgstr ""
+
+#: .\cart\models.py:30 .\comparison\models.py:18 .\order\models.py:29
+#: .\products\models.py:66 .\products\models.py:94
+msgid "дата создания"
 msgstr ""
 
 #: .\cart\models.py:33
@@ -99,10 +126,6 @@ msgstr ""
 
 #: .\comparison\models.py:17
 msgid "товары"
-msgstr ""
-
-#: .\comparison\models.py:18 .\products\models.py:66
-msgid "дата создания"
 msgstr ""
 
 #: .\comparison\models.py:21
@@ -151,11 +174,11 @@ msgstr ""
 msgid "Неверный запрос. Отсутствует product_id."
 msgstr ""
 
-#: .\config\settings.py:76
+#: .\config\settings.py:74
 msgid "Русский"
 msgstr ""
 
-#: .\config\settings.py:77
+#: .\config\settings.py:75
 msgid "Английский"
 msgstr ""
 
@@ -187,12 +210,24 @@ msgstr ""
 msgid "процент скидки"
 msgstr ""
 
+#: .\discounts\models.py:57 .\imports\models.py:36 .\products\models.py:74
+msgid "продукты"
+msgstr ""
+
 #: .\discounts\models.py:60
 msgid "скидка на товар"
 msgstr ""
 
 #: .\discounts\models.py:61
 msgid "скидки на товары"
+msgstr ""
+
+#: .\discounts\models.py:67
+msgid "первая группа"
+msgstr ""
+
+#: .\discounts\models.py:68
+msgid "вторая группа"
 msgstr ""
 
 #: .\discounts\models.py:72
@@ -221,6 +256,50 @@ msgstr ""
 
 #: .\discounts\models.py:94
 msgid "скидки на стоимость корзины"
+msgstr ""
+
+#: .\imports\common_utils.py:378 .\imports\common_utils.py:414
+#, python-brace-format
+msgid "Статус импорта от {email}"
+msgstr ""
+
+#: .\imports\common_utils.py:381
+#, python-brace-format
+msgid "Импорт файла {file_name} завершён с ошибкой.\n"
+msgstr ""
+
+#: .\imports\common_utils.py:382 .\imports\common_utils.py:418
+#, python-brace-format
+msgid "Загружено пользователем: {username} ({email}).\n"
+msgstr ""
+
+#: .\imports\common_utils.py:383 .\imports\common_utils.py:419
+#, python-brace-format
+msgid "Всего товаров: {total_products}\n"
+msgstr ""
+
+#: .\imports\common_utils.py:384 .\imports\common_utils.py:420
+#, python-brace-format
+msgid "Успешных импортов: {successful_imports}\n"
+msgstr ""
+
+#: .\imports\common_utils.py:385 .\imports\common_utils.py:421
+#, python-brace-format
+msgid "Неудачных импортов: {failed_imports}"
+msgstr ""
+
+#: .\imports\common_utils.py:417
+#, python-brace-format
+msgid "Импорт файла {file_name} успешно завершен.\n"
+msgstr ""
+
+#: .\imports\common_utils.py:455
+msgid "Загруженный файл пуст"
+msgstr ""
+
+#: .\imports\common_utils.py:685
+#, python-brace-format
+msgid "Произошла ошибка: {e}"
 msgstr ""
 
 #: .\imports\models.py:9
@@ -253,20 +332,42 @@ msgstr ""
 msgid "Время начала импорта"
 msgstr ""
 
-#: .\imports\models.py:38
+#: .\imports\models.py:39
 msgid "лог импорта"
 msgstr ""
 
-#: .\imports\models.py:39
+#: .\imports\models.py:40
 msgid "логи импорта"
 msgstr ""
 
-#: .\imports\models.py:64
-msgid "продукт в логе импорта"
+#: .\imports\models.py:62 .\products\models.py:73 .\products\models.py:86
+#: .\products\models.py:110 .\shops\models.py:55
+msgid "продукт"
 msgstr ""
 
 #: .\imports\models.py:65
+msgid "продукт в логе импорта"
+msgstr ""
+
+#: .\imports\models.py:66
 msgid "продукты в логах импорта"
+msgstr ""
+
+#: .\imports\tasks.py:59
+#, python-brace-format
+msgid "Задача уже в очереди для файла: {file_name}, пользователя: {user_id}"
+msgstr ""
+
+#: .\imports\tasks.py:63
+#, python-brace-format
+msgid ""
+"Постановка задачи async_import_task для файла: {file_name}, пользователя: "
+"{user_id}"
+msgstr ""
+
+#: .\imports\tasks.py:69
+#, python-brace-format
+msgid "Ошибка в async_import_task: {error}"
 msgstr ""
 
 #: .\imports\views.py:144
@@ -275,6 +376,34 @@ msgstr ""
 
 #: .\imports\views.py:153
 msgid "Ошибка при открытии файла."
+msgstr ""
+
+#: .\order\models.py:26 .\templates\order\order_4.jinja2:28
+msgid "имя"
+msgstr ""
+
+#: .\order\models.py:27
+msgid "телефон"
+msgstr ""
+
+#: .\order\models.py:37
+msgid "город"
+msgstr ""
+
+#: .\order\models.py:38
+msgid "адрес"
+msgstr ""
+
+#: .\order\models.py:44
+msgid "Способ оплаты"
+msgstr ""
+
+#: .\order\models.py:47
+msgid "статус"
+msgstr ""
+
+#: .\order\models.py:50
+msgid "Общая стоимость"
 msgstr ""
 
 #: .\order\models.py:54
@@ -349,15 +478,11 @@ msgstr ""
 msgid "товар дня"
 msgstr ""
 
-#: .\products\models.py:73 .\products\models.py:110
-msgid "продукт"
+#: .\products\models.py:88
+msgid "текст"
 msgstr ""
 
-#: .\products\models.py:74
-msgid "продукты"
-msgstr ""
-
-#: .\products\models.py:98 .\templates\products\product.jinja2:99
+#: .\products\models.py:98 .\templates\products\product.jinja2:105
 msgid "отзыв"
 msgstr ""
 
@@ -373,55 +498,91 @@ msgstr ""
 msgid "изображение"
 msgstr ""
 
+#: .\products\views.py:190
+msgid "Ошибка!"
+msgstr ""
+
+#: .\settings_app\models.py:63
+msgid "Директория документов"
+msgstr ""
+
+#: .\settings_app\models.py:66
+msgid "Директория успешных импортов"
+msgstr ""
+
+#: .\settings_app\models.py:69
+msgid "Директория неудачных импортов"
+msgstr ""
+
+#: .\settings_app\models.py:71
+msgid "Директория фикстур"
+msgstr ""
+
+#: .\settings_app\models.py:73
+msgid "Время истечения баннеров"
+msgstr ""
+
+#: .\settings_app\models.py:77
+msgid "настройки e-mail"
+msgstr ""
+
 #: .\settings_app\models.py:98 .\settings_app\models.py:99
 msgid "настройки сайта"
 msgstr ""
 
-#: .\settings_app\views.py:49
+#: .\settings_app\views.py:47
+msgid "Настройки успешно обновлены"
+msgstr ""
+
+#: .\settings_app\views.py:50
 msgid "Ошибка при обновлении настроек. Пожалуйста, исправьте ошибки."
 msgstr ""
 
-#: .\settings_app\views.py:66
+#: .\settings_app\views.py:67
 msgid "Весь кэш успешно очищен"
 msgstr ""
 
-#: .\shops\models.py:24
+#: .\shops\models.py:25
 msgid "название"
 msgstr ""
 
-#: .\shops\models.py:25
+#: .\shops\models.py:26
 msgid "контактная информация"
 msgstr ""
 
-#: .\shops\models.py:26
+#: .\shops\models.py:27
 msgid "описание"
 msgstr ""
 
-#: .\shops\models.py:31
+#: .\shops\models.py:32
 msgid "товары в магазине"
 msgstr ""
 
-#: .\shops\models.py:37
+#: .\shops\models.py:38
 msgid "логотип компании"
 msgstr ""
 
-#: .\shops\models.py:43
+#: .\shops\models.py:44
 msgid "продавец"
 msgstr ""
 
-#: .\shops\models.py:44
+#: .\shops\models.py:45
 msgid "продавцы"
 msgstr ""
 
-#: .\shops\models.py:55
+#: .\shops\models.py:54
+msgid "магазин"
+msgstr ""
+
+#: .\shops\models.py:56
 msgid "цена"
 msgstr ""
 
-#: .\shops\models.py:60
-msgid "предложения"
+#: .\shops\models.py:57
+msgid "осталось"
 msgstr ""
 
-#: .\shops\models.py:61
+#: .\shops\models.py:62
 msgid "предложение"
 msgstr ""
 
@@ -431,8 +592,8 @@ msgid "Навигация"
 msgstr ""
 
 #: .\templates\accounts\account.jinja2:16
-#: .\templates\accounts\profile.jinja2:15 .\templates\menu.jinja2:30
-#: .\templates\order\order_history.jinja2:30
+#: .\templates\accounts\profile.jinja2:15 .\templates\header.jinja2:38
+#: .\templates\menu.jinja2:31 .\templates\order\order_history.jinja2:30
 msgid "Личный кабинет"
 msgstr ""
 
@@ -466,7 +627,6 @@ msgid "Заказ"
 msgstr ""
 
 #: .\templates\accounts\account.jinja2:61
-#: .\templates\products\product.jinja2:154
 msgid "Тип доставки: "
 msgstr ""
 
@@ -480,6 +640,7 @@ msgid "Оплата:"
 msgstr ""
 
 #: .\templates\accounts\account.jinja2:66 .\templates\order\order_3.jinja2:27
+#: .\templates\products\product.jinja2:172
 msgid "Онлайн картой"
 msgstr ""
 
@@ -504,7 +665,8 @@ msgstr ""
 msgid "Восстановление пароля (1/2)"
 msgstr ""
 
-#: .\templates\accounts\login.jinja2:6 .\templates\header.jinja2:36
+#: .\templates\accounts\login.jinja2:6 .\templates\header.jinja2:40
+#: .\templates\menu.jinja2:37
 msgid "Вход"
 msgstr ""
 
@@ -513,7 +675,7 @@ msgid "Забыли пароль?"
 msgstr ""
 
 #: .\templates\accounts\login.jinja2:29 .\templates\accounts\registr.jinja2:6
-#: .\templates\header.jinja2:37
+#: .\templates\header.jinja2:41 .\templates\menu.jinja2:38
 msgid "Регистрация"
 msgstr ""
 
@@ -548,7 +710,7 @@ msgid "Сохранить"
 msgstr ""
 
 #: .\templates\accounts\registr.jinja2:20
-#: .\templates\products\product.jinja2:276
+#: .\templates\products\product.jinja2:291
 msgid "Зарегистрироваться"
 msgstr ""
 
@@ -599,13 +761,13 @@ msgid "чтобы совершить покупки"
 msgstr ""
 
 #: .\templates\comparison\comparison.jinja2:36
-#: .\templates\products\product.jinja2:92
-#: .\templates\products\product.jinja2:119
+#: .\templates\products\product.jinja2:98
+#: .\templates\products\product.jinja2:125
 msgid "Характеристика"
 msgstr ""
 
 #: .\templates\comparison\comparison.jinja2:37
-#: .\templates\products\product.jinja2:121
+#: .\templates\products\product.jinja2:127
 msgid "Значение"
 msgstr ""
 
@@ -620,7 +782,7 @@ msgstr ""
 #: .\templates\discounts\discount-cart.jinja2:30
 #: .\templates\discounts\discount-product.jinja2:30
 #: .\templates\discounts\discount-set.jinja2:30
-#: .\templates\products\product.jinja2:89
+#: .\templates\products\product.jinja2:95
 msgid "Описание"
 msgstr ""
 
@@ -781,15 +943,15 @@ msgstr ""
 msgid "Скидки"
 msgstr ""
 
-#: .\templates\menu.jinja2:31
+#: .\templates\menu.jinja2:33
 msgid "Административный раздел"
 msgstr ""
 
-#: .\templates\menu.jinja2:32
+#: .\templates\menu.jinja2:35
 msgid "Выход"
 msgstr ""
 
-#: .\templates\menu.jinja2:45
+#: .\templates\menu.jinja2:52
 msgid "Показать навигацию"
 msgstr ""
 
@@ -877,10 +1039,6 @@ msgstr ""
 msgid "Шаг 4. Подтверждение заказа"
 msgstr ""
 
-#: .\templates\order\order_4.jinja2:28
-msgid "имя"
-msgstr ""
-
 #: .\templates\order\order_4.jinja2:40
 msgid "E-mail"
 msgstr ""
@@ -948,7 +1106,7 @@ msgstr ""
 
 #: .\templates\products\catalog.jinja2:124
 #: .\templates\products\index.jinja2:127 .\templates\products\index.jinja2:190
-#: .\templates\products\index.jinja2:256
+#: .\templates\products\index.jinja2:256 .\templates\products\product.jinja2:68
 msgid "Поздравляем!"
 msgstr ""
 
@@ -960,13 +1118,13 @@ msgstr ""
 
 #: .\templates\products\catalog.jinja2:128
 #: .\templates\products\index.jinja2:131 .\templates\products\index.jinja2:194
-#: .\templates\products\index.jinja2:260 .\templates\products\product.jinja2:67
+#: .\templates\products\index.jinja2:260 .\templates\products\product.jinja2:72
 msgid "Товар успешно добавлен в корзину!"
 msgstr ""
 
 #: .\templates\products\catalog.jinja2:130
 #: .\templates\products\index.jinja2:133 .\templates\products\index.jinja2:196
-#: .\templates\products\index.jinja2:262
+#: .\templates\products\index.jinja2:262 .\templates\products\product.jinja2:74
 msgid "Перейти в корзину"
 msgstr ""
 
@@ -994,69 +1152,73 @@ msgstr ""
 msgid "Ограниченный тираж"
 msgstr ""
 
-#: .\templates\products\product.jinja2:55
-#: .\templates\products\product.jinja2:148
+#: .\templates\products\product.jinja2:59
+#: .\templates\products\product.jinja2:163
 msgid "Купить"
 msgstr ""
 
-#: .\templates\products\product.jinja2:63
-msgid "Поздравляем"
-msgstr ""
-
-#: .\templates\products\product.jinja2:91
-msgid "Продавцы"
-msgstr ""
-
-#: .\templates\products\product.jinja2:95
-msgid "Отзывы: "
+#: .\templates\products\product.jinja2:83
+msgid "Теги"
 msgstr ""
 
 #: .\templates\products\product.jinja2:97
-#: .\templates\products\product.jinja2:103
-msgid "отзывов"
+msgid "Продавцы"
 msgstr ""
 
 #: .\templates\products\product.jinja2:101
+msgid "Отзывы: "
+msgstr ""
+
+#: .\templates\products\product.jinja2:103
+#: .\templates\products\product.jinja2:109
+msgid "отзывов"
+msgstr ""
+
+#: .\templates\products\product.jinja2:107
 msgid "отзыва"
 msgstr ""
 
-#: .\templates\products\product.jinja2:158
+#: .\templates\products\product.jinja2:171
 msgid "Оплата: "
 msgstr ""
 
-#: .\templates\products\product.jinja2:162
+#: .\templates\products\product.jinja2:175
 msgid "Стоимость: "
 msgstr ""
 
-#: .\templates\products\product.jinja2:222
-msgid "Страницы: "
+#: .\templates\products\product.jinja2:186
+msgid "Товара нет в продаже"
 msgstr ""
 
 #: .\templates\products\product.jinja2:237
+msgid "Страницы: "
+msgstr ""
+
+#: .\templates\products\product.jinja2:252
 msgid "Написать отзыв"
 msgstr ""
 
-#: .\templates\products\product.jinja2:244
+#: .\templates\products\product.jinja2:259
 msgid "Текст отзыва"
 msgstr ""
 
-#: .\templates\products\product.jinja2:266
+#: .\templates\products\product.jinja2:281
 msgid "Добавить отзыв"
 msgstr ""
 
-#: .\templates\products\product.jinja2:272
+#: .\templates\products\product.jinja2:287
 msgid "Для того чтобы оставить комментарий вы должны"
 msgstr ""
 
-#: .\templates\products\product.jinja2:273
+#: .\templates\products\product.jinja2:288
 msgid "Войти"
 msgstr ""
 
-#: .\templates\products\product.jinja2:275
+#: .\templates\products\product.jinja2:290
 msgid "или"
 msgstr ""
 
-#: .\templates\products\product.jinja2:293
+#: .\templates\products\product.jinja2:308
 msgid "Добавить к сравнению"
 msgstr ""
 
@@ -1064,10 +1226,10 @@ msgstr ""
 msgid "Все категории"
 msgstr ""
 
-#: .\templates\search-row.jinja2:36
+#: .\templates\search-row.jinja2:38
 msgid "Скидки!"
 msgstr ""
 
-#: .\templates\search-row.jinja2:49
+#: .\templates\search-row.jinja2:51
 msgid "Поиск"
 msgstr ""

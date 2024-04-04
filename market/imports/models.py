@@ -32,7 +32,9 @@ class ImportLog(models.Model):
     file_name = models.CharField(max_length=255, verbose_name=_("Имя файла импорта"))
     status = models.CharField(max_length=25, choices=ImportStatus.choices, verbose_name=_("Статус"))
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name=_("Время начала импорта"))
-    products = models.ManyToManyField(Product, through="ImportLogProduct", related_name="import_logs")
+    products = models.ManyToManyField(
+        Product, through="ImportLogProduct", related_name="import_logs", verbose_name=_("продукты")
+    )
 
     class Meta:
         verbose_name = _("лог импорта")
@@ -57,8 +59,8 @@ class ImportLogProduct(models.Model):
         product (Product): Ссылка на объект Product.
     """
 
-    import_log = models.ForeignKey(ImportLog, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    import_log = models.ForeignKey(ImportLog, on_delete=models.CASCADE, verbose_name="лог импорта")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name=_("продукт"))
 
     class Meta:
         verbose_name = _("продукт в логе импорта")

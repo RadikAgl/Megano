@@ -10,6 +10,7 @@ from django.dispatch import receiver
 from django.http import JsonResponse, HttpRequest, HttpResponseNotFound
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, TemplateView
 from django_filters.views import FilterView
 
@@ -188,7 +189,7 @@ class ProductDetailView(DetailView):
             )
             return redirect("products:product-details", pk=product.pk)
 
-        return HttpResponseNotFound("Ошибка!")
+        return HttpResponseNotFound(_("Ошибка!"))
 
 
 def add_review(request: WSGIRequest):
