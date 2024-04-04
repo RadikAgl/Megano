@@ -23,10 +23,10 @@ class DeliveryTypes(models.TextChoices):
 class Order(models.Model):
     """Модель заказа"""
 
-    name = models.TextField(max_length=20, blank=False, null=False)
-    phone = models.IntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
+    name = models.TextField(max_length=20, blank=False, null=False, verbose_name=_("имя"))
+    phone = models.IntegerField(verbose_name=_("телефон"))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("пользователь"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
     delivery_type = models.CharField(
         max_length=50,
         choices=DeliveryTypes.choices,
@@ -34,20 +34,20 @@ class Order(models.Model):
         blank=False,
         default=DeliveryTypes.REGULAR,
     )
-    city = models.CharField(max_length=50, verbose_name="city")
-    address = models.CharField(max_length=255, verbose_name="address")
+    city = models.CharField(max_length=50, verbose_name=_("город"))
+    address = models.CharField(max_length=255, verbose_name=_("адрес"))
     payment_type = models.CharField(
         max_length=50,
         choices=PaymentTypes.choices,
         blank=False,
         default=PaymentTypes.CARD,
-        verbose_name="payment type",
+        verbose_name=_("Способ оплаты"),
     )
     status = models.CharField(
-        max_length=15, choices=OrderStatus.choices, default=OrderStatus.CREATED, verbose_name="status"
+        max_length=15, choices=OrderStatus.choices, default=OrderStatus.CREATED, verbose_name=_("статус")
     )
-    cart = models.OneToOneField(Cart, on_delete=models.CASCADE, verbose_name="cart")
-    total_price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name="total price")
+    cart = models.OneToOneField(Cart, on_delete=models.CASCADE, verbose_name=_("корзина"))
+    total_price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name=_("Общая стоимость"))
 
     class Meta:
         db_table = "order"

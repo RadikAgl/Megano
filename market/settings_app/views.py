@@ -7,9 +7,10 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import TemplateView
-from django.utils.translation import gettext_lazy as _
+
 from .forms import SiteSettingsForm
 from .models import SiteSettings
 
@@ -43,7 +44,7 @@ class SettingsView(TemplateView):
         form = SiteSettingsForm(request.POST, instance=site_settings)
         if form.is_valid():
             form.save()
-            messages.success(request, "Настройки успешно обновлены")
+            messages.success(request, _("Настройки успешно обновлены"))
             return redirect(reverse("admin:index"))
         else:
             messages.error(request, _("Ошибка при обновлении настроек. Пожалуйста, исправьте ошибки."))
