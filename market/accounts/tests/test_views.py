@@ -6,6 +6,10 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils.translation import activate
 
+from accounts.models import get_user_model
+
+User = get_user_model()  # noqa
+
 
 class ProfileViewTest(TestCase):
     @classmethod
