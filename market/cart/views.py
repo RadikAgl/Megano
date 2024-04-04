@@ -4,12 +4,13 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
+from accounts.group_mixins import BuyersRequiredMixin
 from cart.cart import CartInstance
 from cart.forms import CartAddProductForm
 from shops.models import Offer
 
 
-class CartView(TemplateView):
+class CartView(BuyersRequiredMixin, TemplateView):
     """Представление для отображения корзины"""
 
     template_name = "cart/cart.jinja2"

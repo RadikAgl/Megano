@@ -2,6 +2,8 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from accounts.group_mixins import BuyersRequiredMixin
 from .forms import FirstStepForm, SecondStepForm, ThirdStepForm
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
@@ -11,7 +13,7 @@ from accounts.models import User
 from .service import OrderService
 
 
-class FirstOrderView(LoginRequiredMixin, FormView):
+class FirstOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
     form_class = FirstStepForm
 
     template_name = "order/order.jinja2"
@@ -31,7 +33,7 @@ class FirstOrderView(LoginRequiredMixin, FormView):
         return super().form_invalid(form)
 
 
-class SecondOrderView(LoginRequiredMixin, FormView):
+class SecondOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
     template_name = "order/order_2.jinja2"
     success_url = reverse_lazy("url:step3")
     form_class = SecondStepForm
@@ -49,7 +51,7 @@ class SecondOrderView(LoginRequiredMixin, FormView):
         return super().form_invalid(form)
 
 
-class ThirdOrderView(LoginRequiredMixin, FormView):
+class ThirdOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
     template_name = "order/order_3.jinja2"
     form_class = ThirdStepForm
     success_url = reverse_lazy("url:step4")
@@ -66,7 +68,7 @@ class ThirdOrderView(LoginRequiredMixin, FormView):
         return super().form_invalid(form)
 
 
-class FourStepView(LoginRequiredMixin, ListView):
+class FourStepView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
     template_name = "order/order_4.jinja2"
     model = ProductInCart
 
@@ -108,7 +110,7 @@ class FourStepView(LoginRequiredMixin, ListView):
         return context
 
 
-class OrderListView(LoginRequiredMixin, ListView):
+class OrderListView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
     """
     Класс представления для отображения истории заказов.
 
@@ -130,7 +132,7 @@ class OrderListView(LoginRequiredMixin, ListView):
         return context
 
 
-class OrderDetailView(LoginRequiredMixin, DetailView):
+class OrderDetailView(LoginRequiredMixin, BuyersRequiredMixin, DetailView):
     """
     Класс представления для отображения детальной информации о заказе.
 
