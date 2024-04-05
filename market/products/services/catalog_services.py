@@ -43,8 +43,6 @@ def get_paginate_products_by() -> int:
         res = SiteSettings.load().paginate_products_by
         if not res:
             res = PAGINATE_PRODUCTS_BY
-    except ProgrammingError:
-        res = PAGINATE_PRODUCTS_BY
-    except ObjectDoesNotExist:
+    except (ProgrammingError, ObjectDoesNotExist):
         res = PAGINATE_PRODUCTS_BY
     return res
