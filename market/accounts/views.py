@@ -1,3 +1,5 @@
+from typing import Any, List
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.contrib.auth.forms import PasswordResetForm
@@ -63,7 +65,7 @@ class AcountView(LoginRequiredMixin, TemplateView):
 class RegistrationView(FormView):
     """вью класс для регистрации"""
 
-    template_name = "accounts/registr.jinja2"
+    template_name = "accounts/register.jinja2"
     form_class = RegistrationForm
     success_url = reverse_lazy("user:main")
 
@@ -181,12 +183,14 @@ class UpdatePasswordView(PasswordResetConfirmView):
 
 
 class UserHistoryView(LoginRequiredMixin, View):
-    template_name = "viewing_history.jinja2"
+    """Представление истории просмотров пользователя."""
 
-    def get(self, request, *args, **kwargs):
+    template_name: str = "accounts/viewing_history.jinja2"
+
+    def get(self, request, *args, **kwargs) -> Any:
         user = request.user
-        user_history = ViewHistory.objects.filter(user=user).order_by("-timestamp")
-        viewed_products = [history.product for history in user_history]
+        user_history = ViewHistory.objects.filter(user=user).order_by("-view_date")
+        viewed_products: List[Any] = [history.product for history in user_history]
 
         return render(request, self.template_name, {"viewed_products": viewed_products})
 

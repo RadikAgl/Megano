@@ -47,7 +47,7 @@
                     <div class="search">
                         <form class="form form_search" action="{{ url('products:catalog') }}" method="get">
                             {% csrf_token %}
-                            <input class="search-input" id="query" name="name" type="text" placeholder="{{ product_name().name }}" />
+                            <input class="search-input" id="query" name="name" type="text" placeholder="Samsung, Xiaomi, Appel" />
                             <button class="search-button" type="submit" name="search" id="search"><img src="{{ static('img/icons/search.svg') }}" alt="search.svg" />{{ _('Поиск') }}
                             </button>
                         </form>
