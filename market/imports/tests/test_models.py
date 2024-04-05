@@ -5,31 +5,34 @@ from django.utils import timezone
 from imports.models import ImportLog, ImportLogProduct, ImportStatus
 from products.models import Product, Category
 
+User = get_user_model()
+
 
 class ImportLogModelTest(TestCase):
     """
     Тестовый класс для модели ImportLog.
     """
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls) -> None:
         """
         Подготовка данных перед запуском тестов.
         """
-        self.user = get_user_model().objects.create_user(username="testuser", password="testpassword")
-        self.import_log = ImportLog.objects.create(
-            user=self.user, file_name="test_file.txt", status=ImportStatus.COMPLETED, timestamp=timezone.now()
+        cls.user: User = User.objects.create_user(username="testuser", password="testpassword")
+        cls.import_log: ImportLog = ImportLog.objects.create(
+            user=cls.user, file_name="test_file.txt", status=ImportStatus.COMPLETED, timestamp=timezone.now()
         )
 
-    def test_import_log_str(self):
+    def test_import_log_str(self) -> None:
         """
         Тестирование метода __str__ модели ImportLog.
 
         Ожидаемое поведение: Строковое представление должно быть правильно отформатировано.
         """
-        expected_str = f"Импорт: {self.import_log.file_name}, Статус: {self.import_log.get_status_display()}"
+        expected_str: str = f"Импорт: {self.import_log.file_name}, Статус: {self.import_log.get_status_display()}"
         self.assertEqual(str(self.import_log), expected_str, msg="Неправильное представление __str__.")
 
-    def test_verbose_name(self):
+    def test_verbose_name(self) -> None:
         """
         Тестирование verbose_name и verbose_name_plural модели ImportLog.
 
@@ -44,20 +47,23 @@ class ImportLogProductModelTest(TestCase):
     Тестовый класс для модели ImportLogProduct.
     """
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls) -> None:
         """
         Подготовка данных перед запуском тестов.
         """
-        self.user = get_user_model().objects.create_user(username="testuser", password="testpassword")
-        self.import_log = ImportLog.objects.create(
-            user=self.user, file_name="test_file.txt", status=ImportStatus.COMPLETED, timestamp=timezone.now()
+        cls.user: User = User.objects.create_user(username="testuser", password="testpassword")
+        cls.import_log: ImportLog = ImportLog.objects.create(
+            user=cls.user, file_name="test_file.txt", status=ImportStatus.COMPLETED, timestamp=timezone.now()
         )
-        self.category = Category.objects.create(name="Test Category")
-        self.product = Product.objects.create(name="Test Product", category=self.category)
+        cls.category: Category = Category.objects.create(name="Test Category")
+        cls.product: Product = Product.objects.create(name="Test Product", category=cls.category)
 
-        self.import_log_product = ImportLogProduct.objects.create(import_log=self.import_log, product=self.product)
+        cls.import_log_product: ImportLogProduct = ImportLogProduct.objects.create(
+            import_log=cls.import_log, product=cls.product
+        )
 
-    def test_import_log_product_relationships(self):
+    def test_import_log_product_relationships(self) -> None:
         """
         Тестирование отношений модели ImportLogProduct.
 
@@ -66,7 +72,7 @@ class ImportLogProductModelTest(TestCase):
         self.assertEqual(self.import_log_product.import_log, self.import_log, msg="Неправильное отношение ImportLog.")
         self.assertEqual(self.import_log_product.product, self.product, msg="Неправильное отношение Product.")
 
-    def test_verbose_name(self):
+    def test_verbose_name(self) -> None:
         """
         Тестирование verbose_name и verbose_name_plural модели ImportLogProduct.
 

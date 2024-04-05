@@ -10,7 +10,7 @@ from products.models import Tag
 def get_ordering_fields(filter_class: ProductFilter) -> list:
     """Возвращает параметры сортировки и их название для отображения на странице"""
 
-    return [item for item in filter_class.filters["o"].field.choices[1:] if not item[0].startswith("-")]
+    return [item for item in list(filter_class.filters["o"].field.choices)[1:] if not item[0].startswith("-")]
 
 
 def get_popular_tags() -> list:

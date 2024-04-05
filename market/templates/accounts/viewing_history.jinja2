@@ -1,10 +1,22 @@
 {% extends 'base.jinja2' %}
 
 {% block content %}
-    {{ _('История просмотров товаров') }}
+    <h2>{{ _('История просмотров товаров') }}</h2>
 
     {% for product in viewed_products %}
-        {{ product.name }}
+
+        <div class="ProductCard-look">
+            {% if product.images.exists %}
+
+                <div class="Card"><a class="Card-picture" href="{{ url('products:product-details', product.id) }}"><img
+                    src="{{ product.images.first().image.url }}" alt="card.jpg"/></a>
+
+            {% endif %}
+
+            <a href="{{ url('products:product-details', product.id) }}">{{ product.name }}</a>
+
+            </div>
+        </div>
     {% endfor %}
 
 {% endblock %}
