@@ -21,13 +21,12 @@ from comparison.services import get_comparison_list
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
 
-from settings_app.models import SiteSettings
 from shops.models import Offer, Shop
 from . import constants
 from .filters import ProductFilter
 from .forms import ReviewsForm
 from .models import Product, ProductImage
-from .services.catalog_services import get_ordering_fields, get_popular_tags, relative_url
+from .services.catalog_services import get_ordering_fields, get_popular_tags, relative_url, get_paginate_products_by
 from .services.product_services import (
     get_discount_for_product,
     invalidate_product_details_cache,
@@ -86,7 +85,7 @@ class CatalogView(FilterView):
 
     template_name = "products/catalog.jinja2"
     filterset_class = ProductFilter
-    paginate_by = SiteSettings.load().paginate_products_by
+    paginate_by = get_paginate_products_by()
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
