@@ -1,5 +1,6 @@
 """ Сервисы страницы каталога товаров """
-from django.core.exceptions import ObjectDoesNotExist
+
+from django.db.utils import ProgrammingError
 from django.db.models import Count
 from django.http import HttpRequest
 
@@ -40,6 +41,6 @@ def get_paginate_products_by() -> int:
     """Возвращает значение поля paginate_products_by если доступно, иначе значение по умолчанию"""
     try:
         res = SiteSettings.load().paginate_products_by
-    except ObjectDoesNotExist:
+    except ProgrammingError:
         res = PAGINATE_PRODUCTS_BY
     return res
