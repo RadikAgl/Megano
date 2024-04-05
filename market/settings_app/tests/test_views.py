@@ -13,13 +13,12 @@ class SettingsViewTestCase(TestCase):
     """
 
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpTestData(cls) -> None:
         """
         Настройка перед запуском тестов.
         """
-        super().setUpClass()
-        cls.user: User = User.objects.create_superuser(username="admin", email="admin@example.com", password="admin")
-        cls.client: Client = Client()
+        cls.user = User.objects.create_superuser(username="admin", email="admin@example.com", password="admin")
+        cls.client = Client()
 
     def test_settings_view(self) -> None:
         """
@@ -50,15 +49,12 @@ class ResetCacheViewTestCase(TestCase):
     """
 
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpTestData(cls) -> None:
         """
         Настройка перед запуском тестов.
         """
-        super().setUpClass()
-        cls.client: Client = Client()
-        cls.user: User = User.objects.create_superuser(
-            username="test_user", email="test@example.com", password="password"
-        )
+        cls.client = Client()
+        cls.user = User.objects.create_superuser(username="test_user", email="test@example.com", password="password")
         cls.client.force_login(cls.user)  # Используйте force_login для аутентификации пользователя
 
     def test_reset_cache_view(self) -> None:
@@ -71,4 +67,4 @@ class ResetCacheViewTestCase(TestCase):
 
         # Тестирование POST-запроса
         response = self.client.post(reverse("settings_app:reset_cache"))
-        self.assertEqual(response.status_code, 302)  # Ожидается перенаправ
+        self.assertEqual(response.status_code, 302)  # Ожидается перенаправление
