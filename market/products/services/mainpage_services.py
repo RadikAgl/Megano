@@ -7,6 +7,7 @@ from django.core.cache import cache
 from django.db.models import QuerySet, Count, Min, Sum, Avg
 
 from products.models import Product, Banner, Category
+from settings_app.models import SiteSettings
 from shops.models import Offer
 
 
@@ -97,8 +98,7 @@ class MainPageService:
 
         cache_key = "banners_cache"
         data = cache.get(cache_key)
-        # banners_expiration_time = SiteSettings.load().banners_expiration_time
-        banners_expiration_time = 100
+        banners_expiration_time = SiteSettings.load().banners_expiration_time
         if not data:
             data = Banner.objects.filter(actual=True).order_by("?")[:3]
             cache.set(cache_key, data, banners_expiration_time)

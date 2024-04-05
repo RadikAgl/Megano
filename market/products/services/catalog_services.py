@@ -1,10 +1,13 @@
 """ Сервисы страницы каталога товаров """
-
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.utils import ProgrammingError
 from django.db.models import Count
 from django.http import HttpRequest
 
 from products.filters import ProductFilter
 from products.models import Tag
+from settings_app.models import SiteSettings
+from settings_app.singleton_model import PAGINATE_PRODUCTS_BY
 
 
 def get_ordering_fields(filter_class: ProductFilter) -> list:
@@ -32,3 +35,16 @@ def relative_url(request: HttpRequest):
         if not param.startswith("page"):
             url_params += param
     return url.split("?")[0] + url_params, True
+
+
+def get_paginate_products_by() -> int:
+    """Возвращает значение поля paginate_products_by если доступно, иначе значение по умолчанию"""
+    try:
+        res = SiteSettings.load().paginate_products_by
+        if not res:
+            res = PAGINATE_PRODUCTS_BY
+    except ProgrammingError:
+        res = PAGINATE_PRODUCTS_BY
+    except ObjectDoesNotExist:
+        res = PAGINATE_PRODUCTS_BY
+    return res
