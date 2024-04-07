@@ -220,6 +220,19 @@ class UserHistoryView(LoginRequiredMixin, View):
         return render(request, self.template_name, {"viewed_products": viewed_products})
 
 
+class UserHistoryView(LoginRequiredMixin, View):
+    """Представление истории просмотров пользователя."""
+
+    template_name: str = "accounts/viewing_history.jinja2"
+
+    def get(self, request, *args, **kwargs) -> Any:
+        user = request.user
+        user_history = ViewHistory.objects.filter(user=user).order_by("-view_date")
+        viewed_products: List[Any] = [history.product for history in user_history]
+
+        return render(request, self.template_name, {"viewed_products": viewed_products})
+
+
 def logout_view(request):
     """Представление для выхода из учетной записи"""
     logout(request)
