@@ -7,7 +7,7 @@ from django.contrib.auth.views import (
     LoginView,
 )
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import  HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -216,19 +216,6 @@ class UserHistoryView(LoginRequiredMixin, View):
         user = request.user
         user_history = ViewHistory.objects.filter(user=user).order_by("-timestamp")
         viewed_products = [history.product for history in user_history]
-
-        return render(request, self.template_name, {"viewed_products": viewed_products})
-
-
-class UserHistoryView(LoginRequiredMixin, View):
-    """Представление истории просмотров пользователя."""
-
-    template_name: str = "accounts/viewing_history.jinja2"
-
-    def get(self, request, *args, **kwargs) -> Any:
-        user = request.user
-        user_history = ViewHistory.objects.filter(user=user).order_by("-view_date")
-        viewed_products: List[Any] = [history.product for history in user_history]
 
         return render(request, self.template_name, {"viewed_products": viewed_products})
 
