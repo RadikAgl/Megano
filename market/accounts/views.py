@@ -4,20 +4,22 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import (
-    PasswordResetView,
-    PasswordResetConfirmView,
     LoginView,
 )
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import  HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView
 from order.models import OrderStatus, Order
 from comparison.services import get_comparison_list
-from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm, ResetPasswordEmailForm
-from .models import ViewHistory, User
+from .forms import (RegistrationForm,
+                    LoginForm,
+                    CustomPasswordForm,
+                    ProfilePasswordForm,
+                    ResetPasswordEmailForm)
+from .models import ViewHistory
 from .service import mail
 import random
 
