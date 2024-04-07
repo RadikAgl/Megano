@@ -22,7 +22,7 @@ urlpatterns = [
     path("login/", MyLoginView.as_view(), name="login"),
     path("logout/", logout_view, name="logout"),
     path("reset_password/", PasswordReset.as_view(), name="password_reset"),
-    path("reset_password/done/", PasswordResetDoneView.as_view(), name="reset_password_done"),
+    path("reset_password/done/", PasswordResetDoneView.as_view(template_name='accounts/back_to_email.jinja2'), name="reset_password_done"),
     path("reset/<uidb64>/<token>/", UpdatePasswordView.as_view(), name="reset_password_confirm"),
     path(
         "reset/done/",

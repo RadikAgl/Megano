@@ -2,7 +2,6 @@ from typing import Any, List
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model, logout
-from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import (
     PasswordResetView,
@@ -10,16 +9,17 @@ from django.contrib.auth.views import (
     LoginView,
 )
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import FormView, TemplateView
-
 from order.models import OrderStatus, Order
-from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm
-from .models import ViewHistory
+from comparison.services import get_comparison_list
+from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm, ResetPasswordEmailForm
+from .models import ViewHistory, User
+from .service import mail
+import random
 
 
 class ProfileView(LoginRequiredMixin, FormView):
@@ -32,11 +32,11 @@ class ProfileView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        messages.error(self.request, _("успешно"))
+        messages.error(self.request, "успешно")
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, _("не верный ввод полей"))
+        messages.error(self.request, "не верный ввод полей")
         return super().form_invalid(form)
 
     def get_form_kwargs(self):
@@ -51,12 +51,15 @@ class AcountView(LoginRequiredMixin, TemplateView):
     template_name = "accounts/account.jinja2"
 
     def get_context_data(self, **kwargs):
+        comparison_list = get_comparison_list(self.request.user.id)
+        comparison_count = len(comparison_list)
         context = super().get_context_data(**kwargs)
         context["name"] = self.request.user
+        context["comparison_count"] = comparison_count
         try:
-            if self.request.session[f"{self.request.user.id}"]["id"]:
+            if self.request.session[f'{self.request.user.id}']['id']:
                 Order.objects.filter(user=self.request.user.id).update(status=OrderStatus.PAID)
-                context["paid"] = _("оплачено")
+                context['paid'] = 'оплачено'
                 return context
         except KeyError:
             return context
@@ -65,7 +68,7 @@ class AcountView(LoginRequiredMixin, TemplateView):
 class RegistrationView(FormView):
     """вью класс для регистрации"""
 
-    template_name = "accounts/register.jinja2"
+    template_name = "accounts/registr.jinja2"
     form_class = RegistrationForm
     success_url = reverse_lazy("user:main")
 
@@ -75,7 +78,7 @@ class RegistrationView(FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, _("не валидная форма или такой пользователь уже есть"))
+        messages.error(self.request, "не валидная форма или такой пользователь уже есть")
         return super().form_invalid(form)
 
 
@@ -92,11 +95,11 @@ class MyLoginView(LoginView):
             login(self.request, user)
             return super().form_valid(form)
         else:
-            messages.error(self.request, _("нет пользователя с таким Email или неверный пароль"))
+            messages.error(self.request, "нет пользователя с таким Email или неверный пароль")
             return super().form_invalid(form)
 
 
-class PasswordReset(LoginRequiredMixin, PasswordResetView):
+class PasswordReset(FormView):
     """
     Представление для сброса пароля. Отправляет электронное письмо с инструкциями
     по сбросу пароля на указанный электронный адрес.
@@ -109,8 +112,7 @@ class PasswordReset(LoginRequiredMixin, PasswordResetView):
     """
 
     template_name = "accounts/e-mail.jinja2"
-    email_template_name = "accounts/reset_password.jinja2"
-    form_class = PasswordResetForm
+    form_class = ResetPasswordEmailForm
     success_url = reverse_lazy("user:reset_password_done")
 
     def form_valid(self, form):
@@ -129,14 +131,22 @@ class PasswordReset(LoginRequiredMixin, PasswordResetView):
         """
         email = form.cleaned_data["email"]
         try:
-            get_user_model().objects.get(email=email)
+            email = get_user_model().objects.get(email=email)
+            random_numbers = [random.randint(0, 9) for _ in range(4)]
+            random_number = int(''.join(map(str, random_numbers)))
+            token_session = mail(email, random_number)
+            self.request.session[token_session] = {}
+            self.request.session[token_session] = {"check_number": random_number,
+                                                   "email": f'{email}',
+                                                   }
         except ObjectDoesNotExist:
-            messages.error(self.request, _("нет пользователя с таким Email"))
+            messages.error(self.request, "нет пользователя с таким Email")
             return self.form_invalid(form)
+
         return super().form_valid(form)
 
 
-class UpdatePasswordView(PasswordResetConfirmView):
+class UpdatePasswordView(FormView):
     """
     Представление для обновления пароля. Позволяет пользователю изменить свой пароль
     после успешного запроса на сброс.
@@ -146,24 +156,30 @@ class UpdatePasswordView(PasswordResetConfirmView):
         URL-адрес, на который перенаправляется пользователь после успешного
         обновления пароля.
     """
-
+    model = get_user_model()
     template_name = "accounts/password.jinja2"
     form_class = CustomPasswordForm
-    success_url = reverse_lazy("user:password_reset_complete")
+    success_url = reverse_lazy("user:login")
 
     def form_valid(self, form):
-        """
-        Обработчик вызывается при успешном вводе нового пароля.
-        Сохраняет новый пароль пользователя.
-
-        Parameters:
-        - form: Form
-            Форма с введенным новым паролем.
-
 
         """
-        form.save()
-        return super().form_valid(form)
+              Обработчик вызывается при успешном вводе нового пароля.
+              Сохраняет новый пароль пользователя.
+
+              Parameters:
+              - form: Form
+                  Форма с введенным новым паролем.
+
+
+              """
+        token = self.kwargs['token']
+        code = self.request.session[f"{token}"]['check_number']
+        if code == form.cleaned_data['code']:
+            form.save()
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def form_invalid(self, form):
         """
@@ -178,8 +194,28 @@ class UpdatePasswordView(PasswordResetConfirmView):
         - HttpResponseRedirect
             Перенаправляет пользователя на страницу с формой обновления пароля.
         """
-        messages.error(self.request, f"{form.errors}")
+        print(form.cleaned_data)
+        messages.error(self.request, 'пароли не совпадают или неверный код')
         return super().form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        token = self.kwargs['token']
+        user = get_user_model().objects.get(email=self.request.session[f"{token}"]['email'])
+        kwargs['user'] = user  # Передаем текущего пользователя в форму
+        kwargs['data'] = self.request.POST  # Передаем данные запроса в форму
+        return kwargs
+
+
+class UserHistoryView(LoginRequiredMixin, View):
+    template_name = "viewing_history.jinja2"
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        user_history = ViewHistory.objects.filter(user=user).order_by("-timestamp")
+        viewed_products = [history.product for history in user_history]
+
+        return render(request, self.template_name, {"viewed_products": viewed_products})
 
 
 class UserHistoryView(LoginRequiredMixin, View):
