@@ -9,7 +9,6 @@ from django.views import View
 from django.views.decorators.http import require_POST
 from django.utils.translation import gettext_lazy as _
 
-from accounts.group_mixins import BuyersRequiredMixin
 from products.models import Product
 from shops.models import Offer
 from .services import (
@@ -22,7 +21,7 @@ from .services import (
 
 
 @method_decorator(login_required, name="dispatch")
-class ComparisonView(BuyersRequiredMixin, View):
+class ComparisonView(View):
     def get(self, request) -> render:
         """Обработчик GET-запроса для страницы сравнения товаров."""
         comparison_list = get_comparison_list(request.user.id)
