@@ -5,8 +5,8 @@ from django.db.models import QuerySet, Count, Sum
 from django_filters import CharFilter
 from django_filters.filters import ModelMultipleChoiceFilter, ModelChoiceFilter
 
-from products.models import Tag, Category, Product
-from shops.models import Offer
+from ..products.models import Tag, Category, Product
+from ..shops.models import Offer
 
 
 class CustomOrderingFilter(django_filters.OrderingFilter):
@@ -66,6 +66,8 @@ class ProductFilter(django_filters.FilterSet):
     )
 
     class Meta:
+        """Метаданные класса ProductFilter"""
+
         model = Product
         fields = {"name": ["iexact", "icontains"]}
 

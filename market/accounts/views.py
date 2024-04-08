@@ -1,3 +1,19 @@
+"""
+Модуль, содержащий представления для работы с учетными записями пользователей.
+
+Модуль включает в себя следующие классы и функции:
+
+- ProfileView: вью для изменения пароля и email.
+- AcountView: вью для страницы пользователя.
+- RegistrationView: вью класс для регистрации новых пользователей.
+- MyLoginView: вью для аутентификации пользователей.
+- PasswordReset: представление для сброса пароля.
+- UpdatePasswordView: представление для обновления пароля.
+- UserHistoryView: представление истории просмотров пользователя.
+- logout_view: функция для выхода из учетной записи.
+
+"""
+
 from typing import Any, List
 
 from django.contrib import messages
@@ -17,7 +33,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
-from order.models import OrderStatus, Order
+from ..order.models import OrderStatus, Order
 from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm
 from .models import ViewHistory
 
@@ -80,6 +96,8 @@ class RegistrationView(FormView):
 
 
 class MyLoginView(LoginView):
+    """Представление для входа пользователя в систему."""
+
     template_name = "accounts/login.jinja2"
     form_class = LoginForm
     redirect_authenticated_user = True
@@ -187,7 +205,7 @@ class UserHistoryView(LoginRequiredMixin, View):
 
     template_name: str = "accounts/viewing_history.jinja2"
 
-    def get(self, request, *args, **kwargs) -> Any:
+    def get(self, request) -> Any:
         user = request.user
         user_history = ViewHistory.objects.filter(user=user).order_by("-view_date")
         viewed_products: List[Any] = [history.product for history in user_history]

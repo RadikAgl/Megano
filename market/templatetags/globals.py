@@ -2,7 +2,7 @@
 
 from django_jinja import library
 
-from products.models import Category, Product
+from ..products.models import Category, Product
 
 
 @library.global_function

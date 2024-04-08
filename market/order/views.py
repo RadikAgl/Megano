@@ -1,3 +1,8 @@
+"""
+Модуль представлений для оформления заказов.
+
+Содержит представления для оформления заказов, просмотра истории заказов и детальной информации о заказе.
+"""
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
@@ -6,12 +11,13 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
 
-from accounts.models import User
-from cart.models import Cart, ProductInCart
-from accounts.group_mixins import BuyersRequiredMixin
+from ..accounts.models import User
+from ..cart.models import Cart, ProductInCart
+from ..accounts.group_mixins import BuyersRequiredMixin
 from .forms import FirstStepForm, SecondStepForm, ThirdStepForm
 from .models import Order
 from .service import OrderService
+from .service import translate
 
 
 class FirstOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
@@ -96,8 +102,6 @@ class FourStepView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
         return HttpResponseRedirect(reverse("user:profile"))
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        from .service import translate
-
         context = super().get_context_data(**kwargs)
         cart = Cart.objects.get(user=self.request.user.id)
         delivery_type, pay_type = translate(self.request.session[f"{self.request.user.id}"]["delivery_type"])

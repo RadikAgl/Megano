@@ -1,9 +1,10 @@
+# pylint: disable=R0901
 """Представления приложения discounts"""
 
 from django.views.generic import ListView, DetailView
 
-from accounts.group_mixins import BuyersRequiredMixin
-from discounts.models import DiscountProduct, DiscountCart, DiscountSet
+from ..accounts.group_mixins import BuyersRequiredMixin
+from ..discounts.models import DiscountProduct, DiscountCart, DiscountSet
 
 
 class DiscountListView(BuyersRequiredMixin, ListView):

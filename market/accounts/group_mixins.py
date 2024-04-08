@@ -1,3 +1,11 @@
+"""
+Модуль, содержащий миксины для проверки принадлежности пользователей к определенным группам.
+
+Classes:
+    GroupRequiredMixin: Миксин, требующий принадлежности пользователя к определенным группам.
+    SellersRequiredMixin: Миксин, требующий принадлежности пользователя к группе "Sellers".
+    BuyersRequiredMixin: Миксин, требующий принадлежности пользователя к группе "Buyers".
+"""
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import Group
 

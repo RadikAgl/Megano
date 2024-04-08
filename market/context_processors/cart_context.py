@@ -1,6 +1,6 @@
 """Модуль с глобальным контекстом сайта"""
 
-from cart.cart import CartInstance
+from ..cart.cart import CartInstance
 
 
 def get_cart_cost(request):

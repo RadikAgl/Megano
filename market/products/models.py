@@ -16,6 +16,8 @@ class Banner(models.Model):
     link = models.URLField(verbose_name=_("ссылка"), unique=True, db_index=True)
 
     class Meta:
+        """Метаданные класса Banner"""
+
         verbose_name = _("Баннер")
         verbose_name_plural = _("Баннеры")
         app_label = "products"
@@ -37,6 +39,8 @@ class Category(models.Model):
         return self.product_set.exists()
 
     class Meta:
+        """Метаданные класса Category"""
+
         verbose_name = _("категория")
         verbose_name_plural = _("категорий")
 
@@ -50,6 +54,8 @@ class Tag(models.Model):
     name = models.CharField(max_length=100, verbose_name=_("тег"), unique=True)
 
     class Meta:
+        """Метаданные класса Tags"""
+
         verbose_name = _("тег")
         verbose_name_plural = _("теги")
 
@@ -70,6 +76,8 @@ class Product(models.Model):
     is_product_of_the_day = models.BooleanField(default=False, verbose_name=_("товар дня"))
 
     class Meta:
+        """Метаданные класса Product"""
+
         verbose_name = _("продукт")
         verbose_name_plural = _("продукты")
 
@@ -95,6 +103,8 @@ class Review(models.Model):
     rating = models.IntegerField()
 
     class Meta:
+        """Метаданные класса Review"""
+
         verbose_name = _("отзыв")
         verbose_name_plural = _("отзывы")
         unique_together = ("user", "product")
@@ -110,6 +120,8 @@ class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name=_("продукт"))
 
     class Meta:
+        """Метаданные класса ProductImage"""
+
         verbose_name = _("изображения")
         verbose_name_plural = _("изображение")
 

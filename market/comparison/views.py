@@ -1,3 +1,18 @@
+"""
+Модуль, содержащий представления и функции для работы с сравнением товаров.
+
+Этот модуль включает в себя представления для отображения страницы сравнения товаров,
+а также функции для добавления и удаления товаров из списка сравнения.
+
+Classes:
+    ComparisonView: Класс представления для страницы сравнения товаров.
+
+Functions:
+    add_to_comparison: Обработчик POST-запроса для добавления товара в сравнение.
+    remove_from_comparison_view: Обработчик POST-запроса для удаления товара из сравнения.
+    get_product_details: Получает детали продукта по его идентификатору.
+    comparison_count: Вычисляет количество товаров в списке сравнения для текущего пользователя.
+"""
 from typing import Union
 
 from django.contrib import messages
@@ -9,8 +24,8 @@ from django.views import View
 from django.views.decorators.http import require_POST
 from django.utils.translation import gettext_lazy as _
 
-from products.models import Product
-from shops.models import Offer
+from ..products.models import Product
+from ..shops.models import Offer
 from .services import (
     remove_from_comparison,
     add_to_comparison_service,
@@ -22,6 +37,12 @@ from .services import (
 
 @method_decorator(login_required, name="dispatch")
 class ComparisonView(View):
+    """
+    Представление для страницы сравнения товаров.
+
+    Позволяет пользователям просматривать и сравнивать товары.
+    """
+
     def get(self, request) -> render:
         """Обработчик GET-запроса для страницы сравнения товаров."""
         comparison_list = get_comparison_list(request.user.id)

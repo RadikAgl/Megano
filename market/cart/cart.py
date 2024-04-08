@@ -10,16 +10,16 @@ from django.db.models import Sum, F
 from django.http import HttpResponseNotFound
 from django.utils.translation import gettext_lazy as _
 
-from accounts.models import User
-from cart.models import ProductInCart, Cart
-from discounts.services import (
+from ..accounts.models import User
+from ..cart.models import ProductInCart, Cart
+from ..discounts.services import (
     calculate_product_price_with_discount,
     calculate_cart,
     calculate_set,
     calculate_products_discount_total_price,
 )
-from products.models import Product
-from shops.models import Offer
+from ..products.models import Product
+from ..shops.models import Offer
 
 
 class CartInstance:

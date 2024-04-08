@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from products.models import Product
+from ..products.models import Product
 
 
 class User(AbstractUser):
@@ -17,6 +17,10 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     class Meta:
+        """
+        Метаданные модели "Пользователь"
+        """
+
         app_label = "accounts"
         verbose_name = _("пользователь")
         verbose_name_plural = _("пользователи")
@@ -31,6 +35,8 @@ class ViewHistory(models.Model):
     view_count = models.IntegerField(default=0, verbose_name=_("количество просмотров"))
 
     class Meta:
+        """Метаданные модели "История просмотров" """
+
         verbose_name = _("история просмотров")
         verbose_name_plural = _("истории просмотров")
 

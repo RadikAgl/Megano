@@ -1,7 +1,13 @@
-"""Настройки URL приложения discounts"""
+# pylint: disable=C0103
+""" Модуль для определения URL-путей приложения discounts """
 from django.urls import path
 
-from discounts.views import DiscountListView, DiscountProductDetailView, DiscountCartDetailView, DiscountSetDetailView
+from ..discounts.views import (
+    DiscountListView,
+    DiscountProductDetailView,
+    DiscountCartDetailView,
+    DiscountSetDetailView,
+)
 
 app_name = "discounts"
 

@@ -1,6 +1,6 @@
 """ Представления приложения products """
 
-from typing import Any, Dict, Type
+from typing import Any, Dict
 
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Avg, Sum
@@ -14,14 +14,14 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, TemplateView
 from django_filters.views import FilterView
 
-from accounts.models import ViewHistory
-from cart.cart import CartInstance
-from cart.forms import CartAddProductCatalogForm, CartAddProductForm
-from comparison.services import get_comparison_list
-from products.services.mainpage_services import MainPageService
-from products.services.review_services import ReviewService
+from ..accounts.models import ViewHistory
+from ..cart.cart import CartInstance
+from ..cart.forms import CartAddProductCatalogForm, CartAddProductForm
+from ..comparison.services import get_comparison_list
+from ..products.services.mainpage_services import MainPageService
+from ..products.services.review_services import ReviewService
 
-from shops.models import Offer, Shop
+from ..shops.models import Offer, Shop
 from . import constants
 from .filters import ProductFilter
 from .forms import ReviewsForm
@@ -103,7 +103,7 @@ class CatalogView(FilterView):
             .annotate(remains=Sum("offer__remains"))
         ).exclude(avg_price=None)
 
-    def post(self, request: HttpRequest, **kwargs):
+    def post(self, request: HttpRequest):
         cart_form = CartAddProductCatalogForm(request.POST)
         if cart_form.is_valid():
             add_product_to_cart(request, cart_form)
@@ -131,7 +131,7 @@ def add_to_view_history(request, product: Product):
 
 
 @receiver([post_save, post_delete], sender=Product)
-def clear_product_detail_cache(sender: Type[Product], instance: Product, **kwargs) -> None:
+def clear_product_detail_cache(instance: Product) -> None:
     """Очистка кэша с характеристиками продукта"""
     invalidate_product_details_cache(instance.pk)
 

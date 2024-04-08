@@ -1,7 +1,15 @@
+"""
+Модуль для работы с сравнением продуктов.
+
+Этот модуль содержит функции и классы для управления сравнением продуктов,
+включая добавление и удаление продуктов из сравнения, получение списка
+продуктов в сравнении и проверку общих характеристик среди продуктов.
+
+"""
 import logging
 
-from comparison.models import Comparison
-from products.models import Product
+from ..comparison.models import Comparison
+from ..products.models import Product
 
 logger = logging.getLogger(__name__)
 
@@ -108,5 +116,7 @@ def check_common_details(products):
 
 
 class ComparisonService:
+    """Сервис для управления сравнениями продуктов."""
+
     def __init__(self):
         self.comparison_model = Comparison

@@ -1,10 +1,17 @@
+"""
+Модуль для импорта данных о продуктах и их связанных объектах в систему.
+
+Содержит функции для импорта продуктов, категорий, тегов и предложений магазина в систему из внешних источников.
+
+"""
 import logging
 import os
-import smtplib
-from _csv import reader
 from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+import smtplib
 from typing import List, Optional, Tuple
+from _csv import reader
+from email.mime.text import MIMEText
+
 
 from django.core.cache import cache
 from django.db import IntegrityError, transaction
@@ -12,10 +19,10 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from filelock import FileLock
 
-from accounts.models import User
-from products.models import Category, Product, Tag
-from settings_app.models import SiteSettings
-from shops.models import Offer, Shop
+from ..accounts.models import User
+from ..products.models import Category, Product, Tag
+from ..settings_app.models import SiteSettings
+from ..shops.models import Offer, Shop
 from .models import ImportLog, ImportLogProduct
 
 lock_key = "import_lock"
