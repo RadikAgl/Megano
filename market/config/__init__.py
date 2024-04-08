@@ -1,3 +1,3 @@
-from ..config.celery import celery_app as celery_app
+from market.config.celery import celery_app as celery_app
 
 __all__ = ("celery_app",)
