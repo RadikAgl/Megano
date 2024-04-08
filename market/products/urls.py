@@ -1,4 +1,5 @@
-""" Маршруты приложения products """
+# pylint: disable=C0103
+""" Модуль для определения URL-путей приложения products """
 
 from django.urls import path
 from .views import MainPageView, ProductDetailView, add_review, CatalogView

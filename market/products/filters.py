@@ -66,6 +66,8 @@ class ProductFilter(django_filters.FilterSet):
     )
 
     class Meta:
+        """Метаданные класса ProductFilter"""
+
         model = Product
         fields = {"name": ["iexact", "icontains"]}
 

@@ -1,3 +1,9 @@
+"""
+Модуль, содержащий форму для создания и редактирования настроек сайта.
+
+Этот модуль предоставляет форму `SiteSettingsForm`, которая используется
+для создания и изменения настроек сайта, используя соответствующую модель `SiteSettings`.
+"""
 from typing import Type
 
 from django import forms
@@ -14,6 +20,8 @@ class SiteSettingsForm(forms.ModelForm):
     """
 
     class Meta:
+        """Метакласс, определяющий свойства формы."""
+
         model: Type[SiteSettings] = SiteSettings  # Модель, связанная с формой
         fields: list[str] = [
             "docs_dir",

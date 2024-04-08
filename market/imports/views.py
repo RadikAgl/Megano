@@ -1,3 +1,16 @@
+"""
+Модуль, содержащий представления и утилиты для обработки импорта товаров.
+
+Этот модуль содержит представления для отображения страницы импорта,
+деталей импорта товаров и скачивания шаблона CSV-файла.
+
+Модуль также предоставляет утилиты для обработки импорта.
+
+Классы:
+    ImportPageView: Представление для отображения страницы импорта.
+    ImportDetailsView: Представление для отображения и обработки деталей импорта товаров.
+    DownloadCSVTemplateView: Представление для скачивания шаблона CSV-файла.
+"""
 import logging
 import os
 
@@ -51,7 +64,7 @@ class ImportDetailsView(LoginRequiredMixin, View):
         """
         return render(request, self.template_name)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         """
         Обработка POST-запроса, начало процесса импорта.
 
@@ -124,7 +137,7 @@ class DownloadCSVTemplateView(LoginRequiredMixin, View):
         get(request, *args, **kwargs): Обработка GET-запроса для скачивания файла.
     """
 
-    def get(self, request, *args, **kwargs):
+    def get(self):
         """
         Обработка GET-запроса для скачивания файла.
 

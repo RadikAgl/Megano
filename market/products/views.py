@@ -103,7 +103,7 @@ class CatalogView(FilterView):
             .annotate(remains=Sum("offer__remains"))
         ).exclude(avg_price=None)
 
-    def post(self, request: HttpRequest, **kwargs):
+    def post(self, request: HttpRequest):
         cart_form = CartAddProductCatalogForm(request.POST)
         if cart_form.is_valid():
             add_product_to_cart(request, cart_form)

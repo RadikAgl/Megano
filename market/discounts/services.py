@@ -5,7 +5,7 @@ from _decimal import Decimal
 
 from django.utils import timezone
 
-from discounts.models import DiscountCart, DiscountProduct, DiscountSet
+from .models import DiscountCart, DiscountProduct, DiscountSet
 from shops.models import Offer
 
 
