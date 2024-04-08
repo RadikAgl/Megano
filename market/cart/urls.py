@@ -3,7 +3,7 @@
 
 from django.urls import path
 
-from market.cart.views import CartView, cart_add, cart_remove
+from cart.views import CartView, cart_add, cart_remove
 
 app_name = "cart"
 

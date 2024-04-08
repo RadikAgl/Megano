@@ -4,10 +4,10 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
-from market.accounts.group_mixins import BuyersRequiredMixin
-from market.cart.cart import CartInstance
-from market.cart.forms import CartAddProductForm
-from market.shops.models import Offer
+from accounts.group_mixins import BuyersRequiredMixin
+from cart.cart import CartInstance
+from cart.forms import CartAddProductForm
+from shops.models import Offer
 
 
 class CartView(BuyersRequiredMixin, TemplateView):

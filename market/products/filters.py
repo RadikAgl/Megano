@@ -6,7 +6,7 @@ from django_filters import CharFilter
 from django_filters.filters import ModelMultipleChoiceFilter, ModelChoiceFilter
 
 from ..products.models import Tag, Category, Product
-from market.shops.models import Offer
+from shops.models import Offer
 
 
 class CustomOrderingFilter(django_filters.OrderingFilter):

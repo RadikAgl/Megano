@@ -7,8 +7,8 @@ from django.core.cache import cache
 from django.db.models import QuerySet, Count, Min, Sum, Avg
 
 from ...products.models import Product, Banner, Category
-from market.settings_app.models import SiteSettings
-from market.shops.models import Offer
+from settings_app.models import SiteSettings
+from shops.models import Offer
 
 
 class MainPageService:

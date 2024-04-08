@@ -33,7 +33,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
-from market.order.models import OrderStatus, Order
+from order.models import OrderStatus, Order
 from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm
 from .models import ViewHistory
 

@@ -6,7 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from market.products.models import Product
+from products.models import Product
 
 
 class DiscountBase(models.Model):

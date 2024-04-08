@@ -24,8 +24,8 @@ from django.views import View
 from django.views.decorators.http import require_POST
 from django.utils.translation import gettext_lazy as _
 
-from market.products.models import Product
-from market.shops.models import Offer
+from products.models import Product
+from shops.models import Offer
 from .services import (
     remove_from_comparison,
     add_to_comparison_service,

@@ -6,8 +6,8 @@ from django.http import HttpRequest
 
 from ...products.filters import ProductFilter
 from ...products.models import Tag
-from market.settings_app.models import SiteSettings
-from market.settings_app.singleton_model import PAGINATE_PRODUCTS_BY
+from settings_app.models import SiteSettings
+from settings_app.singleton_model import PAGINATE_PRODUCTS_BY
 
 
 def get_ordering_fields(filter_class: ProductFilter) -> list:

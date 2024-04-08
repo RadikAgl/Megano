@@ -24,7 +24,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import TemplateView
 
-from market.settings_app.models import SiteSettings
+from settings_app.models import SiteSettings
 from .common_utils import process_import_common
 from .models import ImportLog, ImportLogProduct
 from .tasks import async_import_task

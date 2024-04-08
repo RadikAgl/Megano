@@ -3,7 +3,7 @@
 
 from django.views.generic import ListView, DetailView
 
-from market.accounts.group_mixins import BuyersRequiredMixin
+from accounts.group_mixins import BuyersRequiredMixin
 from ..discounts.models import DiscountProduct, DiscountCart, DiscountSet
 
 
