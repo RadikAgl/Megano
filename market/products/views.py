@@ -1,6 +1,6 @@
 """ Представления приложения products """
 
-from typing import Any, Dict
+from typing import Any, Dict, Type
 
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Avg, Sum
@@ -131,7 +131,7 @@ def add_to_view_history(request, product: Product):
 
 
 @receiver([post_save, post_delete], sender=Product)
-def clear_product_detail_cache(instance: Product) -> None:
+def clear_product_detail_cache(sender: Type[Product], instance: Product, **kwargs) -> None:
     """Очистка кэша с характеристиками продукта"""
     invalidate_product_details_cache(instance.pk)
 
