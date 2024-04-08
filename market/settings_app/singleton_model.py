@@ -1,3 +1,6 @@
+"""
+Модуль содержит базовые классы и константы, используемые в приложении.
+"""
 from typing import Dict, Any
 
 from django.db import models
@@ -7,6 +10,8 @@ class SingletonModel(models.Model):
     """Базовая модель для реализации синглтона."""
 
     class Meta:
+        """Метаданные класса"""
+
         abstract: bool = True
 
     def save(self, *args: Any, **kwargs: Any) -> None:
@@ -16,7 +21,7 @@ class SingletonModel(models.Model):
         Удаляет все объекты класса, кроме текущего, перед сохранением.
         """
         self.__class__.objects.exclude(id=self.id).delete()
-        super(SingletonModel, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     @classmethod
     def load(cls) -> "SingletonModel":

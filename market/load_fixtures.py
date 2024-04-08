@@ -1,3 +1,10 @@
+"""
+Модуль для загрузки фикстур в Django.
+
+Этот модуль предоставляет функцию `load_all_fixtures`, которая ищет файлы JSON в каталоге 'fixtures' и загружает их
+с использованием команды управления 'loaddata'.
+
+"""
 import os
 from django.core.management import call_command
 from django import setup

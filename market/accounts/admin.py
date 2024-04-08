@@ -1,6 +1,30 @@
 """Настройки админ панели приложения accounts"""
 from django.contrib import admin
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
 from .models import User, ViewHistory
+
+
+class GroupMemberInline(admin.TabularInline):
+    """
+    Класс для табличного представеления участников группы в административном интерфейсе.
+    """
+
+    model = Group.user_set.through
+    verbose_name = "участник"
+    verbose_name_plural = "участники"
+
+
+class GroupAdmin(BaseGroupAdmin):
+    """
+    Административный класс для управления группами и их участниками.
+    """
+
+    inlines = (GroupMemberInline,)
+
+
+admin.site.unregister(Group)
+admin.site.register(Group, GroupAdmin)
 
 
 @admin.register(User)

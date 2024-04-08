@@ -1,3 +1,7 @@
+"""
+Модуль для хранения модели сравнения между товарами для конкретного пользователя.
+"""
+
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -18,6 +22,8 @@ class Comparison(models.Model):
     created_at = models.DateTimeField(verbose_name=_("дата создания"), editable=False)
 
     class Meta:
+        """Метаданные класса Comparison"""
+
         verbose_name = _("сравнения")
         verbose_name_plural = _("сравнение")
 

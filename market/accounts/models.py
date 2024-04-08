@@ -17,6 +17,10 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     class Meta:
+        """
+        Метаданные модели "Пользователь"
+        """
+
         app_label = "accounts"
         verbose_name = _("пользователь")
         verbose_name_plural = _("пользователи")
@@ -31,6 +35,8 @@ class ViewHistory(models.Model):
     view_count = models.IntegerField(default=0, verbose_name=_("количество просмотров"))
 
     class Meta:
+        """Метаданные модели "История просмотров" """
+
         verbose_name = _("история просмотров")
         verbose_name_plural = _("истории просмотров")
 

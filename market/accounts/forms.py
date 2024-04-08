@@ -1,3 +1,13 @@
+"""
+Модуль, содержащий различные формы для работы с пользователями.
+
+Содержит следующие формы:
+- RegistrationForm: Форма регистрации нового пользователя.
+- LoginForm: Форма для входа в аккаунт.
+- CustomPasswordForm: Форма изменения пароля.
+- ProfilePasswordForm: Форма для изменения пароля профиля пользователя.
+"""
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordChangeForm
@@ -32,11 +42,15 @@ class LoginForm(AuthenticationForm):
     email = forms.EmailField(required=True)
 
     class Meta:
+        """
+        Метаданные формы для работы с пользовательской моделью.
+        """
+
         model = get_user_model()
         fields = ["email", "password"]
 
     def __init__(self, *args, **kwargs):
-        super(LoginForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         del self.fields["username"]
 
 

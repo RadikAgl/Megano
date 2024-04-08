@@ -1,3 +1,9 @@
+"""
+Модуль для работы с логами импорта.
+
+Модуль содержит модели для записи логов импорта файлов и связей продуктов с этими логами.
+
+"""
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -37,6 +43,8 @@ class ImportLog(models.Model):
     )
 
     class Meta:
+        """Метаданные класса ImportLog"""
+
         verbose_name = _("лог импорта")
         verbose_name_plural = _("логи импорта")
 
@@ -63,5 +71,7 @@ class ImportLogProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name=_("продукт"))
 
     class Meta:
+        """Метаданные класса ImportLogProduct"""
+
         verbose_name = _("продукт в логе импорта")
         verbose_name_plural = _("продукты в логах импорта")

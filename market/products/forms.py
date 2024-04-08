@@ -10,6 +10,10 @@ class ReviewsForm(forms.ModelForm):
     """
 
     class Meta:
+        """
+        Метаданные класса ReviewForm
+        """
+
         model = Review
         fields = ("text", "rating")
         widgets = {

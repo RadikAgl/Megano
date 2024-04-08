@@ -1,3 +1,5 @@
+# pylint: disable=C0103
+""" Модуль для определения URL-путей приложения настройки settings_app """
 from django.urls import path
 
 from .views import ResetCacheView, SettingsView

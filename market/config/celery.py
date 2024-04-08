@@ -1,3 +1,11 @@
+"""
+Модуль для настройки и запуска Celery в приложении.
+
+Этот модуль содержит конфигурацию и настройки для Celery, включая расписание задач и
+автоматическое обнаружение задач.
+
+"""
+
 import os
 from celery import Celery
 from celery.schedules import crontab

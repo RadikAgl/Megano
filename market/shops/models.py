@@ -10,13 +10,7 @@ from django.utils.translation import gettext_lazy as _
 
 def shop_logo_directory_path(instance: "Shop", filename: str) -> str:
     """Функция, гененрирующая путь, по которому будет храниться логотип компании-продавца"""
-    return os.path.join(
-        settings.MEDIA_ROOT,
-        "shops/shop_{name}/{filename}".format(
-            name=instance.name,
-            filename=filename,
-        ),
-    )
+    return os.path.join(settings.MEDIA_ROOT, f"shops/shop_{instance.name}/{filename}")
 
 
 class Shop(models.Model):
@@ -41,6 +35,8 @@ class Shop(models.Model):
     )
 
     class Meta:
+        """Метаинформация о модели 'Магазин'."""
+
         verbose_name = _("продавец")
         verbose_name_plural = _("продавцы")
 
@@ -57,6 +53,8 @@ class Offer(models.Model):
     remains = models.IntegerField(default=0, verbose_name=_("осталось"))
 
     class Meta:
+        """Метаинформация о модели 'Предложение'."""
+
         constraints = [models.UniqueConstraint("shop", "product", name="unique_product_in_shop")]
         verbose_name = _("предложения")
         verbose_name_plural = _("предложение")

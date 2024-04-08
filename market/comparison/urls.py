@@ -1,5 +1,5 @@
-""" Маршруты приложения comparison """
-
+# pylint: disable=C0103
+""" Модуль для определения URL-путей приложения comparison """
 from django.urls import path
 
 from comparison.views import ComparisonView, add_to_comparison, remove_from_comparison_view
