@@ -7,7 +7,7 @@
 
 from django.db.models import QuerySet
 from ..order.models import Order
-from ..cart.cart import CartInstance
+from market.cart.cart import CartInstance
 
 
 def translate(type_delivery):

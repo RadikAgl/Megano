@@ -6,7 +6,7 @@ from _decimal import Decimal
 from django.utils import timezone
 
 from ..discounts.models import DiscountCart, DiscountProduct, DiscountSet
-from ..shops.models import Offer
+from market.shops.models import Offer
 
 
 def calculate_set(offers: list[Offer]) -> Tuple[Decimal | int, int]:

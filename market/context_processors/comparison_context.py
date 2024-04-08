@@ -3,7 +3,7 @@
 
 Этот модуль содержит функцию для управления сравнениями товаров.
 """
-from ..comparison.views import ComparisonView
+from market.comparison.views import ComparisonView
 
 
 def comparison_count(request):

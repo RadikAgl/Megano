@@ -14,14 +14,14 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, TemplateView
 from django_filters.views import FilterView
 
-from ..accounts.models import ViewHistory
-from ..cart.cart import CartInstance
-from ..cart.forms import CartAddProductCatalogForm, CartAddProductForm
-from ..comparison.services import get_comparison_list
+from market.accounts.models import ViewHistory
+from market.cart.cart import CartInstance
+from market.cart.forms import CartAddProductCatalogForm, CartAddProductForm
+from market.comparison.services import get_comparison_list
 from ..products.services.mainpage_services import MainPageService
 from ..products.services.review_services import ReviewService
 
-from ..shops.models import Offer, Shop
+from market.shops.models import Offer, Shop
 from . import constants
 from .filters import ProductFilter
 from .forms import ReviewsForm

@@ -6,8 +6,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from ..accounts.models import User
-from ..products.models import Product
+from market.accounts.models import User
+from market.products.models import Product
 
 
 class Comparison(models.Model):

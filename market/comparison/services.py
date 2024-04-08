@@ -8,8 +8,8 @@
 """
 import logging
 
-from ..comparison.models import Comparison
-from ..products.models import Product
+from market.comparison.models import Comparison
+from market.products.models import Product
 
 logger = logging.getLogger(__name__)
 

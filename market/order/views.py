@@ -11,9 +11,9 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView
 
-from ..accounts.models import User
-from ..cart.models import Cart, ProductInCart
-from ..accounts.group_mixins import BuyersRequiredMixin
+from market.accounts.models import User
+from market.cart.models import Cart, ProductInCart
+from market.accounts.group_mixins import BuyersRequiredMixin
 from .forms import FirstStepForm, SecondStepForm, ThirdStepForm
 from .models import Order
 from .service import OrderService
