@@ -4,7 +4,7 @@ from django.db.models import QuerySet
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.http import HttpRequest
-from ...products.models import Review, Product
+from products.models import Review, Product
 
 
 User = get_user_model()

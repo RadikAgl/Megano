@@ -5,7 +5,7 @@ from django.db.models import QuerySet, Count, Sum
 from django_filters import CharFilter
 from django_filters.filters import ModelMultipleChoiceFilter, ModelChoiceFilter
 
-from ..products.models import Tag, Category, Product
+from products.models import Tag, Category, Product
 from shops.models import Offer
 
 

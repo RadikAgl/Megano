@@ -11,7 +11,7 @@ from django.http import HttpResponseNotFound
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import User
-from ..cart.models import ProductInCart, Cart
+from cart.models import ProductInCart, Cart
 from discounts.services import (
     calculate_product_price_with_discount,
     calculate_cart,

@@ -3,7 +3,7 @@ import random
 
 from celery import shared_task
 
-from ..products.models import Product
+from products.models import Product
 
 
 @shared_task(name="Установить товар дня")

@@ -3,7 +3,7 @@ from decimal import Decimal
 from typing import Optional
 from django.core.cache import cache
 
-from ...products.models import Product
+from products.models import Product
 
 
 def gen_cache_key(product_id: int) -> str:
