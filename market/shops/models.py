@@ -2,10 +2,12 @@
 import os
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
+
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from accounts.models import User
 
 
 def shop_logo_directory_path(instance: "Shop", filename: str) -> str:
@@ -25,7 +27,7 @@ class Shop(models.Model):
         related_name="shops",
         verbose_name=_("товары в магазине"),
     )
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, verbose_name=_("пользователь"))
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=_("пользователь"))
     logo = models.ImageField(
         upload_to=shop_logo_directory_path,
         validators=[FileExtensionValidator(allowed_extensions=["jpg", "jpeg", "png"])],

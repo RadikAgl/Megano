@@ -16,8 +16,14 @@ class Comparison(models.Model):
     """
 
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name="comparison", verbose_name=_("пользователь")
+        User,
+        on_delete=models.CASCADE,
+        related_name="comparison",
+        verbose_name=_("пользователь"),
+        null=True,
+        blank=True,
     )
+
     products = models.ManyToManyField(Product, verbose_name=_("товары"))
     created_at = models.DateTimeField(verbose_name=_("дата создания"), editable=False)
 

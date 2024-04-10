@@ -34,6 +34,7 @@ urlpatterns += i18n_patterns(
     path("", include(("products.urls", "products"), namespace="product")),
     path("", include(("imports.urls", "imports"), namespace="imports")),
     path("comparison/", include(("comparison.urls", "comparison"), namespace="comparison")),
+    path("shop/", include(("shops.urls", "shops"), namespace="shop")),
 )
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

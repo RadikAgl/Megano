@@ -12,6 +12,12 @@ from products.models import Product
 
 
 class ImportStatus(models.TextChoices):
+    """
+    Статус выполнения импорта.
+
+    Определяет возможные статусы выполнения импорта.
+    """
+
     IN_PROGRESS = "in_progress", _("В процессе выполнения")
     COMPLETED = "completed", _("Выполнен")
     ERROR = "error", _("Завершён с ошибкой")
