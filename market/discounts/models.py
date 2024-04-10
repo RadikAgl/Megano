@@ -65,6 +65,7 @@ class DiscountProduct(DiscountPercentageBase):
 
         verbose_name = _("скидка на товар")
         verbose_name_plural = _("скидки на товары")
+        ordering = ["-weight"]
 
 
 class DiscountSet(DiscountBase):

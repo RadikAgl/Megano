@@ -70,6 +70,7 @@
                         </div>
                         <div class="Sort-variants">
                             {% with order_by=request.GET.get('o') %}
+                                {% set ordering_fields = filter.get_ordering_fields() %}
                                 {% for parameter, name in ordering_fields %}
                                     {% if not order_by or parameter != order_by and parameter != order_by[1:] %}
                                         <a class="Sort-sortBy"
