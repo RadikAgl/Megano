@@ -1,5 +1,12 @@
+"""
+Модуль для работы с заказами.
+
+Модуль содержит сервис для работы с заказами и функцию для перевода типа доставки.
+
+"""
+
 from django.db.models import QuerySet
-from order.models import Order
+from .models import Order
 from cart.cart import CartInstance
 
 

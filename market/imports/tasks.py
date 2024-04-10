@@ -1,3 +1,7 @@
+"""
+Модуль для обработки задач импорта.
+"""
+
 from typing import Optional
 
 from celery import shared_task
@@ -29,7 +33,7 @@ def process_import(file_name: str, user_id: int) -> None:
                 "В процессе выполнения",
             )
             process_import_common(file_name, user_id, import_log)
-    except IntegrityError or Exception as e:
+    except (IntegrityError, Exception) as e:
         create_import_log(file_name, user_id, "Завершён с ошибкой", error_details=str(e))
         raise
 

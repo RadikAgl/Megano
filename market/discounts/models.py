@@ -25,6 +25,8 @@ class DiscountBase(models.Model):
     )
 
     class Meta:
+        """Метаданные класса DiscountBase"""
+
         abstract = True
 
     def is_relevant(self):
@@ -39,6 +41,8 @@ class DiscountPercentageBase(DiscountBase):
     percentage = models.PositiveIntegerField(default=0, verbose_name=_("процент скидки"))
 
     class Meta:
+        """Метаданные класса DiscountPercentageBase"""
+
         abstract = True
 
     def save(self, *args, **kwargs):
@@ -57,6 +61,8 @@ class DiscountProduct(DiscountPercentageBase):
     products = models.ManyToManyField(Product, related_name="discount_products", verbose_name=_("продукты"))
 
     class Meta:
+        """Метаданные класса DiscountProduct"""
+
         verbose_name = _("скидка на товар")
         verbose_name_plural = _("скидки на товары")
 
@@ -74,6 +80,8 @@ class DiscountSet(DiscountBase):
     )
 
     class Meta:
+        """Метаданные класса DiscountSet"""
+
         verbose_name = _("скидка на набор товаров")
         verbose_name_plural = _("скидки на наборы товаров")
 
@@ -90,5 +98,7 @@ class DiscountCart(DiscountPercentageBase):
     )
 
     class Meta:
+        """Метаданные класса DiscountCart"""
+
         verbose_name = _("скидка на стоимость корзины")
         verbose_name_plural = _("скидки на стоимость корзины")

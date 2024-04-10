@@ -1,10 +1,17 @@
+"""
+Модуль для импорта данных о продуктах и их связанных объектах в систему.
+
+Содержит функции для импорта продуктов, категорий, тегов и предложений магазина в систему из внешних источников.
+
+"""
 import logging
 import os
-import smtplib
-from _csv import reader
 from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+import smtplib
 from typing import List, Optional, Tuple
+from _csv import reader
+from email.mime.text import MIMEText
+
 
 from django.core.cache import cache
 from django.db import IntegrityError, transaction
@@ -18,8 +25,8 @@ from settings_app.models import SiteSettings
 from shops.models import Offer, Shop
 from .models import ImportLog, ImportLogProduct
 
-lock_key = "import_lock"
-lock_path = "import_lock.lock"
+LOCK_KEY = "import_lock"
+LOCK_PATH = "import_lock.lock"
 logging.basicConfig(filename="email_errors.log", level=logging.ERROR)
 
 
@@ -27,18 +34,18 @@ def acquire_lock():
     """
     Получение файлового замка для предотвращения параллельного импорта.
     """
-    lock = FileLock(lock_path)
+    lock = FileLock(LOCK_PATH)
     with lock:
-        cache.set(lock_key, "locked")
+        cache.set(LOCK_KEY, "locked")
 
 
 def release_lock():
     """
     Освобождение файлового замка после завершения импорта.
     """
-    lock = FileLock(lock_path)
+    lock = FileLock(LOCK_PATH)
     with lock:
-        cache.delete(lock_key)
+        cache.delete(LOCK_KEY)
 
 
 def create_or_update_category(name: str, parent_name: str = None, parent_id: int = None) -> Tuple[Category, bool]:
@@ -377,7 +384,7 @@ def log_and_notify_error(
         subject = _("Статус импорта от {email}").format(email=user.email)
 
         body = (
-            _("Импорт файла {file_name} завершён с ошибкой.\n")
+            _("Импорт файла {file_name} завершён с ошибкой.\n").format(file_name=file_name)
             + _("Загружено пользователем: {username} ({email}).\n").format(username=user.username, email=user.email)
             + _("Всего товаров: {total_products}\n").format(total_products=total_products)
             + _("Успешных импортов: {successful_imports}\n").format(successful_imports=successful_imports)
@@ -389,6 +396,8 @@ def log_and_notify_error(
     except Exception as e:
         logging.error("An error occurred while logging and sending email:", exc_info=True)
         return str(e)
+
+    return None
 
 
 def notify_admin_about_import_success(
@@ -535,7 +544,7 @@ def handle_import_log_status(import_log, successful_imports, failed_imports):
     import_log.save()
 
 
-def handle_destination_path(file_name, content, import_log, successful_imports_dir, failed_imports_dir):
+def handle_destination_path(content, import_log, successful_imports_dir, failed_imports_dir):
     """
     Обработка пути назначения для успешного и неудачного импорта.
 

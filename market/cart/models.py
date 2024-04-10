@@ -14,6 +14,8 @@ class Cart(models.Model):
     is_active = models.BooleanField(default=True, verbose_name=_("активный"))
 
     class Meta:
+        """Метаданные класса Cart"""
+
         verbose_name = _("корзина")
         verbose_name_plural = _("корзины")
 
@@ -30,6 +32,8 @@ class ProductInCart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("дата создания"))
 
     class Meta:
+        """Метаданные класса ProductInCart"""
+
         verbose_name = _("товар в корзине")
         verbose_name_plural = _("товары в корзине")
         ordering = ("-created_at",)

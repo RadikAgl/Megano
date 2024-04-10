@@ -1,3 +1,7 @@
+"""
+Модуль для представлений настроек сайта.
+"""
+
 from typing import Any, Dict
 
 from django.contrib import messages
@@ -28,7 +32,7 @@ class SettingsView(TemplateView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         """Получает контекст данных для шаблона."""
-        site_settings, created = SiteSettings.objects.get_or_create()
+        site_settings, _ = SiteSettings.objects.get_or_create()
         form = SiteSettingsForm(instance=site_settings)
 
         return {
@@ -37,17 +41,17 @@ class SettingsView(TemplateView):
             "app_label": "settings_app",
         }
 
-    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+    def post(self, request: HttpRequest) -> HttpResponse:
         """Обрабатывает POST-запрос для сохранения настроек."""
-        site_settings, created = SiteSettings.objects.get_or_create()
+        site_settings, _ = SiteSettings.objects.get_or_create()
 
         form = SiteSettingsForm(request.POST, instance=site_settings)
         if form.is_valid():
             form.save()
             messages.success(request, _("Настройки успешно обновлены"))
             return redirect(reverse("admin:index"))
-        else:
-            messages.error(request, _("Ошибка при обновлении настроек. Пожалуйста, исправьте ошибки."))
+
+        messages.error(request, _("Ошибка при обновлении настроек. Пожалуйста, исправьте ошибки."))
         return self.render_to_response(self.get_context_data(form=form))
 
 

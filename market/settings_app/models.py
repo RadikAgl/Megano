@@ -1,3 +1,10 @@
+"""
+Модуль для работы с настройками сайта.
+
+Этот модуль содержит классы и функции для работы с настройками сайта,
+включая модель `SiteSettings` для хранения основных настроек сайта.
+"""
+
 import os
 from typing import Dict, Any
 
@@ -100,5 +107,9 @@ class SiteSettings(SingletonModel):
             return reverse("settings_app:sitesettings_add")
 
     class Meta:
+        """
+        Метаданные класса SiteSettings
+        """
+
         verbose_name = _("настройки сайта")
         verbose_name_plural = _("настройки сайта")

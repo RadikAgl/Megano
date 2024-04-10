@@ -1,13 +1,13 @@
+"""Представления приложения comparison"""
 from typing import Union
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
-from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.decorators.http import require_POST
-from django.utils.translation import gettext_lazy as _
+
 from products.models import Product
 from shops.models import Offer
 from .services import (
@@ -19,8 +19,13 @@ from .services import (
 )
 
 
-@method_decorator(login_required, name="dispatch")
 class ComparisonView(View):
+    """
+    Представление для страницы сравнения товаров.
+
+    Позволяет пользователям просматривать и сравнивать товары.
+    """
+
     def get(self, request) -> render:
         """Обработчик GET-запроса для страницы сравнения товаров."""
         comparison_list = get_comparison_list(request.user.id)
@@ -65,57 +70,10 @@ class ComparisonView(View):
         return render(request, "comparison/comparison.jinja2", context)
 
     @staticmethod
-    def comparison_count(request):
-        """Calculate comparison count."""
-        if request.user.is_authenticated:
-            comparison_list = get_comparison_list(request.user.id)
-            return len(comparison_list)
-        else:
-            return 0
-
-    @require_POST
-    @login_required
-    def add_to_comparison(request, product_id: str) -> HttpResponseRedirect:
-        """Обработчик POST-запроса для добавления товара в сравнение."""
-        added: bool
-        created: bool
-        added, created = add_to_comparison_service(request.user, product_id)
-        if added:
-            if created:
-                messages.success(request, _("Товар успешно добавлен в сравнение"))
-            else:
-                messages.info(request, _("Товар уже присутствует в сравнении"))
-        else:
-            max_products = _("Не удалось добавить товар в сравнение. Максимум 4 товара разрешены.")
-            messages.error(request, max_products)
-
-        return redirect("products:product-details", pk=product_id)
-
-    @require_POST
-    def remove_from_comparison_view(request) -> Union[HttpResponseRedirect, HttpResponse]:
-        """Обработчик POST-запроса для удаления товара из сравнения."""
-        if "product_id" in request.POST:
-            product_id: str = request.POST["product_id"]
-            success: bool = remove_from_comparison(request.user, product_id)
-            if success:
-                messages.success(request, _("Товар успешно удален из сравнения"))
-                return redirect("comparison:comparison")
-            else:
-                messages.error(request, _("Не удалось удалить товар из сравнения"))
-                return render(
-                    request,
-                    "comparison/comparison.jinja2",
-                    {"error_message": _("Не удалось удалить товар из сравнения")},
-                )
-        else:
-            messages.error(request, _("Неверный запрос. Отсутствует product_id."))
-            return render(
-                request,
-                "comparison/comparison.jinja2",
-                {"error_message": _("Неверный запрос. Отсутствует product_id.")},
-            )
-
-        return redirect("comparison:comparison")
+    def comparison_count(request: HttpRequest) -> int:
+        """Рассчитывает количество сравнений."""
+        comparison_list = get_comparison_list(request.user.id)
+        return len(comparison_list)
 
     @staticmethod
     def get_product_details(product_id: str) -> Union[str, None]:
@@ -128,19 +86,22 @@ class ComparisonView(View):
 
 
 @require_POST
-@login_required
 def add_to_comparison(request, product_id: str) -> HttpResponseRedirect:
     """Обработчик POST-запроса для добавления товара в сравнение."""
+    user = request.user if request.user.is_authenticated else None
+
     added: bool
     created: bool
-    added, created = add_to_comparison_service(request.user, product_id)
+    added, created = add_to_comparison_service(user, product_id)
+
     if added:
         if created:
             messages.success(request, _("Товар успешно добавлен в сравнение"))
         else:
-            messages.success(request, _("Товар уже присутствует в сравнении"))
+            messages.info(request, _("Товар уже присутствует в сравнении"))
     else:
-        messages.error(request, _("Не удалось добавить товар в сравнение. Максимум 4 товара разрешены."))
+        max_products = _("Не удалось добавить товар в сравнение. Максимум 4 товара разрешены.")
+        messages.error(request, max_products)
 
     return redirect("products:product-details", pk=product_id)
 
@@ -149,11 +110,15 @@ def add_to_comparison(request, product_id: str) -> HttpResponseRedirect:
 def remove_from_comparison_view(request) -> Union[HttpResponseRedirect, HttpResponse]:
     """Обработчик POST-запроса для удаления товара из сравнения."""
 
-    product_id: str = request.POST["product_id"]
-    success: bool = remove_from_comparison(request.user, product_id)
-    if success:
-        return redirect("comparison:comparison")
+    user = request.user if request.user.is_authenticated else None
+    if "product_id" in request.POST:
+        product_id: str = request.POST["product_id"]
+        success: bool = remove_from_comparison(user, product_id)
+        if success:
+            messages.success(request, _("Товар успешно удален из сравнения"))
+        else:
+            messages.error(request, _("Не удалось удалить товар из сравнения"))
     else:
-        messages.success(request, _("Не удалось удалить товар из сравнения"))
+        messages.error(request, _("Неверный запрос. Отсутствует product_id."))
 
     return redirect("comparison:comparison")

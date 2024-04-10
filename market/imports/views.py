@@ -1,3 +1,16 @@
+"""
+Модуль, содержащий представления и утилиты для обработки импорта товаров.
+
+Этот модуль содержит представления для отображения страницы импорта,
+деталей импорта товаров и скачивания шаблона CSV-файла.
+
+Модуль также предоставляет утилиты для обработки импорта.
+
+Классы:
+    ImportPageView: Представление для отображения страницы импорта.
+    ImportDetailsView: Представление для отображения и обработки деталей импорта товаров.
+    DownloadCSVTemplateView: Представление для скачивания шаблона CSV-файла.
+"""
 import logging
 import os
 
@@ -31,7 +44,8 @@ class ImportPageView(LoginRequiredMixin, TemplateView):
         Получение контекстных данных для шаблона страницы импорта.
         """
         context = super().get_context_data(**kwargs)
-        context["import_logs"] = ImportLog.objects.all().order_by("-timestamp")
+        current_user = self.request.user
+        context["import_logs"] = ImportLog.objects.filter(user=current_user).order_by("-timestamp")
         return context
 
 
@@ -149,5 +163,5 @@ class DownloadCSVTemplateView(LoginRequiredMixin, View):
                 response["Content-Disposition"] = f'attachment; filename="{file_name}"'
             return response
         except Exception as e:
-            logging.error(f"Error opening file: {str(e)}")
+            logging.error("Error opening file: %s", str(e))
             return HttpResponse(_("Ошибка при открытии файла."))

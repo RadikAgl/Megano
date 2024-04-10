@@ -1,12 +1,12 @@
 """Сервисы приложения discounts"""
 
-from typing import Tuple
 from _decimal import Decimal
+from typing import Tuple
 
 from django.utils import timezone
 
-from discounts.models import DiscountCart, DiscountProduct, DiscountSet
 from shops.models import Offer
+from .models import DiscountCart, DiscountProduct, DiscountSet
 
 
 def calculate_set(offers: list[Offer]) -> Tuple[Decimal | int, int]:

@@ -1,3 +1,11 @@
+"""
+Модуль для работы со сравнением продуктов.
+
+Этот модуль содержит функции и классы для управления сравнением продуктов,
+включая добавление и удаление продуктов из сравнения, получение списка
+продуктов в сравнении и проверку общих характеристик среди продуктов.
+
+"""
 import logging
 
 from comparison.models import Comparison
@@ -19,18 +27,18 @@ def add_to_comparison_service(user, product_id):
     comparison, created = Comparison.objects.get_or_create(user=user)
 
     if created:
-        logger.info(f"Comparison created for user {user}")
+        logger.info("Comparison created for user %s", user)
 
     if comparison.products.count() < MAX_PRODUCTS_FOR_COMPARISON:
         if product_id not in comparison.products.values_list("id", flat=True):
             product = Product.objects.filter(id=product_id).first()
             if product:
                 comparison.products.add(product)
-                logger.info(f"Product {product} added to comparison for user {user}")
+                logger.info("Product %s added to comparison for user %s", product, user)
                 return True, created
     else:
         logger.warning(
-            f"Failed to add product {product_id} to comparison for user {user}. Maximum number of products reached."
+            "Failed to add product %s to comparison for user %s. Maximum number of products reached.", product_id, user
         )
 
     return False, created
@@ -52,7 +60,7 @@ def remove_from_comparison(user, product_id):
 
         return True
     except Product.DoesNotExist:
-        logger.error(f"Product with ID {product_id} not found for user {user}")
+        logger.error("Product with ID %s not found for user %s", product_id, user)
         return False
 
 
@@ -67,7 +75,7 @@ def get_comparison_list(user_id):
         comparison = Comparison.objects.get(user_id=user_id)
         return comparison.products.all()
     except Comparison.DoesNotExist:
-        logger.warning(f"No comparison found for user {user_id}")
+        logger.warning("No comparison found for user %s", user_id)
         return []
 
 
@@ -108,5 +116,7 @@ def check_common_details(products):
 
 
 class ComparisonService:
+    """Сервис для управления сравнениями продуктов."""
+
     def __init__(self):
         self.comparison_model = Comparison

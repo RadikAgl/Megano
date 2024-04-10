@@ -1,3 +1,6 @@
+# pylint: disable=C0103
+""" Модуль для определения URL-путей приложения accounts """
+
 from django.urls import path
 from django.contrib.auth.views import (
     PasswordResetDoneView,

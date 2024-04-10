@@ -1,3 +1,9 @@
+"""
+Модуль для настройки административного интерфейса Django.
+
+Этот модуль содержит настройки административных интерфейсов для моделей `ImportLog` и `ImportLogProduct`.
+"""
+
 from django.contrib import admin
 
 from .models import ImportLog, ImportLogProduct

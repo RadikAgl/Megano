@@ -1,3 +1,6 @@
+# pylint: disable=C0103
+""" Модуль для определения URL-путей приложения orders """
+
 from django.urls import path
 from .views import (
     FirstOrderView,
