@@ -17,8 +17,6 @@ def mail(recipient_email, random_number):
     # Sender and recipient email addresses
     sender_email = 'kudakaevnikita@yandex.ru'
     recipient_email = f'{recipient_email}'
-    # Получаем модель пользователя
-
 
     # Пользователь, для которого нужно сгенерировать токен
     user = get_user_model().objects.get(email=recipient_email)
@@ -29,11 +27,12 @@ def mail(recipient_email, random_number):
     # Email content
     subject = 'shop Megano'
 
-    body = html_content = f"""
+    body = f"""
 <html>
 <head></head>
 <body>
-    <p>Привет: vazaxac@gmail.com, если вы хотите изменить пароль, <a href={'http://127.0.0.1:8000' + reset_url} title='сброс'>нажмите тут</a>. ваш код {random_number}</p>
+    <p>Привет: vazaxac@gmail.com, если вы хотите изменить пароль, <a href={'http://127.0.0.1:8000' + reset_url}
+     title='сброс'>нажмите тут</a>. ваш код {random_number}</p>
 </body>
 </html>
 """

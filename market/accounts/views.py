@@ -7,8 +7,8 @@ from django.contrib.auth.views import (
     LoginView,
 )
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView
@@ -70,7 +70,7 @@ class AcountView(LoginRequiredMixin, TemplateView):
 class RegistrationView(FormView):
     """вью класс для регистрации"""
 
-    template_name = "accounts/registr.jinja2"
+    template_name = "accounts/register.jinja2"
     form_class = RegistrationForm
     success_url = reverse_lazy("user:main")
 
@@ -162,6 +162,15 @@ class UpdatePasswordView(FormView):
     template_name = "accounts/password.jinja2"
     form_class = CustomPasswordForm
     success_url = reverse_lazy("user:login")
+
+    def dispatch(self, request, *args, **kwargs):
+        token = kwargs.get('token')  # Получаем токен из kwargs
+        session_data = request.session.get(token)
+        if not session_data:
+            raise Http404()
+        email = session_data.get('email')
+        get_object_or_404(get_user_model(), email=email)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
 
