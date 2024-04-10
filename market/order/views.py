@@ -130,8 +130,6 @@ class FourStepView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
                 return redirect(confirmation_url)
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        from .service import translate
-
         context = super().get_context_data(**kwargs)
         cart = Cart.objects.get(user=self.request.user.id)
         delivery_type, pay_type = translate(self.request.session[f"{self.request.user.id}"]["delivery_type"])
