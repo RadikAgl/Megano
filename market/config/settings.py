@@ -60,7 +60,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -95,8 +94,6 @@ jinja_env.add_extension("jinja2.ext.debug")
 class DjangoTranslationExtension(Extension):
     def __init__(self, environment):
         super(DjangoTranslationExtension, self).__init__(environment)
-
-        # Add the '_' alias for gettext function
         environment.globals["_"] = gettext
 
 
