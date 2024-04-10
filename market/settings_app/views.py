@@ -32,7 +32,7 @@ class SettingsView(TemplateView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         """Получает контекст данных для шаблона."""
-        site_settings, _ = SiteSettings.objects.get_or_create()
+        site_settings, created = SiteSettings.objects.get_or_create()
         form = SiteSettingsForm(instance=site_settings)
 
         return {
@@ -41,9 +41,9 @@ class SettingsView(TemplateView):
             "app_label": "settings_app",
         }
 
-    def post(self, request: HttpRequest) -> HttpResponse:
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """Обрабатывает POST-запрос для сохранения настроек."""
-        site_settings, _ = SiteSettings.objects.get_or_create()
+        site_settings, created = SiteSettings.objects.get_or_create()
 
         form = SiteSettingsForm(request.POST, instance=site_settings)
         if form.is_valid():
