@@ -44,7 +44,8 @@ class ImportPageView(LoginRequiredMixin, TemplateView):
         Получение контекстных данных для шаблона страницы импорта.
         """
         context = super().get_context_data(**kwargs)
-        context["import_logs"] = ImportLog.objects.all().order_by("-timestamp")
+        current_user = self.request.user
+        context["import_logs"] = ImportLog.objects.filter(user=current_user).order_by("-timestamp")
         return context
 
 
@@ -64,7 +65,7 @@ class ImportDetailsView(LoginRequiredMixin, View):
         """
         return render(request, self.template_name)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         """
         Обработка POST-запроса, начало процесса импорта.
 
@@ -137,7 +138,7 @@ class DownloadCSVTemplateView(LoginRequiredMixin, View):
         get(request, *args, **kwargs): Обработка GET-запроса для скачивания файла.
     """
 
-    def get(self):
+    def get(self, request, *args, **kwargs):
         """
         Обработка GET-запроса для скачивания файла.
 
@@ -162,5 +163,5 @@ class DownloadCSVTemplateView(LoginRequiredMixin, View):
                 response["Content-Disposition"] = f'attachment; filename="{file_name}"'
             return response
         except Exception as e:
-            logging.error(f"Error opening file: {str(e)}")
+            logging.error("Error opening file: %s", str(e))
             return HttpResponse(_("Ошибка при открытии файла."))
