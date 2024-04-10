@@ -2,13 +2,13 @@
 {% block content %}
 <div class="Section-columnSection">
     <header class="Section-header">
-        <strong class="Section-title">{% trans "Прогресс заполнения" %}
+        <strong class="Section-title">{{  _("Прогресс заполнения") }}
         </strong>
     </header>
     <div class="Section-columnContent">
         <div class="NavigateProfile">
             <ul class="menu menu_vt">
-                <li class="menu-item_ACTIVE menu-item"><a class="menu-link" href="#step1">{% trans "Шаг 4. Подтверждение заказа" %}</a></li>
+                <li class="menu-item_ACTIVE menu-item"><a class="menu-link" href="#step1">{{ _("Шаг 4. Подтверждение заказа") }}</a></li>
             </ul>
         </div>
     </div>
@@ -17,7 +17,7 @@
 <div class="Section-content">
     <div class="Order-block Order-block_OPEN" id="step1">
         <header class="Section-header Section-header_sm">
-            <h2 class="Section-title">{% trans "Шаг 4. Подтверждение заказа" %}
+            <h2 class="Section-title">{{ _("Шаг 4. Подтверждение заказа") }}
             </h2>
         </header>
         <div class="Order-infoBlock">
@@ -25,19 +25,19 @@
                 <div class="row">
                     <div class="row-block">
                         <div class="Order-info">
-                            <div class="Order-infoType">{% trans "имя" %}:
+                            <div class="Order-infoType">{{ _("имя") }}:
                             </div>
                             <div class="Order-infoContent">{{ name }}
                             </div>
                         </div>
                         <div class="Order-info">
-                            <div class="Order-infoType">{% trans "Телефон" %}:
+                            <div class="Order-infoType">{{ _("Телефон") }}:
                             </div>
                             <div class="Order-infoContent">{{ phone }}
                             </div>
                         </div>
                         <div class="Order-info">
-                            <div class="Order-infoType">{% trans "E-mail" %}:
+                            <div class="Order-infoType">{{ _("E-mail") }}:
                             </div>
                             <div class="Order-infoContent">{{ request.user }}
                             </div>
@@ -45,25 +45,25 @@
                     </div>
                     <div class="row-block">
                         <div class="Order-info Order-info_delivery">
-                            <div class="Order-infoType">{% trans "Тип доставки" %}:
+                            <div class="Order-infoType">{{ _("Тип доставки") }}:
                             </div>
                             <div class="Order-infoContent">{{ delivery_type }}
                             </div>
                         </div>
                         <div class="Order-info">
-                            <div class="Order-infoType">{% trans "Город" %}:
+                            <div class="Order-infoType">{{ _("Город") }}:
                             </div>
                             <div class="Order-infoContent">{{ city }}
                             </div>
                         </div>
                         <div class="Order-info">
-                            <div class="Order-infoType">{% trans "Адрес" %}:
+                            <div class="Order-infoType">{{ _("Адрес") }}:
                             </div>
                             <div class="Order-infoContent">{{ address }}
                             </div>
                         </div>
                         <div class="Order-info Order-info_pay">
-                            <div class="Order-infoType">{% trans "Оплата" %}:
+                            <div class="Order-infoType">{{ _("Оплата") }}:
                             </div>
                             <div class="Order-infoContent"> {{ payment }}
                             </div>
@@ -90,14 +90,14 @@
                         </div>
                     </div>
                     <div class="Cart-block Cart-block_row">
-                        <div class="Cart-block Cart-block_amount">{{ i.quantity }} {% trans "шт." %}
+                        <div class="Cart-block Cart-block_amount">{{ i.quantity }} {{ _("шт.") }}
                         </div>
                     </div>
                 </div>
                 {% endfor %}
                 <form class="form"  method="post">{% csrf_token %}
                     <div class="Cart-block">
-                        <button class="btn btn_primary btn_lg" name="yookassa-payment" value="yookassa-payment" type="submit">{% trans "Оплатить" %}</button>
+                        <button class="btn btn_primary btn_lg" name="yookassa-payment" value="yookassa-payment" type="submit">{{ _("Оплатить") }}</button>
                     </div>
                 </form>
                 </div>
@@ -105,7 +105,7 @@
         </div>
         {% else %}
         <div>
-            <p>{% trans "нет заказов" %}</p>
+            <p>{{ _("нет заказов") }}</p>
         </div>
         {% endif %}
     </div>

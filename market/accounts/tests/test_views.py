@@ -2,11 +2,16 @@ from typing import Any
 from unittest.mock import patch
 
 from django.contrib.auth.models import User
-from django.test import Client, TestCase
+from django.contrib.sessions.middleware import SessionMiddleware
+from django.test import Client, TestCase, RequestFactory
+
 from django.urls import reverse
 from django.utils.translation import activate
-
+from uuid import uuid4
+from django.contrib.auth.tokens import default_token_generator
 from accounts.models import get_user_model
+
+from accounts.views import UpdatePasswordView
 
 User = get_user_model()  # noqa
 
@@ -106,23 +111,38 @@ def test_password_reset_view_invalid_email(self) -> None:
 
 
 class UpdatePasswordViewTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
     def test_update_password_view_invalid(self) -> None:
         """Тест недействительной ссылки на сброс пароля."""
         # Проверка, когда ссылка на сброс пароля недействительна
-        response: Any = self.client.get(
-            reverse("accounts:reset_password_confirm", kwargs={"uidb64": "invalid", "token": "invalid"})
-        )
-        self.assertEqual(response.status_code, 200)
+
+        # Создание недействительного токена и uid
+        token = "invalid_token"
+        uid = "invalid_uid"
+
+        # Создание объекта
+        response = self.client.get(reverse("accounts:reset_password_confirm", kwargs={"uidb64": uid, "token": token}))
+
+        # Проверка, что сервер возвращает код состояния 404 (или другой подходящий код состояния)
+        self.assertEqual(response.status_code, 404)
 
     def test_update_password_view_valid(self) -> None:
         """Тест действительной ссылки на сброс пароля."""
         # Проверка, когда ссылка на сброс пароля действительна
+
         user: User = User.objects.create_user(username="username", email="test@example.com", password="testpassword")
-        uid: str = user.id
-        token: str = "token"  # Заменить на фактический токен
-        response: Any = self.client.get(
-            reverse("accounts:reset_password_confirm", kwargs={"uidb64": uid, "token": token})
-        )
+        uid = uuid4()
+        token = default_token_generator.make_token(user)
+        request = self.factory.get(reverse("accounts:reset_password_confirm", kwargs={"uidb64": uid, "token": token}))
+        middleware = SessionMiddleware(lambda request: None)
+        middleware.process_request(request)
+        request.session[f"{token}"] = {}
+        request.session[f"{token}"] = {'email': user.email}
+
+        response = UpdatePasswordView.as_view()(request, uidb64=str(uid), token=str(token))
+
         self.assertEqual(response.status_code, 200)
 
 

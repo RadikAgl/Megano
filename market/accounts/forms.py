@@ -55,21 +55,28 @@ class LoginForm(AuthenticationForm):
 
 
 class CustomPasswordForm(SetPasswordForm):
+    code = forms.IntegerField()
     """
     Форма изменения пароля.
     """
 
     class Meta:
         """поля для измены пароля"""
+        fields = ["new_password1", 'new_password2', 'code']
 
-        fields = ["new_password1"]
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(user, *args, **kwargs)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Делаем поле для повторного ввода нового пароля не обязательным
-        self.fields["new_password2"].required = False
-        # Убираем поле для повторного ввода нового пароля
-        self.fields.pop("new_password2", None)
+    def clean_new_password2(self):
+
+        new_password1 = self.cleaned_data.get("new_password1")
+        new_password2 = self.cleaned_data.get("new_password2")
+
+        if new_password1 and new_password2:
+            if new_password1 != new_password2:
+                raise forms.ValidationError("Пароли не совпадают")
+
+        return new_password2
 
 
 class ProfilePasswordForm(PasswordChangeForm):
@@ -88,3 +95,7 @@ class ProfilePasswordForm(PasswordChangeForm):
             raise forms.ValidationError(_("Пароли не совпадают"))
 
         return new_password2
+
+
+class ResetPasswordEmailForm(forms.Form):
+    email = forms.EmailField()
