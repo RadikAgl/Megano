@@ -35,10 +35,10 @@
                                                         {% if item["offer"] == offer %}
                                                             <option selected
                                                                     value="{{ offer.id }}">{{ offer.shop.name }}:
-                                                                ${{ offer.price }}</option>
+                                                                {{ offer.price }}</option>
                                                         {% else %}
                                                             <option value="{{ offer.id }}">{{ offer.shop.name }}:
-                                                                ${{ offer.price }}</option>
+                                                                {{ offer.price }}</option>
                                                         {% endif %}
                                                     {% endfor %}
                                                 {% endwith %}

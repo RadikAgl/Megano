@@ -7,7 +7,7 @@ from accounts.group_mixins import BuyersRequiredMixin
 from discounts.models import DiscountProduct, DiscountCart, DiscountSet
 
 
-class DiscountListView(BuyersRequiredMixin, ListView):
+class DiscountListView(ListView):
     """Страница с отображением всех скидок"""
 
     template_name = "discounts/discounts_list.jinja2"

@@ -17,16 +17,14 @@ def calculate_set(offers: list[Offer]) -> Tuple[Decimal | int, int]:
     ).order_by("-weight")
 
     weight = 0
-    percentage = 0
-
+    discount_amount = 0
     for discount in discounts:
-        for offer in offers:
-            if offer.product.id in discount.first_group.all():
-                for offer_ in offers:
-                    if offer_.product.id in discount.second_group.all() and offer_.product != offer.product:
-                        return discount.weight, discount.percentage
+        if any(offer.product in discount.first_group.all() for offer in offers) and any(
+            offer.product in discount.second_group.all() for offer in offers
+        ):
+            return discount.weight, discount.discount_amount
 
-    return weight, percentage
+    return weight, discount_amount
 
 
 def calculate_cart(price: Decimal) -> Tuple[Decimal | int, int]:
@@ -43,6 +41,7 @@ def calculate_cart(price: Decimal) -> Tuple[Decimal | int, int]:
         if discount.price_from <= price <= discount.price_to:
             weight = discount.weight
             percentage = discount.percentage
+            return weight, percentage
     return weight, percentage
 
 

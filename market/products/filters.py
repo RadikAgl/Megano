@@ -81,3 +81,8 @@ class ProductFilter(django_filters.FilterSet):
         if value:
             return queryset.filter(remains__gt=0)
         return queryset
+
+    def get_ordering_fields(self) -> list[tuple[str, str]]:
+        """Возвращает параметры сортировки и их название для отображения на странице"""
+
+        return [item for item in list(self.filters["o"].field.choices)[1:] if not item[0].startswith("-")]

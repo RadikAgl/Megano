@@ -26,8 +26,7 @@ class CartInstance:
     """Класс корзины покупок"""
 
     def __init__(self, request):
-        self.request = request
-        self.use_db = False
+        self.__use_db = False
         self.cart = None
         self.cart_for_view = []
         self.user = request.user
@@ -35,9 +34,9 @@ class CartInstance:
         self.qs = None
         cart = self.session.get(settings.CART_SESSION_ID)
         if self.user.is_authenticated:
-            self.use_db = True
+            self.__use_db = True
             if cart:
-                self._save_in_db(cart, request.user)
+                self.__save_in_db(cart, request.user)
                 self.clear(True)
             try:
                 cart = Cart.objects.get(user=self.user, is_active=True)
@@ -49,7 +48,7 @@ class CartInstance:
                 cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def _save_in_db(self, cart: dict, user: User) -> None:
+    def __save_in_db(self, cart: dict, user: User) -> None:
         """
         Перенос корзины из сессии в БД
         :param cart: корзина из сессии
@@ -94,7 +93,7 @@ class CartInstance:
         """
         if not offer:
             offer = self.get_offer(product, quantity)
-        if self.use_db:
+        if self.__use_db:
             if self.qs.filter(offer=offer).exists():
                 product_in_cart = self.qs.get(offer=offer)
             else:
@@ -103,8 +102,7 @@ class CartInstance:
                 product_in_cart.quantity += quantity
             else:
                 product_in_cart.quantity = quantity
-            if product_in_cart.quantity > offer.remains:
-                product_in_cart.quantity = offer.remains
+            product_in_cart.quantity = min(product_in_cart.quantity, offer.remains)
             product_in_cart.save()
         else:
             offer_id = str(offer.id)
@@ -123,7 +121,7 @@ class CartInstance:
         Сохранение корзины в сессии
         :return: None
         """
-        if not self.use_db:
+        if not self.__use_db:
             self.session[settings.CART_SESSION_ID] = self.cart
             self.session.modified = True
 
@@ -133,7 +131,7 @@ class CartInstance:
         :param offer: товар
         :return: None
         """
-        if self.use_db:
+        if self.__use_db:
             offer_ = self.qs.filter(offer=offer)
             if offer_.exists():
                 offer_.delete()
@@ -145,15 +143,14 @@ class CartInstance:
 
     def __iter__(self):
         """Перебор товаров из корзины"""
-        for item in self.get_discount_cart_items():
-            yield item
+        yield from self.__get_discount_cart_items()
 
     def __len__(self) -> int:
         """
         Считает количество товаров в корзине
         :return: количество товаров в корзине
         """
-        if self.use_db:
+        if self.__use_db:
             result = ProductInCart.objects.filter(cart=self.cart).aggregate(Sum("quantity"))["quantity__sum"]
             return result if result else 0
         return sum(item["quantity"] for item in self.cart.values())
@@ -170,14 +167,14 @@ class CartInstance:
             if self.qs:
                 self.qs.delete()
 
-    def get_discount_cart_items(self) -> list[dict]:
+    def __get_discount_cart_items(self) -> list[dict]:
         """Подготавливает список товаров корзины с учетом скидок"""
         if self.cart_for_view:
             return self.cart_for_view
 
-        discount_type, _ = self._get_discount_type()
+        discount_type, _ = self.__get_discount_type()
         if discount_type == "product":
-            if self.use_db:
+            if self.__use_db:
                 for product in self.qs:
                     self.cart_for_view.append(
                         {
@@ -197,7 +194,7 @@ class CartInstance:
                         }
                     )
         else:
-            if self.use_db:
+            if self.__use_db:
                 for product in self.qs:
                     self.cart_for_view.append(
                         {
@@ -214,25 +211,25 @@ class CartInstance:
                     )
         return self.cart_for_view
 
-    def _get_offers(self):
+    def __get_offers(self):
         """Получение всех товаров из корзины"""
 
-        if self.use_db:
+        if self.__use_db:
             return [item.offer for item in self.qs]
 
         return [Offer.objects.get(pk=int(idx)) for idx in self.cart.keys()]
 
-    def _get_offers_with_quantity(self):
+    def __get_offers_with_quantity(self):
         """Получение всех товаров с количеством из корзины"""
 
-        if self.use_db:
+        if self.__use_db:
             return [(item.offer, item.quantity) for item in self.qs]
 
         return [(Offer.objects.get(pk=int(idx)), item["quantity"]) for idx, item in self.cart.items()]
 
     def get_offer(self, product: Product, quantity: int = 1) -> HttpResponseNotFound | Any:
         """Подбор предложения для товара"""
-        if self.use_db:
+        if self.__use_db:
             products_in_cart = self.qs.filter(offer__product=product)
             if products_in_cart:
                 return products_in_cart[0].offer
@@ -252,7 +249,7 @@ class CartInstance:
         Считает итоговую цену товаров корзины без учета скидок
         :return: цена товаров в корзине
         """
-        if self.use_db:
+        if self.__use_db:
             total = self.qs.only("quantity").aggregate(total=Sum(F("quantity") * F("offer__price")))["total"]
             if not total:
                 total = Decimal("0")
@@ -260,11 +257,11 @@ class CartInstance:
 
         return sum(Decimal(item["price"]) * item["quantity"] for item in self.cart.values())
 
-    def _get_discount_type(self) -> tuple[str, int]:
+    def __get_discount_type(self) -> tuple[str, int]:
         """Возвращает тип скидки"""
 
         total_price = self.get_total_price_without_discount()
-        offers = self._get_offers()
+        offers = self.__get_offers()
 
         weight_cart, percentage_cart = calculate_cart(total_price)
         weight_set, discount_cost = calculate_set(offers)
@@ -280,7 +277,7 @@ class CartInstance:
     def get_total_price(self) -> Decimal:
         """Возвращает стоимость корзины с учетом всех скидок"""
 
-        discount_type, discount = self._get_discount_type()
+        discount_type, discount = self.__get_discount_type()
         total_price = self.get_total_price_without_discount()
 
         if discount_type == "cart":
@@ -290,5 +287,5 @@ class CartInstance:
             total_price -= discount
             return total_price if total_price > 1 else 1
 
-        offers_with_quantity = self._get_offers_with_quantity()
+        offers_with_quantity = self.__get_offers_with_quantity()
         return calculate_products_discount_total_price(offers_with_quantity)

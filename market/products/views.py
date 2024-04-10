@@ -26,7 +26,7 @@ from . import constants
 from .filters import ProductFilter
 from .forms import ReviewsForm
 from .models import Product, ProductImage
-from .services.catalog_services import get_ordering_fields, get_popular_tags, relative_url, get_paginate_products_by
+from .services.catalog_services import get_popular_tags, relative_url, get_paginate_products_by
 from .services.product_services import (
     get_discount_for_product,
     invalidate_product_details_cache,
@@ -89,7 +89,6 @@ class CatalogView(FilterView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context["ordering_fields"] = get_ordering_fields(ProductFilter())
         context["tags"] = get_popular_tags()
         context["cart_form"] = CartAddProductCatalogForm()
         context["relative_url"] = relative_url(self.request)
