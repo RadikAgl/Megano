@@ -1,11 +1,7 @@
-"""
-Модуль представлений для оформления заказов.
-
-Содержит представления для оформления заказов, просмотра истории заказов и детальной информации о заказе.
-"""
+import uuid
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
@@ -17,7 +13,15 @@ from accounts.group_mixins import BuyersRequiredMixin
 from .forms import FirstStepForm, SecondStepForm, ThirdStepForm
 from .models import Order
 from .service import OrderService
+from dotenv import load_dotenv
+from yookassa import Configuration, Payment
+import os
 from .service import translate
+
+load_dotenv()
+
+Configuration.account_id = os.getenv('SHOP_ID')
+Configuration.secret_key = os.getenv('SECRET_KEY')
 
 
 class FirstOrderView(LoginRequiredMixin, BuyersRequiredMixin, FormView):
@@ -80,6 +84,7 @@ class FourStepView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
     model = ProductInCart
 
     def post(self, request, *args, **kwargs):
+        payment_type = request.POST.get('yookassa-payment')
         cart = Cart.objects.get(user=self.request.user.id)
         user = User.objects.get(pk=request.user.id)
         total_price = ProductInCart.objects.filter(cart=cart)[:3]
@@ -99,7 +104,30 @@ class FourStepView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
                 "total_price": db_price,
             },
         )
-        return HttpResponseRedirect(reverse("user:profile"))
+        match payment_type:
+            case "yookassa-payment":
+                idempotence_key = uuid.uuid4()
+                currency = 'RUB'
+                description = 'Товары в корзине'
+                payment = Payment.create({
+                    "amount": {
+                        "value": str(db_price * 90),
+                        "currency": currency
+                    },
+                    "confirmation": {
+                        "type": "redirect",
+                        "return_url": request.build_absolute_uri(reverse('user:main')),
+                    },
+                    "capture": True,
+                    "test": True,
+                    "description": description,
+                }, idempotence_key)
+
+                confirmation_url = payment.confirmation.confirmation_url
+                self.request.session[self.request.user.id] = {}
+                self.request.session[self.request.user.id] = {"id": payment.id}
+
+                return redirect(confirmation_url)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
