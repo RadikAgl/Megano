@@ -16,6 +16,7 @@ from .service import OrderService
 from dotenv import load_dotenv
 from yookassa import Configuration, Payment
 import os
+from .service import translate
 
 load_dotenv()
 
