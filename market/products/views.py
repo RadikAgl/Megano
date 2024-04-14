@@ -1,7 +1,8 @@
 """ Представления приложения products """
-
+import logging
 from typing import Any, Dict, Type
 
+from django.contrib import messages
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Avg, Sum
 from django.db.models.functions import Round
@@ -25,13 +26,15 @@ from shops.models import Offer, Shop
 from . import constants
 from .filters import ProductFilter
 from .forms import ReviewsForm
-from .models import Product, ProductImage
+from .models import Product, ProductImage, Review
 from .services.catalog_services import get_popular_tags, relative_url, get_paginate_products_by
 from .services.product_services import (
     get_discount_for_product,
     invalidate_product_details_cache,
     get_from_cache_or_set,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def add_product_to_cart(request: HttpRequest, cart_form: CartAddProductCatalogForm) -> None:
@@ -195,13 +198,27 @@ class ProductDetailView(DetailView):
 def add_review(request: WSGIRequest):
     """
     Добавляет отзыв о товаре
-    :param request: пост запрос
+    :param request: POST запрос
     :return: обновляет страницу
     """
     if request.method == "POST":
         form = ReviewsForm(request.POST)
         if form.is_valid():
-            review = ReviewService(request, request.user, request.POST["product"])
-            text = form.cleaned_data["text"]
-            review.add(review=text)
+            product_id = form.cleaned_data["product"].id
+            existing_review = Review.objects.filter(user=request.user, product_id=product_id).exists()
+            if existing_review:
+                messages.error(request, "Вы уже добавили отзыв на этот товар.")
+            else:
+                review_service = ReviewService(request, request.user, form.cleaned_data["product"])
+                text = form.cleaned_data["text"]
+                rating = form.cleaned_data["rating"]
+                try:
+                    review_service.add(review=text, rating=rating)
+                    messages.success(request, "Отзыв успешно добавлен.")
+                except Exception as e:
+                    logger.exception("Ошибка при добавлении отзыва: %s", str(e))
+                    messages.error(
+                        request,
+                        "Произошла ошибка при добавлении отзыва. ",
+                    )
     return redirect(request.META.get("HTTP_REFERER"))
