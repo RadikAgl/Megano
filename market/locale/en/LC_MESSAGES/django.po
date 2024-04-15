@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-15 19:14+0300\n"
+"POT-Creation-Date: 2024-04-15 19:38+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -299,7 +299,8 @@ msgstr "User"
 msgid "Имя файла импорта"
 msgstr "Import file name"
 
-#: .\imports\models.py:45 .\templates\imports\import_details.jinja2:19
+#: .\imports\models.py:45 .\templates\accounts\account.jinja2:77
+#: .\templates\imports\import_details.jinja2:19
 #: .\templates\imports\import_page.jinja2:24
 #: .\templates\imports\import_page.jinja2:39
 #: .\templates\order\detail_order.jinja2:60
@@ -382,7 +383,7 @@ msgstr "Payment Method"
 msgid "статус"
 msgstr "Status"
 
-#: .\order\models.py:65
+#: .\order\models.py:65 .\templates\accounts\account.jinja2:73
 msgid "Общая стоимость"
 msgstr "Total cost"
 
@@ -656,6 +657,7 @@ msgstr "Profile"
 
 #: .\templates\accounts\account.jinja2:23
 #: .\templates\accounts\account.jinja2:60
+#: .\templates\accounts\profile.jinja2:20
 #: .\templates\order\detail_order.jinja2:15
 #: .\templates\order\order_history.jinja2:4
 #: .\templates\order\order_history.jinja2:12
@@ -665,14 +667,12 @@ msgid "История заказов"
 msgstr "Orders history"
 
 #: .\templates\accounts\account.jinja2:27
-#: .\templates\accounts\profile.jinja2:25
-#, fuzzy
-#| msgid "магазин"
+#: .\templates\accounts\profile.jinja2:24
 msgid "Мой магазин"
-msgstr "shop"
+msgstr "My shop"
 
 #: .\templates\accounts\account.jinja2:31
-#: .\templates\accounts\profile.jinja2:27
+#: .\templates\accounts\profile.jinja2:26
 #: .\templates\accounts\viewing_history.jinja2:4
 msgid "История просмотров товаров"
 msgstr "Views history"
@@ -686,8 +686,9 @@ msgid "Заказ"
 msgstr "Order"
 
 #: .\templates\accounts\account.jinja2:65
-msgid "Тип доставки: "
-msgstr "Delivery type: "
+#: .\templates\order\detail_order.jinja2:44 .\templates\order\order_4.jinja2:48
+msgid "Тип доставки"
+msgstr "Delivery Type"
 
 #: .\templates\accounts\account.jinja2:66 .\templates\order\order_2.jinja2:28
 msgid "Обычная доставка"
@@ -702,32 +703,34 @@ msgstr "Payment:"
 msgid "Онлайн картой"
 msgstr "Online by card"
 
-#: .\templates\accounts\account.jinja2:73
-msgid "Общая стоимость: "
-msgstr "Total cost:"
-
 #: .\templates\accounts\account.jinja2:74
 msgid "200.99"
 msgstr "200.99"
-
-#: .\templates\accounts\account.jinja2:77
-#, fuzzy
-#| msgid "Статус"
-msgid "Статус: "
-msgstr "Status"
 
 #: .\templates\accounts\account.jinja2:78
 #: .\templates\order\detail_order.jinja2:66
 msgid "Не оплачен"
 msgstr "Not paid"
 
+#: .\templates\accounts\back_to_email.jinja2:6
+msgid "Письмо с инструкциями по восстановлению пароля отправлено"
+msgstr "An email with instructions for password recovery has been sent."
+
 #: .\templates\accounts\e-mail.jinja2:6
 msgid "Восстановление пароля (1/2)"
 msgstr "Password recovery (1/2)"
 
+#: .\templates\accounts\e-mail.jinja2:19
+msgid "Получить проверочный код"
+msgstr "Get verification code"
+
 #: .\templates\accounts\login.jinja2:6 .\templates\header.jinja2:40
 #: .\templates\menu.jinja2:37
 msgid "Вход"
+msgstr "Log in"
+
+#: .\templates\accounts\login.jinja2:19 .\templates\products\product.jinja2:300
+msgid "Войти"
 msgstr "Log in"
 
 #: .\templates\accounts\login.jinja2:27
@@ -747,25 +750,31 @@ msgstr "Password recovery (2/2)"
 msgid "Придумайте новый пароль для учетной записи"
 msgstr "Create a new password for your account"
 
-#: .\templates\accounts\profile.jinja2:41
-msgid "Ваша пароль"
-msgstr "Your password"
-
-#: .\templates\accounts\profile.jinja2:47
-#: .\templates\accounts\profile.jinja2:53
+#: .\templates\accounts\password.jinja2:15
+#: .\templates\accounts\password.jinja2:18
+#: .\templates\accounts\profile.jinja2:46
+#: .\templates\accounts\profile.jinja2:52
 #: .\templates\accounts\register.jinja2:18
 msgid "Пароль"
 msgstr "Password"
 
-#: .\templates\accounts\profile.jinja2:50
+#: .\templates\accounts\password.jinja2:24
+msgid "Сохранить пароль"
+msgstr "Repeat password"
+
+#: .\templates\accounts\profile.jinja2:40
+msgid "Ваша пароль"
+msgstr "Your password"
+
+#: .\templates\accounts\profile.jinja2:49
 msgid "Тут можно изменить пароль"
 msgstr "You can change your password here"
 
-#: .\templates\accounts\profile.jinja2:56
+#: .\templates\accounts\profile.jinja2:55
 msgid "повторите пароль"
 msgstr "Repeat password"
 
-#: .\templates\accounts\profile.jinja2:61
+#: .\templates\accounts\profile.jinja2:60
 msgid "Сохранить"
 msgstr "Save"
 
@@ -842,10 +851,8 @@ msgid "Изображение товара"
 msgstr "product's image"
 
 #: .\templates\discounts\discount-product.jinja2:38
-#, fuzzy
-#| msgid "Скидка действует на следующие товары:"
 msgid "Скидка действует на следующие товары"
-msgstr "The discount applies to the following items:"
+msgstr "The discount applies to the following items"
 
 #: .\templates\discounts\discount-set.jinja2:25
 msgid "Фон скидки"
@@ -924,7 +931,7 @@ msgstr "Timestamp"
 
 #: .\templates\imports\import_details.jinja2:33
 msgid "Нет данных об импорте."
-msgstr "No import data available"
+msgstr "No import data available."
 
 #: .\templates\imports\import_details.jinja2:36
 msgid "Импортированные товары"
@@ -1018,10 +1025,6 @@ msgstr "Full Name"
 #: .\templates\order\detail_order.jinja2:38 .\templates\order\order_4.jinja2:40
 msgid "E-mail"
 msgstr "Email"
-
-#: .\templates\order\detail_order.jinja2:44 .\templates\order\order_4.jinja2:48
-msgid "Тип доставки"
-msgstr "Delivery Type"
 
 #: .\templates\order\detail_order.jinja2:48 .\templates\order\order_2.jinja2:38
 #: .\templates\order\order_4.jinja2:54
@@ -1221,10 +1224,6 @@ msgstr "Add comment"
 #: .\templates\products\product.jinja2:299
 msgid "Для того чтобы оставить комментарий вы должны"
 msgstr "To leave a comment you must"
-
-#: .\templates\products\product.jinja2:300
-msgid "Войти"
-msgstr "Log in"
 
 #: .\templates\products\product.jinja2:302
 msgid "или"
