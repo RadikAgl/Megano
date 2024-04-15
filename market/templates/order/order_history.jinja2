@@ -29,7 +29,7 @@
                                 <ul class="menu menu_vt">
                                     <li class="menu-item"><a class="menu-link" href="{{ url('accounts:main') }}">{% trans %}Личный кабинет{% endtrans %}</a></li>
                                     <li class="menu-item"><a class="menu-link" href="{{ url('accounts:profile') }}">{% trans %}Профиль{% endtrans %}</a></li>
-                                    <li class="menu-item_ACTIVE menu-item"><a class="menu-link" href="{{ url('order:history') }}">{% trans %}История заказов{% endtrans %}</a></li>
+                                    <li class="menu-item_ACTIVE menu-item"><a class="menu-link" href="{{ url('order:history_order') }}">{% trans %}История заказов{% endtrans %}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                     {% if orders %}
                         <ul>
                             {% for order in orders %}
-                                <li>{% trans %}Заказ № {% endtrans %}{{ order.id }} - {{ order.created_at }}</li>
+                               <li><a href="{{ url('order:detail_order', pk=order.id) }}">{{ _('Заказ №') }} {{ order.id }} - {{ order.created_at }}</a></li>
                             {% endfor %}
                         </ul>
                     {% else %}
