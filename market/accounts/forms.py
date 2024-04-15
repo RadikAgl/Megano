@@ -62,19 +62,19 @@ class CustomPasswordForm(SetPasswordForm):
 
     class Meta:
         """поля для измены пароля"""
-        fields = ["new_password1", 'new_password2', 'code']
+
+        fields = ["new_password1", "new_password2", "code"]
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(user, *args, **kwargs)
 
     def clean_new_password2(self):
-
         new_password1 = self.cleaned_data.get("new_password1")
         new_password2 = self.cleaned_data.get("new_password2")
 
         if new_password1 and new_password2:
             if new_password1 != new_password2:
-                raise forms.ValidationError("Пароли не совпадают")
+                raise forms.ValidationError(_("Пароли не совпадают"))
 
         return new_password2
 

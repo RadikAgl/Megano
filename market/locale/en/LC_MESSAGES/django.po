@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-15 19:38+0300\n"
+"POT-Creation-Date: 2024-04-15 20:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\accounts\forms.py:95
+#: .\accounts\forms.py:77 .\accounts\forms.py:95
 msgid "Пароли не совпадают"
 msgstr "Passwords do not match."
 
@@ -59,6 +59,31 @@ msgstr "View history"
 #: .\accounts\models.py:41
 msgid "истории просмотров"
 msgstr "View histories"
+
+#: .\accounts\views.py:51
+msgid "успешно"
+msgstr "successfully"
+
+#: .\accounts\views.py:55 .\order\views.py:43 .\order\views.py:61
+#: .\order\views.py:78
+msgid "не верный ввод полей"
+msgstr "incorrect field input"
+
+#: .\accounts\views.py:78
+msgid "оплачено"
+msgstr "Not paid"
+
+#: .\accounts\views.py:97
+msgid "не валидная форма или такой пользователь уже есть"
+msgstr "Invalid form or user already exists."
+
+#: .\accounts\views.py:116
+msgid "нет пользователя с таким Email или неверный пароль"
+msgstr "No user with this email or incorrect password."
+
+#: .\accounts\views.py:226
+msgid "пароли не совпадают или неверный код"
+msgstr "Passwords do not match or wrong code"
 
 #: .\cart\cart.py:245
 msgid "Ошибка! Не хватает товаров на складе!"
@@ -395,10 +420,6 @@ msgstr "Order"
 msgid "заказы"
 msgstr "Orders"
 
-#: .\order\views.py:43 .\order\views.py:61 .\order\views.py:78
-msgid "не верный ввод полей"
-msgstr "incorrect field input"
-
 #: .\products\filters.py:18
 msgid "Популярности"
 msgstr "Popularity"
@@ -720,11 +741,20 @@ msgstr "An email with instructions for password recovery has been sent."
 msgid "Восстановление пароля (1/2)"
 msgstr "Password recovery (1/2)"
 
-#: .\templates\accounts\e-mail.jinja2:19
+#: .\templates\accounts\e-mail.jinja2:7
+msgid ""
+"Для восстановления пароля введите адрес электронной почты, на которую "
+"зарегистрирована учетная запись"
+msgstr ""
+"To reset your password, please enter the email address associated with your "
+"account."
+
+#: .\templates\accounts\e-mail.jinja2:18
 msgid "Получить проверочный код"
 msgstr "Get verification code"
 
-#: .\templates\accounts\login.jinja2:6 .\templates\header.jinja2:40
+#: .\templates\accounts\e-mail.jinja2:21 .\templates\accounts\login.jinja2:6
+#: .\templates\accounts\register.jinja2:24 .\templates\header.jinja2:40
 #: .\templates\menu.jinja2:37
 msgid "Вход"
 msgstr "Log in"
