@@ -30,18 +30,14 @@ from django.views import View
 from django.views.generic import FormView, TemplateView
 from order.models import OrderStatus, Order
 from comparison.services import get_comparison_list
-from .forms import (RegistrationForm,
-                    LoginForm,
-                    CustomPasswordForm,
-                    ProfilePasswordForm,
-                    ResetPasswordEmailForm)
+from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm, ResetPasswordEmailForm
 from .models import ViewHistory
 from .service import mail
 import random
 
 
 class ProfileView(LoginRequiredMixin, FormView):
-    """вью для изменения пароля и email"""
+    """Представление для изменения пароля и email"""
 
     template_name = "accounts/profile.jinja2"
     form_class = ProfilePasswordForm
@@ -64,7 +60,7 @@ class ProfileView(LoginRequiredMixin, FormView):
 
 
 class AcountView(LoginRequiredMixin, TemplateView):
-    """вюь для страницы пользователя"""
+    """Представление для страницы пользователя"""
 
     template_name = "accounts/account.jinja2"
 
@@ -75,16 +71,16 @@ class AcountView(LoginRequiredMixin, TemplateView):
         context["name"] = self.request.user
         context["comparison_count"] = comparison_count
         try:
-            if self.request.session[f'{self.request.user.id}']['id']:
+            if self.request.session[f"{self.request.user.id}"]["id"]:
                 Order.objects.filter(user=self.request.user.id).update(status=OrderStatus.PAID)
-                context['paid'] = 'оплачено'
+                context["paid"] = "оплачено"
                 return context
         except KeyError:
             return context
 
 
 class RegistrationView(FormView):
-    """вью класс для регистрации"""
+    """Представление класс для регистрации"""
 
     template_name = "accounts/register.jinja2"
     form_class = RegistrationForm
@@ -153,12 +149,13 @@ class PasswordReset(FormView):
         try:
             email = get_user_model().objects.get(email=email)
             random_numbers = [random.randint(0, 9) for _ in range(4)]
-            random_number = int(''.join(map(str, random_numbers)))
+            random_number = int("".join(map(str, random_numbers)))
             token_session = mail(email, random_number)
             self.request.session[token_session] = {}
-            self.request.session[token_session] = {"check_number": random_number,
-                                                   "email": f'{email}',
-                                                   }
+            self.request.session[token_session] = {
+                "check_number": random_number,
+                "email": f"{email}",
+            }
         except ObjectDoesNotExist:
             messages.error(self.request, "нет пользователя с таким Email")
             return self.form_invalid(form)
@@ -176,35 +173,35 @@ class UpdatePasswordView(FormView):
         URL-адрес, на который перенаправляется пользователь после успешного
         обновления пароля.
     """
+
     model = get_user_model()
     template_name = "accounts/password.jinja2"
     form_class = CustomPasswordForm
     success_url = reverse_lazy("user:login")
 
     def dispatch(self, request, *args, **kwargs):
-        token = kwargs.get('token')  # Получаем токен из kwargs
+        token = kwargs.get("token")  # Получаем токен из kwargs
         session_data = request.session.get(token)
         if not session_data:
             raise Http404()
-        email = session_data.get('email')
+        email = session_data.get("email")
         get_object_or_404(get_user_model(), email=email)
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        """
+        Обработчик вызывается при успешном вводе нового пароля.
+        Сохраняет новый пароль пользователя.
+
+        Parameters:
+        - form: Form
+            Форма с введенным новым паролем.
+
 
         """
-              Обработчик вызывается при успешном вводе нового пароля.
-              Сохраняет новый пароль пользователя.
-
-              Parameters:
-              - form: Form
-                  Форма с введенным новым паролем.
-
-
-              """
-        token = self.kwargs['token']
-        code = self.request.session[f"{token}"]['check_number']
-        if code == form.cleaned_data['code']:
+        token = self.kwargs["token"]
+        code = self.request.session[f"{token}"]["check_number"]
+        if code == form.cleaned_data["code"]:
             form.save()
             return super().form_valid(form)
         else:
@@ -224,15 +221,15 @@ class UpdatePasswordView(FormView):
             Перенаправляет пользователя на страницу с формой обновления пароля.
         """
         print(form.cleaned_data)
-        messages.error(self.request, 'пароли не совпадают или неверный код')
+        messages.error(self.request, "пароли не совпадают или неверный код")
         return super().form_invalid(form)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        token = self.kwargs['token']
-        user = get_user_model().objects.get(email=self.request.session[f"{token}"]['email'])
-        kwargs['user'] = user  # Передаем текущего пользователя в форму
-        kwargs['data'] = self.request.POST  # Передаем данные запроса в форму
+        token = self.kwargs["token"]
+        user = get_user_model().objects.get(email=self.request.session[f"{token}"]["email"])
+        kwargs["user"] = user  # Передаем текущего пользователя в форму
+        kwargs["data"] = self.request.POST  # Передаем данные запроса в форму
         return kwargs
 
 
