@@ -15,7 +15,7 @@ class ReviewsForm(forms.ModelForm):
         """
 
         model = Review
-        fields = ("product", "user", "text", "rating")
+        fields = ("product", "text", "rating")
         widgets = {
             "text": Textarea(
                 attrs={

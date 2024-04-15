@@ -206,19 +206,18 @@ def add_review(request: WSGIRequest):
         if form.is_valid():
             product_id = form.cleaned_data["product"].id
             existing_review = Review.objects.filter(user=request.user, product_id=product_id).exists()
-            if existing_review:
-                messages.error(request, "Вы уже добавили отзыв на этот товар.")
-            else:
-                review_service = ReviewService(request, request.user, form.cleaned_data["product"])
+            if not existing_review:
+                product = Product.objects.get(id=product_id)
+                review = ReviewService(request, request.user, product)
                 text = form.cleaned_data["text"]
                 rating = form.cleaned_data["rating"]
                 try:
-                    review_service.add(review=text, rating=rating)
+                    review.add(text=text, rating=rating)
                     messages.success(request, "Отзыв успешно добавлен.")
                 except Exception as e:
                     logger.exception("Ошибка при добавлении отзыва: %s", str(e))
-                    messages.error(
-                        request,
-                        "Произошла ошибка при добавлении отзыва. ",
-                    )
+                    messages.error(request, "Произошла ошибка при добавлении отзыва.")
+            else:
+                messages.error(request, "Вы уже добавили отзыв на этот товар.")
+
     return redirect(request.META.get("HTTP_REFERER"))
