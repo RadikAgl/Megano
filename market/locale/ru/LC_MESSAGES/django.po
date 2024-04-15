@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-15 19:38+0300\n"
+"POT-Creation-Date: 2024-04-15 20:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\accounts\forms.py:95
+#: .\accounts\forms.py:77 .\accounts\forms.py:95
 msgid "Пароли не совпадают"
 msgstr ""
 
@@ -60,6 +60,31 @@ msgstr ""
 
 #: .\accounts\models.py:41
 msgid "истории просмотров"
+msgstr ""
+
+#: .\accounts\views.py:51
+msgid "успешно"
+msgstr ""
+
+#: .\accounts\views.py:55 .\order\views.py:43 .\order\views.py:61
+#: .\order\views.py:78
+msgid "не верный ввод полей"
+msgstr ""
+
+#: .\accounts\views.py:78
+msgid "оплачено"
+msgstr ""
+
+#: .\accounts\views.py:97
+msgid "не валидная форма или такой пользователь уже есть"
+msgstr ""
+
+#: .\accounts\views.py:116
+msgid "нет пользователя с таким Email или неверный пароль"
+msgstr ""
+
+#: .\accounts\views.py:226
+msgid "пароли не совпадают или неверный код"
 msgstr ""
 
 #: .\cart\cart.py:245
@@ -391,10 +416,6 @@ msgstr ""
 msgid "заказы"
 msgstr ""
 
-#: .\order\views.py:43 .\order\views.py:61 .\order\views.py:78
-msgid "не верный ввод полей"
-msgstr ""
-
 #: .\products\filters.py:18
 msgid "Популярности"
 msgstr ""
@@ -716,11 +737,18 @@ msgstr ""
 msgid "Восстановление пароля (1/2)"
 msgstr ""
 
-#: .\templates\accounts\e-mail.jinja2:19
+#: .\templates\accounts\e-mail.jinja2:7
+msgid ""
+"Для восстановления пароля введите адрес электронной почты, на которую "
+"зарегистрирована учетная запись"
+msgstr ""
+
+#: .\templates\accounts\e-mail.jinja2:18
 msgid "Получить проверочный код"
 msgstr ""
 
-#: .\templates\accounts\login.jinja2:6 .\templates\header.jinja2:40
+#: .\templates\accounts\e-mail.jinja2:21 .\templates\accounts\login.jinja2:6
+#: .\templates\accounts\register.jinja2:24 .\templates\header.jinja2:40
 #: .\templates\menu.jinja2:37
 msgid "Вход"
 msgstr ""
