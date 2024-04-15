@@ -1,690 +1,2082 @@
 [
 {
-  "model": "auth.group_permissions",
-  "pk": 137,
+  "model": "auth.permission",
+  "pk": 1,
   "fields": {
-    "group": 1,
-    "permission": 128
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 138,
+  "model": "auth.permission",
+  "pk": 2,
   "fields": {
-    "group": 1,
-    "permission": 129
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 139,
+  "model": "auth.permission",
+  "pk": 3,
   "fields": {
-    "group": 1,
-    "permission": 130
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 140,
+  "model": "auth.permission",
+  "pk": 4,
   "fields": {
-    "group": 1,
-    "permission": 131
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 141,
+  "model": "auth.permission",
+  "pk": 5,
   "fields": {
-    "group": 1,
-    "permission": 132
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 142,
+  "model": "auth.permission",
+  "pk": 6,
   "fields": {
-    "group": 1,
-    "permission": 133
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 143,
+  "model": "auth.permission",
+  "pk": 7,
   "fields": {
-    "group": 1,
-    "permission": 134
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 144,
+  "model": "auth.permission",
+  "pk": 8,
   "fields": {
-    "group": 1,
-    "permission": 135
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 145,
+  "model": "auth.permission",
+  "pk": 9,
   "fields": {
-    "group": 1,
-    "permission": 136
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 146,
+  "model": "auth.permission",
+  "pk": 10,
   "fields": {
-    "group": 1,
-    "permission": 25
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 147,
+  "model": "auth.permission",
+  "pk": 11,
   "fields": {
-    "group": 1,
-    "permission": 26
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 148,
+  "model": "auth.permission",
+  "pk": 12,
   "fields": {
-    "group": 1,
-    "permission": 27
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 149,
+  "model": "auth.permission",
+  "pk": 13,
   "fields": {
-    "group": 1,
-    "permission": 28
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 150,
+  "model": "auth.permission",
+  "pk": 14,
   "fields": {
-    "group": 1,
-    "permission": 29
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 151,
+  "model": "auth.permission",
+  "pk": 15,
   "fields": {
-    "group": 1,
-    "permission": 30
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 152,
+  "model": "auth.permission",
+  "pk": 16,
   "fields": {
-    "group": 1,
-    "permission": 31
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 153,
+  "model": "auth.permission",
+  "pk": 17,
   "fields": {
-    "group": 1,
-    "permission": 32
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 154,
+  "model": "auth.permission",
+  "pk": 18,
   "fields": {
-    "group": 1,
-    "permission": 33
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 155,
+  "model": "auth.permission",
+  "pk": 19,
   "fields": {
-    "group": 1,
-    "permission": 34
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 156,
+  "model": "auth.permission",
+  "pk": 20,
   "fields": {
-    "group": 1,
-    "permission": 35
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 157,
+  "model": "auth.permission",
+  "pk": 21,
   "fields": {
-    "group": 1,
-    "permission": 36
+    "name": "Can add Баннер",
+    "content_type": [
+      "products",
+      "banner"
+    ],
+    "codename": "add_banner"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 158,
+  "model": "auth.permission",
+  "pk": 22,
   "fields": {
-    "group": 1,
-    "permission": 37
+    "name": "Can change Баннер",
+    "content_type": [
+      "products",
+      "banner"
+    ],
+    "codename": "change_banner"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 159,
+  "model": "auth.permission",
+  "pk": 23,
   "fields": {
-    "group": 1,
-    "permission": 38
+    "name": "Can delete Баннер",
+    "content_type": [
+      "products",
+      "banner"
+    ],
+    "codename": "delete_banner"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 160,
+  "model": "auth.permission",
+  "pk": 24,
   "fields": {
-    "group": 1,
-    "permission": 39
+    "name": "Can view Баннер",
+    "content_type": [
+      "products",
+      "banner"
+    ],
+    "codename": "view_banner"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 161,
+  "model": "auth.permission",
+  "pk": 25,
   "fields": {
-    "group": 1,
-    "permission": 40
+    "name": "Can add категория",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "add_category"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 162,
+  "model": "auth.permission",
+  "pk": 26,
   "fields": {
-    "group": 1,
-    "permission": 41
+    "name": "Can change категория",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "change_category"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 163,
+  "model": "auth.permission",
+  "pk": 27,
   "fields": {
-    "group": 1,
-    "permission": 42
+    "name": "Can delete категория",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "delete_category"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 164,
+  "model": "auth.permission",
+  "pk": 28,
   "fields": {
-    "group": 1,
-    "permission": 43
+    "name": "Can view категория",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "view_category"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 165,
+  "model": "auth.permission",
+  "pk": 29,
   "fields": {
-    "group": 1,
-    "permission": 44
+    "name": "Can add продукт",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "add_product"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 166,
+  "model": "auth.permission",
+  "pk": 30,
   "fields": {
-    "group": 1,
-    "permission": 45
+    "name": "Can change продукт",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "change_product"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 167,
+  "model": "auth.permission",
+  "pk": 31,
   "fields": {
-    "group": 1,
-    "permission": 46
+    "name": "Can delete продукт",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "delete_product"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 168,
+  "model": "auth.permission",
+  "pk": 32,
   "fields": {
-    "group": 1,
-    "permission": 47
+    "name": "Can view продукт",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "view_product"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 169,
+  "model": "auth.permission",
+  "pk": 33,
   "fields": {
-    "group": 1,
-    "permission": 48
+    "name": "Can add тег",
+    "content_type": [
+      "products",
+      "tag"
+    ],
+    "codename": "add_tag"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 170,
+  "model": "auth.permission",
+  "pk": 34,
   "fields": {
-    "group": 1,
-    "permission": 49
+    "name": "Can change тег",
+    "content_type": [
+      "products",
+      "tag"
+    ],
+    "codename": "change_tag"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 171,
+  "model": "auth.permission",
+  "pk": 35,
   "fields": {
-    "group": 1,
-    "permission": 50
+    "name": "Can delete тег",
+    "content_type": [
+      "products",
+      "tag"
+    ],
+    "codename": "delete_tag"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 172,
+  "model": "auth.permission",
+  "pk": 36,
   "fields": {
-    "group": 1,
-    "permission": 51
+    "name": "Can view тег",
+    "content_type": [
+      "products",
+      "tag"
+    ],
+    "codename": "view_tag"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 173,
+  "model": "auth.permission",
+  "pk": 37,
   "fields": {
-    "group": 1,
-    "permission": 52
+    "name": "Can add изображения",
+    "content_type": [
+      "products",
+      "productimage"
+    ],
+    "codename": "add_productimage"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 174,
+  "model": "auth.permission",
+  "pk": 38,
   "fields": {
-    "group": 1,
-    "permission": 57
+    "name": "Can change изображения",
+    "content_type": [
+      "products",
+      "productimage"
+    ],
+    "codename": "change_productimage"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 175,
+  "model": "auth.permission",
+  "pk": 39,
   "fields": {
-    "group": 1,
-    "permission": 58
+    "name": "Can delete изображения",
+    "content_type": [
+      "products",
+      "productimage"
+    ],
+    "codename": "delete_productimage"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 176,
+  "model": "auth.permission",
+  "pk": 40,
   "fields": {
-    "group": 1,
-    "permission": 59
+    "name": "Can view изображения",
+    "content_type": [
+      "products",
+      "productimage"
+    ],
+    "codename": "view_productimage"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 177,
+  "model": "auth.permission",
+  "pk": 41,
   "fields": {
-    "group": 1,
-    "permission": 60
+    "name": "Can add отзыв",
+    "content_type": [
+      "products",
+      "review"
+    ],
+    "codename": "add_review"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 178,
+  "model": "auth.permission",
+  "pk": 42,
   "fields": {
-    "group": 1,
-    "permission": 61
+    "name": "Can change отзыв",
+    "content_type": [
+      "products",
+      "review"
+    ],
+    "codename": "change_review"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 179,
+  "model": "auth.permission",
+  "pk": 43,
   "fields": {
-    "group": 1,
-    "permission": 62
+    "name": "Can delete отзыв",
+    "content_type": [
+      "products",
+      "review"
+    ],
+    "codename": "delete_review"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 180,
+  "model": "auth.permission",
+  "pk": 44,
   "fields": {
-    "group": 1,
-    "permission": 63
+    "name": "Can view отзыв",
+    "content_type": [
+      "products",
+      "review"
+    ],
+    "codename": "view_review"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 181,
+  "model": "auth.permission",
+  "pk": 45,
   "fields": {
-    "group": 1,
-    "permission": 64
+    "name": "Can add предложения",
+    "content_type": [
+      "shops",
+      "offer"
+    ],
+    "codename": "add_offer"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 182,
+  "model": "auth.permission",
+  "pk": 46,
   "fields": {
-    "group": 1,
-    "permission": 65
+    "name": "Can change предложения",
+    "content_type": [
+      "shops",
+      "offer"
+    ],
+    "codename": "change_offer"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 183,
+  "model": "auth.permission",
+  "pk": 47,
   "fields": {
-    "group": 1,
-    "permission": 66
+    "name": "Can delete предложения",
+    "content_type": [
+      "shops",
+      "offer"
+    ],
+    "codename": "delete_offer"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 184,
+  "model": "auth.permission",
+  "pk": 48,
   "fields": {
-    "group": 1,
-    "permission": 67
+    "name": "Can view предложения",
+    "content_type": [
+      "shops",
+      "offer"
+    ],
+    "codename": "view_offer"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 185,
+  "model": "auth.permission",
+  "pk": 49,
   "fields": {
-    "group": 1,
-    "permission": 68
+    "name": "Can add продавец",
+    "content_type": [
+      "shops",
+      "shop"
+    ],
+    "codename": "add_shop"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 186,
+  "model": "auth.permission",
+  "pk": 50,
   "fields": {
-    "group": 1,
-    "permission": 85
+    "name": "Can change продавец",
+    "content_type": [
+      "shops",
+      "shop"
+    ],
+    "codename": "change_shop"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 187,
+  "model": "auth.permission",
+  "pk": 51,
   "fields": {
-    "group": 1,
-    "permission": 86
+    "name": "Can delete продавец",
+    "content_type": [
+      "shops",
+      "shop"
+    ],
+    "codename": "delete_shop"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 188,
+  "model": "auth.permission",
+  "pk": 52,
   "fields": {
-    "group": 1,
-    "permission": 87
+    "name": "Can view продавец",
+    "content_type": [
+      "shops",
+      "shop"
+    ],
+    "codename": "view_shop"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 189,
+  "model": "auth.permission",
+  "pk": 53,
   "fields": {
-    "group": 1,
-    "permission": 88
+    "name": "Can add пользователь",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "add_user"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 190,
+  "model": "auth.permission",
+  "pk": 54,
   "fields": {
-    "group": 1,
-    "permission": 125
+    "name": "Can change пользователь",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "change_user"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 191,
+  "model": "auth.permission",
+  "pk": 55,
   "fields": {
-    "group": 1,
-    "permission": 126
+    "name": "Can delete пользователь",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "delete_user"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 192,
+  "model": "auth.permission",
+  "pk": 56,
   "fields": {
-    "group": 1,
-    "permission": 127
+    "name": "Can view пользователь",
+    "content_type": [
+      "accounts",
+      "user"
+    ],
+    "codename": "view_user"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 193,
+  "model": "auth.permission",
+  "pk": 57,
   "fields": {
-    "group": 2,
-    "permission": 128
+    "name": "Can add история просмотров",
+    "content_type": [
+      "accounts",
+      "viewhistory"
+    ],
+    "codename": "add_viewhistory"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 194,
+  "model": "auth.permission",
+  "pk": 58,
   "fields": {
-    "group": 2,
-    "permission": 132
+    "name": "Can change история просмотров",
+    "content_type": [
+      "accounts",
+      "viewhistory"
+    ],
+    "codename": "change_viewhistory"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 195,
+  "model": "auth.permission",
+  "pk": 59,
   "fields": {
-    "group": 2,
-    "permission": 136
+    "name": "Can delete история просмотров",
+    "content_type": [
+      "accounts",
+      "viewhistory"
+    ],
+    "codename": "delete_viewhistory"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 196,
+  "model": "auth.permission",
+  "pk": 60,
   "fields": {
-    "group": 2,
-    "permission": 28
+    "name": "Can view история просмотров",
+    "content_type": [
+      "accounts",
+      "viewhistory"
+    ],
+    "codename": "view_viewhistory"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 197,
+  "model": "auth.permission",
+  "pk": 61,
   "fields": {
-    "group": 2,
-    "permission": 32
+    "name": "Can add корзина",
+    "content_type": [
+      "cart",
+      "cart"
+    ],
+    "codename": "add_cart"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 198,
+  "model": "auth.permission",
+  "pk": 62,
   "fields": {
-    "group": 2,
-    "permission": 36
+    "name": "Can change корзина",
+    "content_type": [
+      "cart",
+      "cart"
+    ],
+    "codename": "change_cart"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 199,
+  "model": "auth.permission",
+  "pk": 63,
   "fields": {
-    "group": 2,
-    "permission": 40
+    "name": "Can delete корзина",
+    "content_type": [
+      "cart",
+      "cart"
+    ],
+    "codename": "delete_cart"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 200,
+  "model": "auth.permission",
+  "pk": 64,
   "fields": {
-    "group": 2,
-    "permission": 41
+    "name": "Can view корзина",
+    "content_type": [
+      "cart",
+      "cart"
+    ],
+    "codename": "view_cart"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 201,
+  "model": "auth.permission",
+  "pk": 65,
   "fields": {
-    "group": 2,
-    "permission": 42
+    "name": "Can add товар в корзине",
+    "content_type": [
+      "cart",
+      "productincart"
+    ],
+    "codename": "add_productincart"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 202,
+  "model": "auth.permission",
+  "pk": 66,
   "fields": {
-    "group": 2,
-    "permission": 43
+    "name": "Can change товар в корзине",
+    "content_type": [
+      "cart",
+      "productincart"
+    ],
+    "codename": "change_productincart"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 203,
+  "model": "auth.permission",
+  "pk": 67,
   "fields": {
-    "group": 2,
-    "permission": 44
+    "name": "Can delete товар в корзине",
+    "content_type": [
+      "cart",
+      "productincart"
+    ],
+    "codename": "delete_productincart"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 204,
+  "model": "auth.permission",
+  "pk": 68,
   "fields": {
-    "group": 2,
-    "permission": 48
+    "name": "Can view товар в корзине",
+    "content_type": [
+      "cart",
+      "productincart"
+    ],
+    "codename": "view_productincart"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 205,
+  "model": "auth.permission",
+  "pk": 69,
   "fields": {
-    "group": 2,
-    "permission": 52
+    "name": "Can add лог импорта",
+    "content_type": [
+      "imports",
+      "importlog"
+    ],
+    "codename": "add_importlog"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 206,
+  "model": "auth.permission",
+  "pk": 70,
   "fields": {
-    "group": 2,
-    "permission": 56
+    "name": "Can change лог импорта",
+    "content_type": [
+      "imports",
+      "importlog"
+    ],
+    "codename": "change_importlog"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 207,
+  "model": "auth.permission",
+  "pk": 71,
   "fields": {
-    "group": 2,
-    "permission": 57
+    "name": "Can delete лог импорта",
+    "content_type": [
+      "imports",
+      "importlog"
+    ],
+    "codename": "delete_importlog"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 208,
+  "model": "auth.permission",
+  "pk": 72,
   "fields": {
-    "group": 2,
-    "permission": 58
+    "name": "Can view лог импорта",
+    "content_type": [
+      "imports",
+      "importlog"
+    ],
+    "codename": "view_importlog"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 209,
+  "model": "auth.permission",
+  "pk": 73,
   "fields": {
-    "group": 2,
-    "permission": 59
+    "name": "Can add продукт в логе импорта",
+    "content_type": [
+      "imports",
+      "importlogproduct"
+    ],
+    "codename": "add_importlogproduct"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 210,
+  "model": "auth.permission",
+  "pk": 74,
   "fields": {
-    "group": 2,
-    "permission": 60
+    "name": "Can change продукт в логе импорта",
+    "content_type": [
+      "imports",
+      "importlogproduct"
+    ],
+    "codename": "change_importlogproduct"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 211,
+  "model": "auth.permission",
+  "pk": 75,
   "fields": {
-    "group": 2,
-    "permission": 65
+    "name": "Can delete продукт в логе импорта",
+    "content_type": [
+      "imports",
+      "importlogproduct"
+    ],
+    "codename": "delete_importlogproduct"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 212,
+  "model": "auth.permission",
+  "pk": 76,
   "fields": {
-    "group": 2,
-    "permission": 66
+    "name": "Can view продукт в логе импорта",
+    "content_type": [
+      "imports",
+      "importlogproduct"
+    ],
+    "codename": "view_importlogproduct"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 213,
+  "model": "auth.permission",
+  "pk": 77,
   "fields": {
-    "group": 2,
-    "permission": 67
+    "name": "Can add настройки сайта",
+    "content_type": [
+      "settings_app",
+      "sitesettings"
+    ],
+    "codename": "add_sitesettings"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 214,
+  "model": "auth.permission",
+  "pk": 78,
   "fields": {
-    "group": 2,
-    "permission": 68
+    "name": "Can change настройки сайта",
+    "content_type": [
+      "settings_app",
+      "sitesettings"
+    ],
+    "codename": "change_sitesettings"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 215,
+  "model": "auth.permission",
+  "pk": 79,
   "fields": {
-    "group": 2,
-    "permission": 81
+    "name": "Can delete настройки сайта",
+    "content_type": [
+      "settings_app",
+      "sitesettings"
+    ],
+    "codename": "delete_sitesettings"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 216,
+  "model": "auth.permission",
+  "pk": 80,
   "fields": {
-    "group": 2,
-    "permission": 82
+    "name": "Can view настройки сайта",
+    "content_type": [
+      "settings_app",
+      "sitesettings"
+    ],
+    "codename": "view_sitesettings"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 217,
+  "model": "auth.permission",
+  "pk": 81,
   "fields": {
-    "group": 2,
-    "permission": 83
+    "name": "Can add заказ",
+    "content_type": [
+      "order",
+      "order"
+    ],
+    "codename": "add_order"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 218,
+  "model": "auth.permission",
+  "pk": 82,
   "fields": {
-    "group": 2,
-    "permission": 84
+    "name": "Can change заказ",
+    "content_type": [
+      "order",
+      "order"
+    ],
+    "codename": "change_order"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 219,
+  "model": "auth.permission",
+  "pk": 83,
   "fields": {
-    "group": 2,
-    "permission": 85
+    "name": "Can delete заказ",
+    "content_type": [
+      "order",
+      "order"
+    ],
+    "codename": "delete_order"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 220,
+  "model": "auth.permission",
+  "pk": 84,
   "fields": {
-    "group": 2,
-    "permission": 86
+    "name": "Can view заказ",
+    "content_type": [
+      "order",
+      "order"
+    ],
+    "codename": "view_order"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 221,
+  "model": "auth.permission",
+  "pk": 85,
   "fields": {
-    "group": 2,
-    "permission": 87
+    "name": "Can add сравнения",
+    "content_type": [
+      "comparison",
+      "comparison"
+    ],
+    "codename": "add_comparison"
   }
 },
 {
-  "model": "auth.group_permissions",
-  "pk": 222,
+  "model": "auth.permission",
+  "pk": 86,
   "fields": {
-    "group": 2,
-    "permission": 88
+    "name": "Can change сравнения",
+    "content_type": [
+      "comparison",
+      "comparison"
+    ],
+    "codename": "change_comparison"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 87,
+  "fields": {
+    "name": "Can delete сравнения",
+    "content_type": [
+      "comparison",
+      "comparison"
+    ],
+    "codename": "delete_comparison"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 88,
+  "fields": {
+    "name": "Can view сравнения",
+    "content_type": [
+      "comparison",
+      "comparison"
+    ],
+    "codename": "view_comparison"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 89,
+  "fields": {
+    "name": "Can add crontab",
+    "content_type": [
+      "django_celery_beat",
+      "crontabschedule"
+    ],
+    "codename": "add_crontabschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 90,
+  "fields": {
+    "name": "Can change crontab",
+    "content_type": [
+      "django_celery_beat",
+      "crontabschedule"
+    ],
+    "codename": "change_crontabschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 91,
+  "fields": {
+    "name": "Can delete crontab",
+    "content_type": [
+      "django_celery_beat",
+      "crontabschedule"
+    ],
+    "codename": "delete_crontabschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 92,
+  "fields": {
+    "name": "Can view crontab",
+    "content_type": [
+      "django_celery_beat",
+      "crontabschedule"
+    ],
+    "codename": "view_crontabschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 93,
+  "fields": {
+    "name": "Can add interval",
+    "content_type": [
+      "django_celery_beat",
+      "intervalschedule"
+    ],
+    "codename": "add_intervalschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 94,
+  "fields": {
+    "name": "Can change interval",
+    "content_type": [
+      "django_celery_beat",
+      "intervalschedule"
+    ],
+    "codename": "change_intervalschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 95,
+  "fields": {
+    "name": "Can delete interval",
+    "content_type": [
+      "django_celery_beat",
+      "intervalschedule"
+    ],
+    "codename": "delete_intervalschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 96,
+  "fields": {
+    "name": "Can view interval",
+    "content_type": [
+      "django_celery_beat",
+      "intervalschedule"
+    ],
+    "codename": "view_intervalschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 97,
+  "fields": {
+    "name": "Can add periodic task",
+    "content_type": [
+      "django_celery_beat",
+      "periodictask"
+    ],
+    "codename": "add_periodictask"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 98,
+  "fields": {
+    "name": "Can change periodic task",
+    "content_type": [
+      "django_celery_beat",
+      "periodictask"
+    ],
+    "codename": "change_periodictask"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 99,
+  "fields": {
+    "name": "Can delete periodic task",
+    "content_type": [
+      "django_celery_beat",
+      "periodictask"
+    ],
+    "codename": "delete_periodictask"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 100,
+  "fields": {
+    "name": "Can view periodic task",
+    "content_type": [
+      "django_celery_beat",
+      "periodictask"
+    ],
+    "codename": "view_periodictask"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 101,
+  "fields": {
+    "name": "Can add periodic tasks",
+    "content_type": [
+      "django_celery_beat",
+      "periodictasks"
+    ],
+    "codename": "add_periodictasks"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 102,
+  "fields": {
+    "name": "Can change periodic tasks",
+    "content_type": [
+      "django_celery_beat",
+      "periodictasks"
+    ],
+    "codename": "change_periodictasks"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 103,
+  "fields": {
+    "name": "Can delete periodic tasks",
+    "content_type": [
+      "django_celery_beat",
+      "periodictasks"
+    ],
+    "codename": "delete_periodictasks"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 104,
+  "fields": {
+    "name": "Can view periodic tasks",
+    "content_type": [
+      "django_celery_beat",
+      "periodictasks"
+    ],
+    "codename": "view_periodictasks"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 105,
+  "fields": {
+    "name": "Can add solar event",
+    "content_type": [
+      "django_celery_beat",
+      "solarschedule"
+    ],
+    "codename": "add_solarschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 106,
+  "fields": {
+    "name": "Can change solar event",
+    "content_type": [
+      "django_celery_beat",
+      "solarschedule"
+    ],
+    "codename": "change_solarschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 107,
+  "fields": {
+    "name": "Can delete solar event",
+    "content_type": [
+      "django_celery_beat",
+      "solarschedule"
+    ],
+    "codename": "delete_solarschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 108,
+  "fields": {
+    "name": "Can view solar event",
+    "content_type": [
+      "django_celery_beat",
+      "solarschedule"
+    ],
+    "codename": "view_solarschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 109,
+  "fields": {
+    "name": "Can add clocked",
+    "content_type": [
+      "django_celery_beat",
+      "clockedschedule"
+    ],
+    "codename": "add_clockedschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 110,
+  "fields": {
+    "name": "Can change clocked",
+    "content_type": [
+      "django_celery_beat",
+      "clockedschedule"
+    ],
+    "codename": "change_clockedschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 111,
+  "fields": {
+    "name": "Can delete clocked",
+    "content_type": [
+      "django_celery_beat",
+      "clockedschedule"
+    ],
+    "codename": "delete_clockedschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 112,
+  "fields": {
+    "name": "Can view clocked",
+    "content_type": [
+      "django_celery_beat",
+      "clockedschedule"
+    ],
+    "codename": "view_clockedschedule"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 113,
+  "fields": {
+    "name": "Can add task result",
+    "content_type": [
+      "django_celery_results",
+      "taskresult"
+    ],
+    "codename": "add_taskresult"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 114,
+  "fields": {
+    "name": "Can change task result",
+    "content_type": [
+      "django_celery_results",
+      "taskresult"
+    ],
+    "codename": "change_taskresult"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 115,
+  "fields": {
+    "name": "Can delete task result",
+    "content_type": [
+      "django_celery_results",
+      "taskresult"
+    ],
+    "codename": "delete_taskresult"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 116,
+  "fields": {
+    "name": "Can view task result",
+    "content_type": [
+      "django_celery_results",
+      "taskresult"
+    ],
+    "codename": "view_taskresult"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 117,
+  "fields": {
+    "name": "Can add chord counter",
+    "content_type": [
+      "django_celery_results",
+      "chordcounter"
+    ],
+    "codename": "add_chordcounter"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 118,
+  "fields": {
+    "name": "Can change chord counter",
+    "content_type": [
+      "django_celery_results",
+      "chordcounter"
+    ],
+    "codename": "change_chordcounter"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 119,
+  "fields": {
+    "name": "Can delete chord counter",
+    "content_type": [
+      "django_celery_results",
+      "chordcounter"
+    ],
+    "codename": "delete_chordcounter"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 120,
+  "fields": {
+    "name": "Can view chord counter",
+    "content_type": [
+      "django_celery_results",
+      "chordcounter"
+    ],
+    "codename": "view_chordcounter"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 121,
+  "fields": {
+    "name": "Can add group result",
+    "content_type": [
+      "django_celery_results",
+      "groupresult"
+    ],
+    "codename": "add_groupresult"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 122,
+  "fields": {
+    "name": "Can change group result",
+    "content_type": [
+      "django_celery_results",
+      "groupresult"
+    ],
+    "codename": "change_groupresult"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 123,
+  "fields": {
+    "name": "Can delete group result",
+    "content_type": [
+      "django_celery_results",
+      "groupresult"
+    ],
+    "codename": "delete_groupresult"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 124,
+  "fields": {
+    "name": "Can view group result",
+    "content_type": [
+      "django_celery_results",
+      "groupresult"
+    ],
+    "codename": "view_groupresult"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 125,
+  "fields": {
+    "name": "Can add скидка на стоимость корзины",
+    "content_type": [
+      "discounts",
+      "discountcart"
+    ],
+    "codename": "add_discountcart"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 126,
+  "fields": {
+    "name": "Can change скидка на стоимость корзины",
+    "content_type": [
+      "discounts",
+      "discountcart"
+    ],
+    "codename": "change_discountcart"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 127,
+  "fields": {
+    "name": "Can delete скидка на стоимость корзины",
+    "content_type": [
+      "discounts",
+      "discountcart"
+    ],
+    "codename": "delete_discountcart"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 128,
+  "fields": {
+    "name": "Can view скидка на стоимость корзины",
+    "content_type": [
+      "discounts",
+      "discountcart"
+    ],
+    "codename": "view_discountcart"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 129,
+  "fields": {
+    "name": "Can add скидка на набор товаров",
+    "content_type": [
+      "discounts",
+      "discountset"
+    ],
+    "codename": "add_discountset"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 130,
+  "fields": {
+    "name": "Can change скидка на набор товаров",
+    "content_type": [
+      "discounts",
+      "discountset"
+    ],
+    "codename": "change_discountset"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 131,
+  "fields": {
+    "name": "Can delete скидка на набор товаров",
+    "content_type": [
+      "discounts",
+      "discountset"
+    ],
+    "codename": "delete_discountset"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 132,
+  "fields": {
+    "name": "Can view скидка на набор товаров",
+    "content_type": [
+      "discounts",
+      "discountset"
+    ],
+    "codename": "view_discountset"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 133,
+  "fields": {
+    "name": "Can add скидка на товар",
+    "content_type": [
+      "discounts",
+      "discountproduct"
+    ],
+    "codename": "add_discountproduct"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 134,
+  "fields": {
+    "name": "Can change скидка на товар",
+    "content_type": [
+      "discounts",
+      "discountproduct"
+    ],
+    "codename": "change_discountproduct"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 135,
+  "fields": {
+    "name": "Can delete скидка на товар",
+    "content_type": [
+      "discounts",
+      "discountproduct"
+    ],
+    "codename": "delete_discountproduct"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 136,
+  "fields": {
+    "name": "Can view скидка на товар",
+    "content_type": [
+      "discounts",
+      "discountproduct"
+    ],
+    "codename": "view_discountproduct"
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Buyers",
+    "permissions": [
+      [
+        "add_viewhistory",
+        "accounts",
+        "viewhistory"
+      ],
+      [
+        "change_viewhistory",
+        "accounts",
+        "viewhistory"
+      ],
+      [
+        "delete_viewhistory",
+        "accounts",
+        "viewhistory"
+      ],
+      [
+        "view_viewhistory",
+        "accounts",
+        "viewhistory"
+      ],
+      [
+        "add_cart",
+        "cart",
+        "cart"
+      ],
+      [
+        "change_cart",
+        "cart",
+        "cart"
+      ],
+      [
+        "delete_cart",
+        "cart",
+        "cart"
+      ],
+      [
+        "view_cart",
+        "cart",
+        "cart"
+      ],
+      [
+        "add_productincart",
+        "cart",
+        "productincart"
+      ],
+      [
+        "change_productincart",
+        "cart",
+        "productincart"
+      ],
+      [
+        "delete_productincart",
+        "cart",
+        "productincart"
+      ],
+      [
+        "view_productincart",
+        "cart",
+        "productincart"
+      ],
+      [
+        "add_comparison",
+        "comparison",
+        "comparison"
+      ],
+      [
+        "change_comparison",
+        "comparison",
+        "comparison"
+      ],
+      [
+        "delete_comparison",
+        "comparison",
+        "comparison"
+      ],
+      [
+        "view_comparison",
+        "comparison",
+        "comparison"
+      ],
+      [
+        "add_discountcart",
+        "discounts",
+        "discountcart"
+      ],
+      [
+        "change_discountcart",
+        "discounts",
+        "discountcart"
+      ],
+      [
+        "delete_discountcart",
+        "discounts",
+        "discountcart"
+      ],
+      [
+        "view_discountcart",
+        "discounts",
+        "discountcart"
+      ],
+      [
+        "add_discountproduct",
+        "discounts",
+        "discountproduct"
+      ],
+      [
+        "change_discountproduct",
+        "discounts",
+        "discountproduct"
+      ],
+      [
+        "delete_discountproduct",
+        "discounts",
+        "discountproduct"
+      ],
+      [
+        "view_discountproduct",
+        "discounts",
+        "discountproduct"
+      ],
+      [
+        "add_discountset",
+        "discounts",
+        "discountset"
+      ],
+      [
+        "change_discountset",
+        "discounts",
+        "discountset"
+      ],
+      [
+        "delete_discountset",
+        "discounts",
+        "discountset"
+      ],
+      [
+        "view_discountset",
+        "discounts",
+        "discountset"
+      ],
+      [
+        "add_category",
+        "products",
+        "category"
+      ],
+      [
+        "change_category",
+        "products",
+        "category"
+      ],
+      [
+        "delete_category",
+        "products",
+        "category"
+      ],
+      [
+        "view_category",
+        "products",
+        "category"
+      ],
+      [
+        "add_product",
+        "products",
+        "product"
+      ],
+      [
+        "change_product",
+        "products",
+        "product"
+      ],
+      [
+        "delete_product",
+        "products",
+        "product"
+      ],
+      [
+        "view_product",
+        "products",
+        "product"
+      ],
+      [
+        "add_productimage",
+        "products",
+        "productimage"
+      ],
+      [
+        "change_productimage",
+        "products",
+        "productimage"
+      ],
+      [
+        "delete_productimage",
+        "products",
+        "productimage"
+      ],
+      [
+        "view_productimage",
+        "products",
+        "productimage"
+      ],
+      [
+        "add_review",
+        "products",
+        "review"
+      ],
+      [
+        "change_review",
+        "products",
+        "review"
+      ],
+      [
+        "delete_review",
+        "products",
+        "review"
+      ],
+      [
+        "view_review",
+        "products",
+        "review"
+      ],
+      [
+        "add_tag",
+        "products",
+        "tag"
+      ],
+      [
+        "change_tag",
+        "products",
+        "tag"
+      ],
+      [
+        "delete_tag",
+        "products",
+        "tag"
+      ],
+      [
+        "view_tag",
+        "products",
+        "tag"
+      ],
+      [
+        "add_offer",
+        "shops",
+        "offer"
+      ],
+      [
+        "change_offer",
+        "shops",
+        "offer"
+      ],
+      [
+        "delete_offer",
+        "shops",
+        "offer"
+      ],
+      [
+        "view_offer",
+        "shops",
+        "offer"
+      ],
+      [
+        "add_shop",
+        "shops",
+        "shop"
+      ],
+      [
+        "change_shop",
+        "shops",
+        "shop"
+      ],
+      [
+        "delete_shop",
+        "shops",
+        "shop"
+      ],
+      [
+        "view_shop",
+        "shops",
+        "shop"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "Sellers",
+    "permissions": [
+      [
+        "view_user",
+        "accounts",
+        "user"
+      ],
+      [
+        "add_viewhistory",
+        "accounts",
+        "viewhistory"
+      ],
+      [
+        "change_viewhistory",
+        "accounts",
+        "viewhistory"
+      ],
+      [
+        "delete_viewhistory",
+        "accounts",
+        "viewhistory"
+      ],
+      [
+        "view_viewhistory",
+        "accounts",
+        "viewhistory"
+      ],
+      [
+        "add_productincart",
+        "cart",
+        "productincart"
+      ],
+      [
+        "change_productincart",
+        "cart",
+        "productincart"
+      ],
+      [
+        "delete_productincart",
+        "cart",
+        "productincart"
+      ],
+      [
+        "view_productincart",
+        "cart",
+        "productincart"
+      ],
+      [
+        "add_comparison",
+        "comparison",
+        "comparison"
+      ],
+      [
+        "change_comparison",
+        "comparison",
+        "comparison"
+      ],
+      [
+        "delete_comparison",
+        "comparison",
+        "comparison"
+      ],
+      [
+        "view_comparison",
+        "comparison",
+        "comparison"
+      ],
+      [
+        "view_discountcart",
+        "discounts",
+        "discountcart"
+      ],
+      [
+        "view_discountproduct",
+        "discounts",
+        "discountproduct"
+      ],
+      [
+        "view_discountset",
+        "discounts",
+        "discountset"
+      ],
+      [
+        "add_order",
+        "order",
+        "order"
+      ],
+      [
+        "change_order",
+        "order",
+        "order"
+      ],
+      [
+        "delete_order",
+        "order",
+        "order"
+      ],
+      [
+        "view_order",
+        "order",
+        "order"
+      ],
+      [
+        "view_category",
+        "products",
+        "category"
+      ],
+      [
+        "view_product",
+        "products",
+        "product"
+      ],
+      [
+        "view_productimage",
+        "products",
+        "productimage"
+      ],
+      [
+        "add_review",
+        "products",
+        "review"
+      ],
+      [
+        "change_review",
+        "products",
+        "review"
+      ],
+      [
+        "delete_review",
+        "products",
+        "review"
+      ],
+      [
+        "view_review",
+        "products",
+        "review"
+      ],
+      [
+        "view_tag",
+        "products",
+        "tag"
+      ],
+      [
+        "view_offer",
+        "shops",
+        "offer"
+      ],
+      [
+        "view_shop",
+        "shops",
+        "shop"
+      ]
+    ]
   }
 }
 ]
