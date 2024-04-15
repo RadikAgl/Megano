@@ -32,16 +32,16 @@
                         </div>
                         <div class="Tabs-wrap">
                             <div class="Tabs-block" id="description">
-                                <h3>{{ _('Событие: ') }}{{ discount_set.title }}</h3>
-                                <h3>{{ _('Размер скидки на корзину: ') }}{{ discount_set.discount_amount }}$</h3>
+                                <h3>{{ _('Событие') }}: {{ discount_set.title }}</h3>
+                                <h3>{{ _('Размер скидки на корзину') }}: {{ discount_set.discount_amount }}$</h3>
                                 <p>{{ discount_set.description }}</p>
-                                <h3>{{ _('Товары из первого набора:') }}</h3>
+                                <h3>{{ _('Товары из первого набора') }}:</h3>
                                 {% for pr in discount_set.first_group.all() %}
                                     <a href="{{ url('product:product-details', pr.id) }}">
                                         <h4>{{ pr.name }}</h4>
                                     </a>
                                 {% endfor %}
-                                <h3>{{ _('Товары из второго набора:') }}</h3>
+                                <h3>{{ _('Товары из второго набора') }}:</h3>
                                 {% for pr in discount_set.second_group.all() %}
                                     <a href="{{ url('product:product-details', pr.id) }}">
                                         <h4>{{ pr.name }}</h4>

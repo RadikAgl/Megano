@@ -4,7 +4,7 @@ import django_filters
 from django.db.models import QuerySet, Count, Sum
 from django_filters import CharFilter
 from django_filters.filters import ModelMultipleChoiceFilter, ModelChoiceFilter
-
+from django.utils.translation import gettext_lazy as _
 from products.models import Tag, Category, Product
 from shops.models import Offer
 
@@ -15,10 +15,10 @@ class CustomOrderingFilter(django_filters.OrderingFilter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.extra["choices"] += [
-            ("popularity", "Популярности"),
-            ("-popularity", "Популярности (по убыванию)"),
-            ("reviews", "Отзывам"),
-            ("-reviews", "Отзывам (по убыванию)"),
+            ("popularity", _("Популярности")),
+            ("-popularity", _("Популярности (по убыванию)")),
+            ("reviews", _("Отзывам")),
+            ("-reviews", _("Отзывам (по убыванию)")),
         ]
 
     def filter(self, qs, value):
@@ -62,7 +62,7 @@ class ProductFilter(django_filters.FilterSet):
             ("avg_price", "avg_price"),
             ("created_at", "created_at"),
         ),
-        field_labels={"avg_price": "Цене", "created_at": "Новизне"},
+        field_labels={"avg_price": _("Цене"), "created_at": _("Новизне")},
     )
 
     class Meta:
