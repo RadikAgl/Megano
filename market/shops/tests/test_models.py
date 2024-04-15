@@ -87,9 +87,7 @@ class OfferModelTest(TestCase):
         self.assertEqual(decimal_places, 2)
 
     def test_fixture_loading(self) -> None:
-        remains_products_in_offers: Any = Offer.objects.aggregate(remains_sum=Sum("remains"))[
-            "remains_sum"
-        ]  # Fix here
+        remains_products_in_offers: Any = Offer.objects.aggregate(remains_sum=Sum("remains"))["remains_sum"]
         shops_count: int = Shop.objects.count()
         offers_count: int = Offer.objects.count()
 
