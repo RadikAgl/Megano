@@ -8,9 +8,25 @@ Classes:
 """
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import Group
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 
 
-class GroupRequiredMixin(UserPassesTestMixin):
+class BaseRequiredMixin(UserPassesTestMixin):
+    """
+    Базовый миксин для проверки принадлежности пользователя к определенной группе
+    и авторизации.
+    """
+
+    def test_func(self):
+        user = self.request.user
+        if user.is_authenticated:
+            return self.check_group(user)
+        else:
+            return redirect(reverse_lazy("login"))
+
+
+class GroupRequiredMixin(BaseRequiredMixin):
     """
     Миксин, который требует, чтобы пользователь был членом определенной группы.
     """
@@ -22,7 +38,7 @@ class GroupRequiredMixin(UserPassesTestMixin):
         return False
 
 
-class SellersRequiredMixin(UserPassesTestMixin):
+class SellersRequiredMixin(BaseRequiredMixin):
     """
     Миксин, который требует, чтобы пользователь был продавцом.
     """
@@ -34,7 +50,7 @@ class SellersRequiredMixin(UserPassesTestMixin):
         return False
 
 
-class BuyersRequiredMixin(UserPassesTestMixin):
+class BuyersRequiredMixin(BaseRequiredMixin):
     """
     Миксин, который требует, чтобы пользователь был покупателем.
     """

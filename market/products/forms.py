@@ -15,13 +15,22 @@ class ReviewsForm(forms.ModelForm):
         """
 
         model = Review
-        fields = ("text", "rating")
+        fields = ("product", "text", "rating")
         widgets = {
             "text": Textarea(
                 attrs={
                     "class": "form-textarea",
                     "placeholder": "Review",
                     "id": "review",
+                }
+            ),
+            "rating": forms.NumberInput(
+                attrs={
+                    "class": "form-numberinput",
+                    "placeholder": "Rating",
+                    "id": "rating",
+                    "min": 1,
+                    "max": 5,
                 }
             ),
         }

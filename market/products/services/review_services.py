@@ -18,7 +18,7 @@ class ReviewService:
         self.product = product
         self.profile = profile
 
-    def add(self, review: str) -> None:
+    def add(self, text: str, rating: int) -> None:
         """
         Добавляет отзыв к товару
         :param review: текст отзыва о товаре
@@ -26,8 +26,9 @@ class ReviewService:
         """
         Review.objects.create(
             user=self.profile,
-            product_id=self.product,
-            text=review,
+            product=self.product,
+            text=text,
+            rating=rating,
         )
 
     def get_reviews_for_product(self) -> QuerySet[Review]:
