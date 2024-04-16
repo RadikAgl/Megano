@@ -17,6 +17,9 @@ from dotenv import load_dotenv
 from yookassa import Configuration, Payment
 import os
 from .service import translate
+from cart.cart import CartInstance
+from django.db.models import F
+from shops.models import Offer
 
 load_dotenv()
 
@@ -85,14 +88,14 @@ class FourStepView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
 
     def post(self, request, *args, **kwargs):
         payment_type = request.POST.get('yookassa-payment')
-        cart = Cart.objects.get(user=self.request.user.id)
+        cartt = Cart.objects.get(user=request.user.id)
         user = User.objects.get(pk=request.user.id)
-        total_price = ProductInCart.objects.filter(cart=cart)[:3]
-        db_price = 0
-        for price in total_price:
-            db_price += price.offer.price * price.quantity
+        cart = CartInstance(request)
+        products = cart.get_offers_with_quantity()
+        for product, count in products:
+            Offer.objects.filter(id=product.id).update(remains=F('remains') - count)
         Order.objects.update_or_create(
-            cart=cart,
+            cart=cartt,
             user=user,
             defaults={
                 "phone": request.session[f"{self.request.user.id}"]["phone"],
@@ -101,7 +104,7 @@ class FourStepView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
                 "city": request.session[f"{self.request.user.id}"]["city"],
                 "address": request.session[f"{self.request.user.id}"]["address"],
                 "payment_type": request.session[f"{self.request.user.id}"]["payment_type"],
-                "total_price": db_price,
+                "total_price": cart.get_total_price(),
             },
         )
         match payment_type:
@@ -111,7 +114,7 @@ class FourStepView(LoginRequiredMixin, BuyersRequiredMixin, ListView):
                 description = 'Товары в корзине'
                 payment = Payment.create({
                     "amount": {
-                        "value": str(db_price * 90),
+                        "value": cart.get_total_price(),
                         "currency": currency
                     },
                     "confirmation": {

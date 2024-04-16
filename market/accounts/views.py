@@ -38,6 +38,7 @@ from .forms import (RegistrationForm,
 from .models import ViewHistory
 from .service import mail
 import random
+from shops.models import Offer
 
 
 class ProfileView(LoginRequiredMixin, FormView):
@@ -77,6 +78,8 @@ class AcountView(LoginRequiredMixin, TemplateView):
         try:
             if self.request.session[f'{self.request.user.id}']['id']:
                 Order.objects.filter(user=self.request.user.id).update(status=OrderStatus.PAID)
+                Order.objects.filter(user=self.request.user.id).delete()
+
                 context['paid'] = 'оплачено'
                 return context
         except KeyError:

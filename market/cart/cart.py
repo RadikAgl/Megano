@@ -219,7 +219,7 @@ class CartInstance:
 
         return [Offer.objects.get(pk=int(idx)) for idx in self.cart.keys()]
 
-    def __get_offers_with_quantity(self):
+    def get_offers_with_quantity(self):
         """Получение всех товаров с количеством из корзины"""
 
         if self.__use_db:
@@ -287,5 +287,5 @@ class CartInstance:
             total_price -= discount
             return total_price if total_price > 1 else 1
 
-        offers_with_quantity = self.__get_offers_with_quantity()
+        offers_with_quantity = self.get_offers_with_quantity()
         return calculate_products_discount_total_price(offers_with_quantity)
