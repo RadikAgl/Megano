@@ -34,3 +34,10 @@ class ReviewsForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class CartAddProductCatalogForm(forms.Form):
+    """Форма для добавления товаров в корзину"""
+
+    quantity = forms.IntegerField(required=False, initial=1, widget=forms.HiddenInput)
+    update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)

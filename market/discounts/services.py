@@ -1,7 +1,7 @@
 """Сервисы приложения discounts"""
 
-from _decimal import Decimal
 from typing import Tuple
+from _decimal import Decimal
 
 from django.utils import timezone
 
@@ -46,7 +46,7 @@ def calculate_cart(price: Decimal) -> Tuple[Decimal | int, int]:
 
 
 def calculate_product_price_with_discount(offer: Offer) -> Decimal:
-    """Возвращает стоимость товара в корзине с учетом скидки"""
+    """Возвращает стоимость товара с учетом скидки"""
 
     discount_products = DiscountProduct.objects.filter(
         start_date__lte=timezone.now().date(), end_date__gte=timezone.now().date(), is_active=True
@@ -58,13 +58,3 @@ def calculate_product_price_with_discount(offer: Offer) -> Decimal:
         if offer.product in discount.products.all():
             return Decimal(price - price * discount.percentage / 100)
     return price
-
-
-def calculate_products_discount_total_price(
-    offers: list[tuple[Offer, int]],
-) -> Decimal | int:
-    """Возвращает стоимость корзины с учетом скидок на товары"""
-    total_price = 0
-    for offer in offers:
-        total_price += calculate_product_price_with_discount(offer[0]) * offer[1]
-    return total_price
