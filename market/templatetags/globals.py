@@ -2,7 +2,7 @@
 
 from django_jinja import library
 
-from products.models import Category, Product
+from products.models import Category
 
 
 @library.global_function
@@ -19,10 +19,3 @@ def get_categories() -> dict:
         "main_categories": all_categories.filter(parent=None),
         "children": children,
     }
-
-
-@library.global_function
-def get_first_product_name() -> Product:
-    """Получение первого товара из каталога"""
-
-    return Product.objects.first()

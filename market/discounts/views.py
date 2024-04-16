@@ -3,7 +3,6 @@
 
 from django.views.generic import ListView, DetailView
 
-from accounts.group_mixins import BuyersRequiredMixin
 from discounts.models import DiscountProduct, DiscountCart, DiscountSet
 
 
@@ -32,7 +31,7 @@ class DiscountListView(ListView):
         return DiscountProduct.objects.prefetch_related("products").filter(is_active=True)
 
 
-class DiscountProductDetailView(BuyersRequiredMixin, DetailView):
+class DiscountProductDetailView(DetailView):
     """Детальная страница скидки продукта"""
 
     template_name = "discounts/discount-product.jinja2"
@@ -40,7 +39,7 @@ class DiscountProductDetailView(BuyersRequiredMixin, DetailView):
     context_object_name = "discount_product"
 
 
-class DiscountCartDetailView(BuyersRequiredMixin, DetailView):
+class DiscountCartDetailView(DetailView):
     """Детальная страница скидки корзины"""
 
     template_name = "discounts/discount-cart.jinja2"
@@ -48,7 +47,7 @@ class DiscountCartDetailView(BuyersRequiredMixin, DetailView):
     context_object_name = "discount_cart"
 
 
-class DiscountSetDetailView(BuyersRequiredMixin, DetailView):
+class DiscountSetDetailView(DetailView):
     """Детальная страница скидки категории"""
 
     template_name = "discounts/discount-set.jinja2"
