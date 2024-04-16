@@ -17,7 +17,7 @@ from django_filters.views import FilterView
 
 from accounts.models import ViewHistory
 from cart.cart import CartInstance
-from cart.forms import CartAddProductCatalogForm, CartAddProductForm
+from cart.forms import CartAddProductForm
 from comparison.services import get_comparison_list
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
@@ -25,9 +25,13 @@ from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
 from . import constants
 from .filters import ProductFilter
-from .forms import ReviewsForm
+from .forms import ReviewsForm, CartAddProductCatalogForm
 from .models import Product, ProductImage, Review
-from .services.catalog_services import get_popular_tags, relative_url, get_paginate_products_by
+from .services.catalog_services import (
+    get_popular_tags,
+    get_paginate_products_by,
+    get_full_path_of_request_without_param_page,
+)
 from .services.product_services import (
     get_discount_for_product,
     invalidate_product_details_cache,
@@ -73,7 +77,7 @@ class MainPageView(TemplateView):
         context["product_of_day"] = main_page_service.get_product_of_day()
         context["comparison_count"] = comparison_count
         context["cart_form"] = CartAddProductCatalogForm()
-        context["time_to_midnight"] = main_page_service.get_midnight_tomorrow()
+        context["time_to_midnight"] = main_page_service.get_tomorrow_date()
         return context
 
     def post(self, request: HttpRequest, **kwargs):
@@ -94,7 +98,7 @@ class CatalogView(FilterView):
         context = super().get_context_data(**kwargs)
         context["tags"] = get_popular_tags()
         context["cart_form"] = CartAddProductCatalogForm()
-        context["relative_url"] = relative_url(self.request)
+        context["relative_url"] = get_full_path_of_request_without_param_page(self.request)
 
         return context
 

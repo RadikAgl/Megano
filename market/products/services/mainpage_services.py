@@ -81,15 +81,11 @@ class MainPageService:
 
         return Product.objects.annotate(avg_price=Avg("offer__price")).filter(is_product_of_the_day=True).first()
 
-    def get_midnight_tomorrow(self) -> datetime:
+    def get_tomorrow_date(self) -> datetime:
         """Возвращает объект времени полночи следующего дня"""
         today = datetime.datetime.today()
         one_day = datetime.timedelta(days=1)
-        tomorrow = today + one_day
-
-        time_midnight = datetime.time(0)
-
-        return datetime.datetime.combine(tomorrow, time_midnight)
+        return today + one_day
 
     def banners_cache(self) -> QuerySet:
         """

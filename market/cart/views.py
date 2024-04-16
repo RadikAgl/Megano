@@ -36,6 +36,8 @@ def cart_add(request: HttpRequest, pk: int) -> HttpResponse:
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(product=offer.product, offer=new_offer, quantity=cd["quantity"], update_quantity=cd["update"])
+    else:
+        return HttpResponse(form.errors.values())
     if new_offer != offer:
         cart.remove(offer)
 
