@@ -38,7 +38,7 @@ from .forms import (RegistrationForm,
 from .models import ViewHistory
 from .service import mail
 import random
-from shops.models import Offer
+
 
 
 class ProfileView(LoginRequiredMixin, FormView):
