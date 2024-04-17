@@ -1,5 +1,9 @@
 {% extends 'base.jinja2' %}
 
+{% block title %}
+    Sale
+{% endblock %}
+
 {% block content %}
     <body class="Site">
     <div class="Middle Middle_top">
@@ -33,7 +37,7 @@
                         <div class="Tabs-wrap">
                             <div class="Tabs-block" id="description">
                                 <h3>{{ _('Событие') }}: {{ discount_set.title }}</h3>
-                                <h3>{{ _('Размер скидки на корзину') }}: {{ discount_set.discount_amount }}$</h3>
+                                <h3>{{ _('Размер скидки на корзину') }}: {{ discount_set.discount_amount }}</h3>
                                 <p>{{ discount_set.description }}</p>
                                 <h3>{{ _('Товары из первого набора') }}:</h3>
                                 {% for pr in discount_set.first_group.all() %}
