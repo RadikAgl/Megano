@@ -276,6 +276,6 @@ class CartInstance:
     def __calculate_products_discount_total_price(self) -> Decimal | int:
         """Подсчет стоимости корзины с учетом скидок на товары"""
         total_price = 0
-        for offer in self.__get_offers_with_quantity():
+        for offer in self.get_offers_with_quantity():
             total_price += calculate_product_price_with_discount(offer[0]) * offer[1]
         return total_price
