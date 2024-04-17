@@ -80,8 +80,6 @@ class AcountView(LoginRequiredMixin, TemplateView):
                 Order.objects.filter(user=self.request.user.id).update(status=OrderStatus.PAID)
                 Order.objects.filter(user=self.request.user.id).delete()
                 context["paid"] = _("оплачено")
-
-
                 return context
         except KeyError:
             return context
