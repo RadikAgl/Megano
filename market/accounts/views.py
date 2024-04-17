@@ -14,7 +14,6 @@
 
 """
 
-import random
 from typing import Any, List
 
 from django.contrib import messages
@@ -30,12 +29,16 @@ from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import FormView, TemplateView
-
-from comparison.services import get_comparison_list
 from order.models import OrderStatus, Order
-from .forms import RegistrationForm, LoginForm, CustomPasswordForm, ProfilePasswordForm, ResetPasswordEmailForm
+from comparison.services import get_comparison_list
+from .forms import (RegistrationForm,
+                    LoginForm,
+                    CustomPasswordForm,
+                    ProfilePasswordForm,
+                    ResetPasswordEmailForm)
 from .models import ViewHistory
 from .service import mail
+import random
 
 
 class ProfileView(LoginRequiredMixin, FormView):
@@ -73,8 +76,9 @@ class AcountView(LoginRequiredMixin, TemplateView):
         context["name"] = self.request.user
         context["comparison_count"] = comparison_count
         try:
-            if self.request.session[f"{self.request.user.id}"]["id"]:
+            if self.request.session[f'{self.request.user.id}']['id']:
                 Order.objects.filter(user=self.request.user.id).update(status=OrderStatus.PAID)
+                Order.objects.filter(user=self.request.user.id).delete()
                 context["paid"] = _("оплачено")
                 return context
         except KeyError:
@@ -151,13 +155,12 @@ class PasswordReset(FormView):
         try:
             email = get_user_model().objects.get(email=email)
             random_numbers = [random.randint(0, 9) for _ in range(4)]
-            random_number = int("".join(map(str, random_numbers)))
+            random_number = int(''.join(map(str, random_numbers)))
             token_session = mail(email, random_number)
             self.request.session[token_session] = {}
-            self.request.session[token_session] = {
-                "check_number": random_number,
-                "email": f"{email}",
-            }
+            self.request.session[token_session] = {"check_number": random_number,
+                                                   "email": f'{email}',
+                                                   }
         except ObjectDoesNotExist:
             messages.error(self.request, "нет пользователя с таким Email")
             return self.form_invalid(form)
@@ -182,28 +185,29 @@ class UpdatePasswordView(FormView):
     success_url = reverse_lazy("user:login")
 
     def dispatch(self, request, *args, **kwargs):
-        token = kwargs.get("token")  # Получаем токен из kwargs
+        token = kwargs.get('token')  # Получаем токен из kwargs
         session_data = request.session.get(token)
         if not session_data:
             raise Http404()
-        email = session_data.get("email")
+        email = session_data.get('email')
         get_object_or_404(get_user_model(), email=email)
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        """
-        Обработчик вызывается при успешном вводе нового пароля.
-        Сохраняет новый пароль пользователя.
-
-        Parameters:
-        - form: Form
-            Форма с введенным новым паролем.
-
 
         """
-        token = self.kwargs["token"]
-        code = self.request.session[f"{token}"]["check_number"]
-        if code == form.cleaned_data["code"]:
+              Обработчик вызывается при успешном вводе нового пароля.
+              Сохраняет новый пароль пользователя.
+
+              Parameters:
+              - form: Form
+                  Форма с введенным новым паролем.
+
+
+              """
+        token = self.kwargs['token']
+        code = self.request.session[f"{token}"]['check_number']
+        if code == form.cleaned_data['code']:
             form.save()
             return super().form_valid(form)
         else:
@@ -228,10 +232,10 @@ class UpdatePasswordView(FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        token = self.kwargs["token"]
-        user = get_user_model().objects.get(email=self.request.session[f"{token}"]["email"])
-        kwargs["user"] = user  # Передаем текущего пользователя в форму
-        kwargs["data"] = self.request.POST  # Передаем данные запроса в форму
+        token = self.kwargs['token']
+        user = get_user_model().objects.get(email=self.request.session[f"{token}"]['email'])
+        kwargs['user'] = user  # Передаем текущего пользователя в форму
+        kwargs['data'] = self.request.POST  # Передаем данные запроса в форму
         return kwargs
 
 
