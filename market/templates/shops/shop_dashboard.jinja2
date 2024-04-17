@@ -83,7 +83,7 @@
                             <h2>{{ _('Импорты') }}:</h2>
                             {% if imports %}
                                 <ol>
-                                    {% for import_log in imports %}
+                                    {% for import_log in imports|reverse %}
                                         <table>
                                             <thead>
                                             <tr>
@@ -104,10 +104,11 @@
                                         </table>
                                     {% endfor %}
                                 </ol>
+
                             {% else %}
                                 {{ _('У вас пока нет импортов') }}
                                 <p><a href="{{ url('imports:import-page') }}">{{ _('Перейти на страницу импорта') }}</a>
-                            </p>
+                                </p>
                             {% endif %}
                         </div>
                         <p><a href="{{ url('shops:shop_remove') }}">{{ _('Закрыть магазин') }}</a></p>
