@@ -1,4 +1,6 @@
 """ Сервисы страницы каталога товаров """
+from typing import Tuple
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import ProgrammingError
 from django.db.models import Count
@@ -15,19 +17,21 @@ def get_popular_tags() -> list:
     return Tag.objects.all().annotate(cnt=Count("product")).order_by("-cnt")[:5]
 
 
-def relative_url(request: HttpRequest):
-    """Создание url для отображения страниц пагинации с фильтрацией"""
+def get_full_path_of_request_without_param_page(request: HttpRequest) -> Tuple[str, bool]:
+    """Возвращает полый url запроса"""
     url = request.get_full_path()
+    return relative_url(url)
+
+
+def relative_url(url: str) -> Tuple[str, bool]:
+    """Создание url для отображения страниц пагинации с фильтрацией"""
     if "?" not in url:
         return url, False
     if "page" not in url:
         return url, True
     params = url.split("?")[1].split("&")
-    url_params = "?"
-    for param in params:
-        if not param.startswith("page"):
-            url_params += param
-    return url.split("?")[0] + url_params, True
+    params = [param for param in params if not param.startswith("page")]
+    return url.split("?")[0] + "?" + "&".join(params), True
 
 
 def get_paginate_products_by() -> int:

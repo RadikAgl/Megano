@@ -32,10 +32,10 @@
                         </div>
                         <div class="Tabs-wrap">
                             <div class="Tabs-block" id="description">
-                                <h3>{{ _('Событие: ') }}{{ discount_product.title }}</h3>
-                                <h3>{{ _('Процент скидки: ') }}{{ discount_product.percentage }}%</h3>
+                                <h3>{{ _('Событие') }}: {{ discount_product.title }}</h3>
+                                <h3>{{ _('Процент скидки') }}: {{ discount_product.percentage }}%</h3>
                                 <p>{{ discount_product.description }}</p>
-                                <h3>{{ _('Скидка действует на следующие товары:') }}</h3>
+                                <h3>{{ _('Скидка действует на следующие товары') }}:</h3>
                                 {% for product in discount_product.products.all() %}
                                     <h4>{{ product.name }}</h4>
                                 {% endfor %}

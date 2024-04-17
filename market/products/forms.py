@@ -15,7 +15,7 @@ class ReviewsForm(forms.ModelForm):
         """
 
         model = Review
-        fields = ("text", "rating")
+        fields = ("product", "text", "rating")
         widgets = {
             "text": Textarea(
                 attrs={
@@ -24,4 +24,20 @@ class ReviewsForm(forms.ModelForm):
                     "id": "review",
                 }
             ),
+            "rating": forms.NumberInput(
+                attrs={
+                    "class": "form-numberinput",
+                    "placeholder": "Rating",
+                    "id": "rating",
+                    "min": 1,
+                    "max": 5,
+                }
+            ),
         }
+
+
+class CartAddProductCatalogForm(forms.Form):
+    """Форма для добавления товаров в корзину"""
+
+    quantity = forms.IntegerField(required=False, initial=1, widget=forms.HiddenInput)
+    update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)

@@ -87,7 +87,7 @@ class DiscountSet(DiscountBase):
         verbose_name_plural = _("скидки на наборы товаров")
 
     def __str__(self):
-        return f"{_('размер скидки')}={self.discount_amount}%, {_('событие')}: {self.title}"
+        return f"{_('размер скидки')}={self.discount_amount}, {_('событие')}: {self.title}"
 
 
 class DiscountCart(DiscountPercentageBase):

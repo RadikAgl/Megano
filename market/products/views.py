@@ -1,7 +1,8 @@
 """ Представления приложения products """
-
+import logging
 from typing import Any, Dict, Type
 
+from django.contrib import messages
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Avg, Sum
 from django.db.models.functions import Round
@@ -16,7 +17,7 @@ from django_filters.views import FilterView
 
 from accounts.models import ViewHistory
 from cart.cart import CartInstance
-from cart.forms import CartAddProductCatalogForm, CartAddProductForm
+from cart.forms import CartAddProductForm
 from comparison.services import get_comparison_list
 from products.services.mainpage_services import MainPageService
 from products.services.review_services import ReviewService
@@ -24,14 +25,20 @@ from products.services.review_services import ReviewService
 from shops.models import Offer, Shop
 from . import constants
 from .filters import ProductFilter
-from .forms import ReviewsForm
-from .models import Product, ProductImage
-from .services.catalog_services import get_popular_tags, relative_url, get_paginate_products_by
+from .forms import ReviewsForm, CartAddProductCatalogForm
+from .models import Product, ProductImage, Review
+from .services.catalog_services import (
+    get_popular_tags,
+    get_paginate_products_by,
+    get_full_path_of_request_without_param_page,
+)
 from .services.product_services import (
     get_discount_for_product,
     invalidate_product_details_cache,
     get_from_cache_or_set,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def add_product_to_cart(request: HttpRequest, cart_form: CartAddProductCatalogForm) -> None:
@@ -70,7 +77,7 @@ class MainPageView(TemplateView):
         context["product_of_day"] = main_page_service.get_product_of_day()
         context["comparison_count"] = comparison_count
         context["cart_form"] = CartAddProductCatalogForm()
-        context["time_to_midnight"] = main_page_service.get_midnight_tomorrow()
+        context["time_to_midnight"] = main_page_service.get_tomorrow_date()
         return context
 
     def post(self, request: HttpRequest, **kwargs):
@@ -91,7 +98,7 @@ class CatalogView(FilterView):
         context = super().get_context_data(**kwargs)
         context["tags"] = get_popular_tags()
         context["cart_form"] = CartAddProductCatalogForm()
-        context["relative_url"] = relative_url(self.request)
+        context["relative_url"] = get_full_path_of_request_without_param_page(self.request)
 
         return context
 
@@ -195,13 +202,26 @@ class ProductDetailView(DetailView):
 def add_review(request: WSGIRequest):
     """
     Добавляет отзыв о товаре
-    :param request: пост запрос
+    :param request: POST запрос
     :return: обновляет страницу
     """
     if request.method == "POST":
         form = ReviewsForm(request.POST)
         if form.is_valid():
-            review = ReviewService(request, request.user, request.POST["product"])
-            text = form.cleaned_data["text"]
-            review.add(review=text)
+            product_id = form.cleaned_data["product"].id
+            existing_review = Review.objects.filter(user=request.user, product_id=product_id).exists()
+            if not existing_review:
+                product = Product.objects.get(id=product_id)
+                review = ReviewService(request, request.user, product)
+                text = form.cleaned_data["text"]
+                rating = form.cleaned_data["rating"]
+                try:
+                    review.add(text=text, rating=rating)
+                    messages.success(request, "Отзыв успешно добавлен.")
+                except Exception as e:
+                    logger.exception("Ошибка при добавлении отзыва: %s", str(e))
+                    messages.error(request, "Произошла ошибка при добавлении отзыва.")
+            else:
+                messages.error(request, "Вы уже добавили отзыв на этот товар.")
+
     return redirect(request.META.get("HTTP_REFERER"))

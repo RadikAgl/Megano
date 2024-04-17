@@ -26,6 +26,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import FormView, TemplateView
 from order.models import OrderStatus, Order
@@ -40,9 +41,8 @@ from .service import mail
 import random
 
 
-
 class ProfileView(LoginRequiredMixin, FormView):
-    """вью для изменения пароля и email"""
+    """Представление для изменения пароля и email"""
 
     template_name = "accounts/profile.jinja2"
     form_class = ProfilePasswordForm
@@ -51,11 +51,11 @@ class ProfileView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        messages.error(self.request, "успешно")
+        messages.error(self.request, _("успешно"))
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "не верный ввод полей")
+        messages.error(self.request, _("не верный ввод полей"))
         return super().form_invalid(form)
 
     def get_form_kwargs(self):
@@ -65,7 +65,7 @@ class ProfileView(LoginRequiredMixin, FormView):
 
 
 class AcountView(LoginRequiredMixin, TemplateView):
-    """вюь для страницы пользователя"""
+    """Представление для страницы пользователя"""
 
     template_name = "accounts/account.jinja2"
 
@@ -79,15 +79,16 @@ class AcountView(LoginRequiredMixin, TemplateView):
             if self.request.session[f'{self.request.user.id}']['id']:
                 Order.objects.filter(user=self.request.user.id).update(status=OrderStatus.PAID)
                 Order.objects.filter(user=self.request.user.id).delete()
+                context["paid"] = _("оплачено")
 
-                context['paid'] = 'оплачено'
+
                 return context
         except KeyError:
             return context
 
 
 class RegistrationView(FormView):
-    """вью класс для регистрации"""
+    """Представление класс для регистрации"""
 
     template_name = "accounts/register.jinja2"
     form_class = RegistrationForm
@@ -99,7 +100,7 @@ class RegistrationView(FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "не валидная форма или такой пользователь уже есть")
+        messages.error(self.request, _("не валидная форма или такой пользователь уже есть"))
         return super().form_invalid(form)
 
 
@@ -118,7 +119,7 @@ class MyLoginView(LoginView):
             login(self.request, user)
             return super().form_valid(form)
         else:
-            messages.error(self.request, "нет пользователя с таким Email или неверный пароль")
+            messages.error(self.request, _("нет пользователя с таким Email или неверный пароль"))
             return super().form_invalid(form)
 
 
@@ -179,6 +180,7 @@ class UpdatePasswordView(FormView):
         URL-адрес, на который перенаправляется пользователь после успешного
         обновления пароля.
     """
+
     model = get_user_model()
     template_name = "accounts/password.jinja2"
     form_class = CustomPasswordForm
@@ -227,7 +229,7 @@ class UpdatePasswordView(FormView):
             Перенаправляет пользователя на страницу с формой обновления пароля.
         """
         print(form.cleaned_data)
-        messages.error(self.request, 'пароли не совпадают или неверный код')
+        messages.error(self.request, _("пароли не совпадают или неверный код"))
         return super().form_invalid(form)
 
     def get_form_kwargs(self):

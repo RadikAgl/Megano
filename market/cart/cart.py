@@ -16,7 +16,6 @@ from discounts.services import (
     calculate_product_price_with_discount,
     calculate_cart,
     calculate_set,
-    calculate_products_discount_total_price,
 )
 from products.models import Product
 from shops.models import Offer
@@ -117,20 +116,13 @@ class CartInstance:
             self.save()
 
     def save(self) -> None:
-        """
-        Сохранение корзины в сессии
-        :return: None
-        """
+        """Сохранение корзины в сессии"""
         if not self.__use_db:
             self.session[settings.CART_SESSION_ID] = self.cart
             self.session.modified = True
 
     def remove(self, offer: Offer) -> None:
-        """
-        Удаление товара из корзины
-        :param offer: товар
-        :return: None
-        """
+        """Удаление товара из корзины"""
         if self.__use_db:
             offer_ = self.qs.filter(offer=offer)
             if offer_.exists():
@@ -146,29 +138,24 @@ class CartInstance:
         yield from self.__get_discount_cart_items()
 
     def __len__(self) -> int:
-        """
-        Считает количество товаров в корзине
-        :return: количество товаров в корзине
-        """
+        """Подсчет количество товаров в корзине"""
         if self.__use_db:
             result = ProductInCart.objects.filter(cart=self.cart).aggregate(Sum("quantity"))["quantity__sum"]
             return result if result else 0
         return sum(item["quantity"] for item in self.cart.values())
 
     def clear(self, only_session: bool = False) -> None:
-        """
-        Удалить корзину из сеанса или из базы данных, если пользователь авторизован
-        :return:
-        """
+        """Удаление корзины из сеанса или из базы данных, если пользователь авторизован"""
         if only_session:
             del self.session[settings.CART_SESSION_ID]
+            self.cart = {}
             self.session.modified = True
         else:
             if self.qs:
                 self.qs.delete()
 
     def __get_discount_cart_items(self) -> list[dict]:
-        """Подготавливает список товаров корзины с учетом скидок"""
+        """Подготовка списка товаров корзины с учетом скидок"""
         if self.cart_for_view:
             return self.cart_for_view
 
@@ -245,10 +232,7 @@ class CartInstance:
         return HttpResponseNotFound(_("Ошибка! Не хватает товаров на складе!"))
 
     def get_total_price_without_discount(self) -> Decimal | int:
-        """
-        Считает итоговую цену товаров корзины без учета скидок
-        :return: цена товаров в корзине
-        """
+        """Получение итоговой цены товаров корзины без учета скидок"""
         if self.__use_db:
             total = self.qs.only("quantity").aggregate(total=Sum(F("quantity") * F("offer__price")))["total"]
             if not total:
@@ -258,7 +242,7 @@ class CartInstance:
         return sum(Decimal(item["price"]) * item["quantity"] for item in self.cart.values())
 
     def __get_discount_type(self) -> tuple[str, int]:
-        """Возвращает тип скидки"""
+        """Определение типа скидки"""
 
         total_price = self.get_total_price_without_discount()
         offers = self.__get_offers()
@@ -275,7 +259,7 @@ class CartInstance:
         return "product", 0
 
     def get_total_price(self) -> Decimal:
-        """Возвращает стоимость корзины с учетом всех скидок"""
+        """Подсчет стоимости корзины с учетом всех скидок"""
 
         discount_type, discount = self.__get_discount_type()
         total_price = self.get_total_price_without_discount()
@@ -287,5 +271,11 @@ class CartInstance:
             total_price -= discount
             return total_price if total_price > 1 else 1
 
-        offers_with_quantity = self.get_offers_with_quantity()
-        return calculate_products_discount_total_price(offers_with_quantity)
+        return self.__calculate_products_discount_total_price()
+
+    def __calculate_products_discount_total_price(self) -> Decimal | int:
+        """Подсчет стоимости корзины с учетом скидок на товары"""
+        total_price = 0
+        for offer in self.__get_offers_with_quantity():
+            total_price += calculate_product_price_with_discount(offer[0]) * offer[1]
+        return total_price

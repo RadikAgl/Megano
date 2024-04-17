@@ -97,9 +97,8 @@
                                    href="#sellers"><span>{{ _('Продавцы') }}</span></a>
                                 <a class="Tabs-link" href="#addit"><span>{{ _('Характеристика') }}</span></a>
                                 <a class="Tabs-link" href="#reviews">
-                                    <a class="Tabs-link" href="#reviews">
-                                        <span>{{ _('Отзывы: ') }}({{ product.reviews_count }})
-                                            {% if reviews|count in (11, 12, 13, 14) %}
+                                        <span>({{ reviews|count }})
+                                            {% if reviews|count in (0,11, 12, 13, 14) %}
                                                 {{ _('отзывов') }}
                                             {% elif reviews|count % 10 == 1 %}
                                                 {{ _('отзыв') }}
@@ -168,11 +167,11 @@
                                                             </div>
                                                             <div class="row-block">
                                                                 <div class="Order-info Order-info_pay">
-                                                                    <div class="Order-infoType">{{ _('Оплата: ') }}</div>
+                                                                    <div class="Order-infoType">{{ _('Оплата') }}:</div>
                                                                     <div class="Order-infoContent">{{ _("Онлайн картой") }}</div>
                                                                 </div>
                                                                 <div class="Order-info">
-                                                                    <div class="Order-infoType">{{ _('Стоимость: ') }}</div>
+                                                                    <div class="Order-infoType">{{ _('Стоимость') }}:</div>
                                                                     <div class="Order-infoContent">
                                                                         <span class="Order-price">{{ offer.price }}</span>
                                                                     </div>
@@ -205,8 +204,8 @@
                                 <div class="Tabs-block" id="reviews">
                                     {% if reviews %}
                                         <header class="Section-header">
-                                            <h3 class="Section-title">{{ product.reviews_count }}
-                                                {% if reviews|count in (11, 12, 13, 14) %}
+                                            <h3 class="Section-title">({{ reviews|count }})
+                                                {% if reviews|count in (0,11, 12, 13, 14) %}
                                                     отзывов
                                                 {% elif reviews|count % 10 == 1 %}
                                                     отзыв
@@ -223,7 +222,7 @@
                                                     <div class="Comment-column">
                                                         <header class="Comment-header">
                                                             <div>
-                                                                <strong class="Comment-title">{{ review.user.username }}</strong>
+                                                                <strong class="Comment-title">{{ review.user }}</strong>
                                                                 <span class="Comment-date">{{ review.created_at.strftime('%H:%M %Y-%m-%d') }}</span>
                                                             </div>
                                                         </header>
@@ -234,7 +233,7 @@
                                         </div>
                                         <div class="pagination">
                                             <ul class="pagination__list">
-                                                <div>{{ _('Страницы: ') }}</div>
+                                                <div>{{ _('Страницы') }}:</div>
                                                 {% for p in paginator.page_range %}
                                                     {% if page_obj.number == p %}
                                                         <li class="pagination__item">{{ p }}</li>
@@ -251,7 +250,17 @@
                                         <header class="Section-header Section-header_product">
                                             <h3 class="Section-title">{{ _('Написать отзыв') }}</h3>
                                         </header>
+                                        {% if messages %}
+                                            <div class="messages">
+                                                <ul>
+                                                    {% for message in messages %}
+                                                        <li>{{ message }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% endif %}
                                         <div class="Tabs-addComment">
+                                        <p>Отзыв должен быть более 10 символов, но менее 1000 символов.</p>
                                             <form class="form" method="post"
                                                   action="{{ url('product:add_review') }}">{% csrf_token %}
                                                 <div class="form-group">
@@ -259,7 +268,16 @@
                                                           placeholder="{{ _('Текст отзыва') }}"></textarea>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="rating">Оценка товара</label>
+                                                    <input type="number" class="form-numberinput" name="rating" id="rating" placeholder="Оценка" min="1" max="5">
+                                                </div>
+                                                <div class="form-group">
                                                     <div class="row">
+                                                         <div class="form-group">
+                                                            <button class="btn btn_primary" type="submit" style="margin-top: 10px;">
+                                                                {{ _('Добавить отзыв') }}
+                                                            </button>
+                                                        </div>
                                                         <div class="row-block">
                                                             <input class="form-input" id="name" name="name" type="text"
                                                                    placeholder="Name"
@@ -275,12 +293,6 @@
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="product" value="{{ product.id }}">
-                                                <div class="form-group">
-                                                    <button class="btn btn_primary" type="submit"
-                                                            style="margin-top: 25px;">
-                                                        {{ _('Добавить отзыв') }}
-                                                    </button>
-                                                </div>
                                             </form>
                                         </div>
                                     {% else %}

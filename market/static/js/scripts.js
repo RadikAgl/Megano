@@ -292,12 +292,12 @@ var range = function(){
             $line.ionRangeSlider({
                 onStart: function(data){
                     $('.rangePrice').text(
-                        '$' + data.from + ' - $' + data.to
+                        data.from + ' - ' + data.to
                     )
                 },
                 onChange: function(data){
                     $('.rangePrice').text(
-                        '$' + data.from + ' - $' + data.to
+                        data.from + ' - ' + data.to
                     )
                 }
             });
@@ -487,7 +487,7 @@ var CountDown = function(){
         endtime = endtime.split(' ');
         var date = endtime[0].split('.');
         var time = endtime[1].split(':');
-        var t = new Date(date[2], date[1] - 1, date[0] - 1, time[0], time[1]) - new Date();
+        var t = new Date(date[2], date[1] - 1, date[0], time[0], time[1]) - new Date();
         var seconds = Math.floor( (t/1000) % 60 );
         var minutes = Math.floor( (t/1000/60) % 60 );
         var hours = Math.floor( (t/(1000*60*60)) % 24 );

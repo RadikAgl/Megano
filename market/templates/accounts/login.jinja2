@@ -16,7 +16,7 @@
                 <input type="password" name="password" id="name" placeholder="*********"/>
             </div>
             <div>
-                <input type="submit" value="Войти"/>
+                <input type="submit" value={{ _("Войти") }}/>
                 {% if messages %}
                     {% for message in messages %}
                         {{ message }}
@@ -28,7 +28,6 @@
             <a class="registr" href="register.jinja2">
                 {{ _('Регистрация') }}
             </a>
-
         </form>
 
     </div>

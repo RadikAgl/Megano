@@ -111,7 +111,6 @@ TEMPLATES = [
             "environment": "jinja2.Environment",
             "globals": {
                 "all_categories": "templatetags.globals.get_categories",
-                "product_name": "templatetags.globals.get_first_product_name",
             },
             "context_processors": [
                 "context_processors.cart_context.get_cart_cost",
