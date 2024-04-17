@@ -6,7 +6,7 @@
       "name": "Тестовый_баннер_1",
       "description": "Самый обычный рекламный текст",
       "actual": true,
-      "preview": "uploads/banners/bigGoods.png",
+      "preview": "/banners/bigGoods.png",
       "link": "http://www.example.com/Тестовый_баннер_1"
     }
   },
@@ -17,7 +17,7 @@
       "name": "Тестовый_баннер_2",
       "description": "Самый обычный рекламный текст",
       "actual": true,
-      "preview": "uploads/banners/bigGoods2.jpg",
+      "preview": "/banners/bigGoods2.jpg",
       "link": "http://www.example.com/Тестовый_баннер_2"
     }
   },
@@ -28,7 +28,7 @@
       "name": "Тестовый_баннер_3",
       "description": "Самый обычный рекламный текст",
       "actual": true,
-      "preview": "uploads/banners/card.jpg",
+      "preview": "/banners/card.jpg",
       "link": "http://www.example.com/Тестовый_баннер_3"
     }
   },
@@ -39,7 +39,7 @@
       "name": "Тестовый_баннер_4",
       "description": "Самый обычный рекламный текст",
       "actual": true,
-      "preview": "uploads/banners/slider.png",
+      "preview": "/banners/slider.png",
       "link": "http://www.example.com/Тестовый_баннер_4"
     }
   }
