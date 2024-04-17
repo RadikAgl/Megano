@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-15 20:07+0300\n"
+"POT-Creation-Date: 2024-04-17 17:48+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,7 +85,7 @@ msgstr "No user with this email or incorrect password."
 msgid "пароли не совпадают или неверный код"
 msgstr "Passwords do not match or wrong code"
 
-#: .\cart\cart.py:245
+#: .\cart\cart.py:232
 msgid "Ошибка! Не хватает товаров на складе!"
 msgstr "Error! Not enough items in stock!"
 
@@ -325,11 +325,11 @@ msgid "Имя файла импорта"
 msgstr "Import file name"
 
 #: .\imports\models.py:45 .\templates\accounts\account.jinja2:77
-#: .\templates\imports\import_details.jinja2:19
-#: .\templates\imports\import_page.jinja2:24
-#: .\templates\imports\import_page.jinja2:39
+#: .\templates\imports\import_details.jinja2:53
+#: .\templates\imports\import_page.jinja2:59
+#: .\templates\imports\import_page.jinja2:74
 #: .\templates\order\detail_order.jinja2:60
-#: .\templates\shops\shop_dashboard.jinja2:87
+#: .\templates\shops\shop_dashboard.jinja2:92
 msgid "Статус"
 msgstr "Status"
 
@@ -528,7 +528,7 @@ msgstr "Image"
 msgid "изображение"
 msgstr "Images"
 
-#: .\products\views.py:195
+#: .\products\views.py:199
 msgid "Ошибка!"
 msgstr "error!"
 
@@ -657,7 +657,9 @@ msgid "предложение"
 msgstr "Offers"
 
 #: .\templates\accounts\account.jinja2:10 .\templates\accounts\profile.jinja2:8
-#: .\templates\footer.jinja2:7 .\templates\order\order_history.jinja2:25
+#: .\templates\footer.jinja2:7 .\templates\imports\import_details.jinja2:10
+#: .\templates\imports\import_page.jinja2:10
+#: .\templates\order\order_history.jinja2:25
 #: .\templates\shops\create_shop.jinja2:10
 #: .\templates\shops\remove_shop.jinja2:10
 #: .\templates\shops\shop_dashboard.jinja2:10
@@ -666,12 +668,16 @@ msgstr "Navigation"
 
 #: .\templates\accounts\account.jinja2:16
 #: .\templates\accounts\profile.jinja2:15 .\templates\header.jinja2:38
-#: .\templates\menu.jinja2:31 .\templates\order\order_history.jinja2:30
+#: .\templates\imports\import_details.jinja2:17
+#: .\templates\imports\import_page.jinja2:17 .\templates\menu.jinja2:31
+#: .\templates\order\order_history.jinja2:30
 msgid "Личный кабинет"
 msgstr "Personal account"
 
 #: .\templates\accounts\account.jinja2:19
 #: .\templates\accounts\profile.jinja2:18 .\templates\footer.jinja2:16
+#: .\templates\imports\import_details.jinja2:20
+#: .\templates\imports\import_page.jinja2:20
 #: .\templates\order\order_history.jinja2:31
 msgid "Профиль"
 msgstr "Profile"
@@ -679,6 +685,8 @@ msgstr "Profile"
 #: .\templates\accounts\account.jinja2:23
 #: .\templates\accounts\account.jinja2:60
 #: .\templates\accounts\profile.jinja2:20
+#: .\templates\imports\import_details.jinja2:24
+#: .\templates\imports\import_page.jinja2:24
 #: .\templates\order\detail_order.jinja2:15
 #: .\templates\order\order_history.jinja2:4
 #: .\templates\order\order_history.jinja2:12
@@ -689,12 +697,16 @@ msgstr "Orders history"
 
 #: .\templates\accounts\account.jinja2:27
 #: .\templates\accounts\profile.jinja2:24
+#: .\templates\imports\import_details.jinja2:28
+#: .\templates\imports\import_page.jinja2:28
 msgid "Мой магазин"
 msgstr "My shop"
 
 #: .\templates\accounts\account.jinja2:31
 #: .\templates\accounts\profile.jinja2:26
-#: .\templates\accounts\viewing_history.jinja2:4
+#: .\templates\accounts\viewing_history.jinja2:30
+#: .\templates\imports\import_details.jinja2:32
+#: .\templates\imports\import_page.jinja2:32
 msgid "История просмотров товаров"
 msgstr "Views history"
 
@@ -923,101 +935,101 @@ msgstr "Comparisons"
 msgid "Контакты"
 msgstr "Contacts"
 
-#: .\templates\imports\import_details.jinja2:5
+#: .\templates\imports\import_details.jinja2:40
 msgid "Импорт начат"
 msgstr "Imports started"
 
-#: .\templates\imports\import_details.jinja2:6
+#: .\templates\imports\import_details.jinja2:41
 msgid "Импорт товаров запущен. Подождите, пожалуйста..."
 msgstr "Products import has started. Please wait..."
 
-#: .\templates\imports\import_details.jinja2:7
-#: .\templates\imports\import_details.jinja2:83
+#: .\templates\imports\import_details.jinja2:42
+#: .\templates\imports\import_details.jinja2:117
 msgid "Вернуться на страницу импорта"
 msgstr "Return to the import page"
 
-#: .\templates\imports\import_details.jinja2:11
+#: .\templates\imports\import_details.jinja2:45
 msgid "Детали импорта"
 msgstr "Import's details"
 
-#: .\templates\imports\import_details.jinja2:17
-#: .\templates\imports\import_page.jinja2:37
-#: .\templates\shops\shop_dashboard.jinja2:85
+#: .\templates\imports\import_details.jinja2:51
+#: .\templates\imports\import_page.jinja2:72
+#: .\templates\shops\shop_dashboard.jinja2:90
 msgid "ID импорта"
 msgstr "Import's ID"
 
-#: .\templates\imports\import_details.jinja2:18
-#: .\templates\imports\import_page.jinja2:23
-#: .\templates\imports\import_page.jinja2:38
-#: .\templates\shops\shop_dashboard.jinja2:86
+#: .\templates\imports\import_details.jinja2:52
+#: .\templates\imports\import_page.jinja2:58
+#: .\templates\imports\import_page.jinja2:73
+#: .\templates\shops\shop_dashboard.jinja2:91
 msgid "Имя файла"
 msgstr "File name"
 
-#: .\templates\imports\import_details.jinja2:20
-#: .\templates\imports\import_page.jinja2:40
-#: .\templates\shops\shop_dashboard.jinja2:88
+#: .\templates\imports\import_details.jinja2:54
+#: .\templates\imports\import_page.jinja2:75
+#: .\templates\shops\shop_dashboard.jinja2:93
 msgid "Временная метка"
 msgstr "Timestamp"
 
-#: .\templates\imports\import_details.jinja2:33
+#: .\templates\imports\import_details.jinja2:67
 msgid "Нет данных об импорте."
 msgstr "No import data available."
 
-#: .\templates\imports\import_details.jinja2:36
+#: .\templates\imports\import_details.jinja2:70
 msgid "Импортированные товары"
 msgstr "Imported products"
 
-#: .\templates\imports\import_details.jinja2:43
+#: .\templates\imports\import_details.jinja2:77
 #: .\templates\products\catalog.jinja2:34
 msgid "Название"
 msgstr "Name"
 
-#: .\templates\imports\import_details.jinja2:44
+#: .\templates\imports\import_details.jinja2:78
 msgid "Основная категория"
 msgstr "Basic Category"
 
-#: .\templates\imports\import_details.jinja2:58
-#: .\templates\imports\import_details.jinja2:80
+#: .\templates\imports\import_details.jinja2:92
+#: .\templates\imports\import_details.jinja2:114
 msgid "Нет импортированных товаров."
 msgstr "No imported products."
 
-#: .\templates\imports\import_details.jinja2:61
+#: .\templates\imports\import_details.jinja2:95
 msgid "Итоги импорта"
 msgstr "Import summary"
 
-#: .\templates\imports\import_details.jinja2:66
+#: .\templates\imports\import_details.jinja2:100
 msgid "Всего товаров"
 msgstr "Total products"
 
-#: .\templates\imports\import_details.jinja2:67
+#: .\templates\imports\import_details.jinja2:101
 msgid "Успешные импорты"
 msgstr "Successful imports"
 
-#: .\templates\imports\import_details.jinja2:68
+#: .\templates\imports\import_details.jinja2:102
 msgid "Неудачные импорты"
 msgstr "Failed imports"
 
-#: .\templates\imports\import_page.jinja2:5
+#: .\templates\imports\import_page.jinja2:40
 msgid "Импорт товаров"
 msgstr "Import products"
 
-#: .\templates\imports\import_page.jinja2:9
+#: .\templates\imports\import_page.jinja2:44
 msgid "Выберите файл для импорта:"
 msgstr "Choose a file for import:"
 
-#: .\templates\imports\import_page.jinja2:11
+#: .\templates\imports\import_page.jinja2:46
 msgid "Запустить импорт"
 msgstr "Start import"
 
-#: .\templates\imports\import_page.jinja2:15
+#: .\templates\imports\import_page.jinja2:50
 msgid "Скачать шаблон CSV"
 msgstr "Download CSV template"
 
-#: .\templates\imports\import_page.jinja2:19
+#: .\templates\imports\import_page.jinja2:54
 msgid "Предыдущие импорты:"
 msgstr "Previous imports:"
 
-#: .\templates\imports\import_page.jinja2:55
+#: .\templates\imports\import_page.jinja2:90
 msgid "У вас пока нет импортов ..."
 msgstr "You have no imports yet ..."
 
@@ -1329,43 +1341,43 @@ msgstr "Description"
 msgid "Логотип "
 msgstr "logo"
 
-#: .\templates\shops\shop_dashboard.jinja2:35
-#: .\templates\shops\shop_dashboard.jinja2:104
+#: .\templates\shops\shop_dashboard.jinja2:40
+#: .\templates\shops\shop_dashboard.jinja2:110
 msgid "Перейти на страницу импорта"
 msgstr "Go to the import page"
 
-#: .\templates\shops\shop_dashboard.jinja2:39
+#: .\templates\shops\shop_dashboard.jinja2:44
 msgid "Продукты"
 msgstr "Products"
 
-#: .\templates\shops\shop_dashboard.jinja2:49
+#: .\templates\shops\shop_dashboard.jinja2:54
 msgid "У вас пока нет продуктов"
 msgstr "You have no products yet"
 
-#: .\templates\shops\shop_dashboard.jinja2:53
+#: .\templates\shops\shop_dashboard.jinja2:58
 msgid "Предложения"
 msgstr "Offer"
 
-#: .\templates\shops\shop_dashboard.jinja2:58
+#: .\templates\shops\shop_dashboard.jinja2:63
 msgid "Товар"
 msgstr "Product"
 
-#: .\templates\shops\shop_dashboard.jinja2:74
+#: .\templates\shops\shop_dashboard.jinja2:79
 msgid "У вас пока нет предложений"
 msgstr "You have no offers yet ..."
 
-#: .\templates\shops\shop_dashboard.jinja2:78
+#: .\templates\shops\shop_dashboard.jinja2:83
 msgid "Импорты"
 msgstr "Imports"
 
-#: .\templates\shops\shop_dashboard.jinja2:103
+#: .\templates\shops\shop_dashboard.jinja2:109
 msgid "У вас пока нет импортов"
 msgstr "You have no imports yet ..."
 
-#: .\templates\shops\shop_dashboard.jinja2:108
+#: .\templates\shops\shop_dashboard.jinja2:114
 msgid "Закрыть магазин"
 msgstr "Close the shop"
 
-#: .\templates\shops\shop_dashboard.jinja2:110
+#: .\templates\shops\shop_dashboard.jinja2:116
 msgid "Открыть магазин"
 msgstr "Open a shop"

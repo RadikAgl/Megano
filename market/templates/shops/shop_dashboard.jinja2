@@ -25,11 +25,11 @@
                     <h1>{{ _('Добро пожаловать в вашу панель управления магазином') }}</h1>
                     {% if shop %}
                         <div>
-                            <h2>{{ _('Детали магазина') }}:</h2>
-                            <h3>{{ _('Название ') }}:{{ shop.name }}</h3>
-                            <h3>{{ _('Контактная информация ') }}:{{ shop.contact_info }}</h3>
-                            <h3>{{ _('Описание ') }}:{{ shop.description }}</h3>
-                            <h3>{{ _('Логотип ') }}:</h3>
+                            <h2>{{ _('Детали магазина') }}: </h2>
+                            <h3>{{ _('Название') }}: {{ shop.name }}</h3>
+                            <h3>{{ _('Контактная информация') }}: {{ shop.contact_info }}</h3>
+                            <h3>{{ _('Описание') }}: {{ shop.description }}</h3>
+                            <h3>{{ _('Логотип') }}: </h3>
                             {% if shop.logo %}
                                 <img src="{{ shop.logo.url }}" alt="Логотип магазина {{ shop.name }}">
                             {% else %}
@@ -83,7 +83,7 @@
                             <h2>{{ _('Импорты') }}:</h2>
                             {% if imports %}
                                 <ol>
-                                    {% for import_log in imports %}
+                                    {% for import_log in imports|reverse %}
                                         <table>
                                             <thead>
                                             <tr>
@@ -104,10 +104,11 @@
                                         </table>
                                     {% endfor %}
                                 </ol>
+
                             {% else %}
                                 {{ _('У вас пока нет импортов') }}
                                 <p><a href="{{ url('imports:import-page') }}">{{ _('Перейти на страницу импорта') }}</a>
-                            </p>
+                                </p>
                             {% endif %}
                         </div>
                         <p><a href="{{ url('shops:shop_remove') }}">{{ _('Закрыть магазин') }}</a></p>
