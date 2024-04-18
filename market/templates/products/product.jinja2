@@ -1,5 +1,9 @@
 {% extends 'base.jinja2' %}
 
+{% block title %}
+    MEGANO
+{% endblock %}
+
 {% block content %}
     <div class="Middle Middle_top">
         <div class="Section">
@@ -146,7 +150,7 @@
                                                                 <a class="Order-title" href="#">{{ offer.shop.name }}</a>
                                                                 <div class="ProductCard-cartElement"
                                                                      style="margin-top: 10px;">
-                                                                    <form class="ProductCard-cart" method="post">
+                                                                    <form class="ProductCard-cart" method="post" action="#modal_open">
                                                                         {% csrf_token %}
                                                                         <div class="ProductCard-cartElement ProductCard-cartElement_amount">
                                                                             <div class="Amount Amount_product">
