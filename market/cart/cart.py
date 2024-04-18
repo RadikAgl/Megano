@@ -74,7 +74,7 @@ class CartInstance:
                     )
             else:
                 offer = Offer.objects.get(id=key)
-                cart_ = Cart.objects.update_or_create(user=user)
+                cart_, is_created = Cart.objects.update_or_create(user=user)
                 ProductInCart.objects.create(
                     offer=offer,
                     cart=cart_,
