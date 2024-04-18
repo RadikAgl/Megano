@@ -78,7 +78,7 @@ class AcountView(LoginRequiredMixin, TemplateView):
         try:
             if self.request.session[f'{self.request.user.id}']['id']:
                 Order.objects.filter(user=self.request.user.id).update(status=OrderStatus.PAID)
-                Order.objects.filter(user=self.request.user.id).delete()
+
                 context["paid"] = _("оплачено")
                 return context
         except KeyError:
